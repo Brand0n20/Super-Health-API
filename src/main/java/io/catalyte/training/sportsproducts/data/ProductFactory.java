@@ -2,6 +2,7 @@ package io.catalyte.training.sportsproducts.data;
 
 import io.catalyte.training.sportsproducts.domains.product.Product;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,8 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils;
  */
 public class ProductFactory {
 
-  private static final String[] colors = {
-      "#000000", // white
+  private static final String[] colors = {"#000000", // white
       "#ffffff", // black
       "#39add1", // light blue
       "#3079ab", // dark blue
@@ -30,60 +30,15 @@ public class ProductFactory {
       "#f092b0", // pink
       "#b7c0c7"  // light gray
   };
-  private static final String[] demographics = {
-      "Men",
-      "Women",
-      "Kids",
-      "Non-Binary"
-  };
-  private static final String[] categories = {
-      "Golf",
-      "Soccer",
-      "Basketball",
-      "Hockey",
-      "Football",
-      "Running",
-      "Baseball",
-      "Skateboarding",
-      "Boxing",
-      "Weightlifting"
-  };
-  private static final String[] adjectives = {
-      "Lightweight",
-      "Slim",
-      "Shock Absorbing",
-      "Exotic",
-      "Elastic",
-      "Fashionable",
-      "Trendy",
-      "Next Gen",
-      "Colorful",
-      "Comfortable",
-      "Water Resistant",
-      "Wicking",
-      "Heavy Duty"
-  };
-  private static final String[] types = {
-      "Pant",
-      "Short",
-      "Shoe",
-      "Glove",
-      "Jacket",
-      "Tank Top",
-      "Sock",
-      "Sunglasses",
-      "Hat",
-      "Helmet",
-      "Belt",
-      "Visor",
-      "Shin Guard",
-      "Elbow Pad",
-      "Headband",
-      "Wristband",
-      "Hoodie",
-      "Flip Flop",
-      "Pool Noodle"
-  };
+  private static final String[] demographics = {"Men", "Women", "Kids", "Non-Binary"};
+  private static final String[] categories = {"Golf", "Soccer", "Basketball", "Hockey", "Football",
+      "Running", "Baseball", "Skateboarding", "Boxing", "Weightlifting"};
+  private static final String[] adjectives = {"Lightweight", "Slim", "Shock Absorbing", "Exotic",
+      "Elastic", "Fashionable", "Trendy", "Next Gen", "Colorful", "Comfortable", "Water Resistant",
+      "Wicking", "Heavy Duty"};
+  private static final String[] types = {"Pant", "Short", "Shoe", "Glove", "Jacket", "Tank Top",
+      "Sock", "Sunglasses", "Hat", "Helmet", "Belt", "Visor", "Shin Guard", "Elbow Pad", "Headband",
+      "Wristband", "Hoodie", "Flip Flop", "Pool Noodle"};
 
   /**
    * Returns a random demographic from the list of demographics.
@@ -148,9 +103,7 @@ public class ProductFactory {
   private static LocalDate between(LocalDate startInclusive, LocalDate endExclusive) {
     long startEpochDay = startInclusive.toEpochDay();
     long endEpochDay = endExclusive.toEpochDay();
-    long randomDay = ThreadLocalRandom
-        .current()
-        .nextLong(startEpochDay, endEpochDay);
+    long randomDay = ThreadLocalRandom.current().nextLong(startEpochDay, endEpochDay);
 
     return LocalDate.ofEpochDay(randomDay);
   }
@@ -181,6 +134,8 @@ public class ProductFactory {
   public Product createRandomProduct() {
     //Get the different types of randomly generated data needed
     Product product = new Product();
+
+
     String demographic = ProductFactory.getDemographic();
     String category = ProductFactory.getCategory();
     String primaryColorCode = ProductFactory.getColorCode();
@@ -191,13 +146,22 @@ public class ProductFactory {
         "A " + adjective + " " + category + " that's great for " + demographic + "!";
     String name = adjective + " " + category + " " + type;
 
+    //Write a helper function to convert release date to appropriate time??
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    LocalDate date = ProductFactory.between(LocalDate.of(1970, 1, 1), LocalDate.now());
 
-    product.setActive(ProductFactory.getActive());
+    dateTimeFormatter.format(date);
+
+    product.setPrimaryColorCode(primaryColorCode);
+    product.setSecondaryColorCode(secondaryColorCode);
+    product.setDescription(description);
+    product.setName(name);
     product.setCategory(category);
     product.setDemographic(demographic);
     product.setGlobalProductCode(ProductFactory.getRandomProductId());
     product.setStyleNumber(ProductFactory.getStyleCode());
-
+    product.setType(type);
+    product.setActive(ProductFactory.getActive());
     return product;
   }
 
