@@ -50,26 +50,55 @@ public class ProductFactory {
     return demographics[randomGenerator.nextInt(demographics.length)];
   }
 
+  /**
+   * Generates a random demographic.
+   *
+   * @return - a category string
+   */
+
   public static String getCategory() {
     Random randomGenerator = new Random();
     return categories[randomGenerator.nextInt(categories.length)];
   }
+
+  /**
+   * Generates a random type.
+   *
+   * @return - a type string
+   */
 
   public static String getType() {
     Random randomGenerator = new Random();
     return types[randomGenerator.nextInt(types.length)];
   }
 
+  /**
+   * Generates a random adjective.
+   *
+   * @return - an adjective string
+   */
+
   public static String getAdjective() {
     Random randomGenerator = new Random();
     return adjectives[randomGenerator.nextInt(adjectives.length)];
   }
+
+  /**
+   * Generates a random color code.
+   *
+   * @return - a color code string
+   */
 
   public static String getColorCode() {
     Random randomGenerator = new Random();
     return colors[randomGenerator.nextInt(colors.length)];
   }
 
+  /**
+   * Generates a random active state.
+   *
+   * @return - an active state boolean
+   */
   public static Boolean getActive() {
     Random randomGenerator = new Random();
     return randomGenerator.nextInt(2) > 0;
@@ -108,7 +137,6 @@ public class ProductFactory {
     return LocalDate.ofEpochDay(randomDay);
   }
 
-
   /**
    * Generates a number of random products based on input.
    *
@@ -134,8 +162,6 @@ public class ProductFactory {
   public Product createRandomProduct() {
     //Get the different types of randomly generated data needed
     Product product = new Product();
-
-
     String demographic = ProductFactory.getDemographic();
     String category = ProductFactory.getCategory();
     String primaryColorCode = ProductFactory.getColorCode();
@@ -146,11 +172,9 @@ public class ProductFactory {
         "A " + adjective + " " + category + " that's great for " + demographic + "!";
     String name = adjective + " " + category + " " + type;
 
-    //Write a helper function to convert release date to appropriate time??
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     LocalDate date = ProductFactory.between(LocalDate.of(1970, 1, 1), LocalDate.now());
-
-    dateTimeFormatter.format(date);
+    String dateString = dateTimeFormatter.format(date);
 
     product.setPrimaryColorCode(primaryColorCode);
     product.setSecondaryColorCode(secondaryColorCode);
@@ -162,6 +186,8 @@ public class ProductFactory {
     product.setStyleNumber(ProductFactory.getStyleCode());
     product.setType(type);
     product.setActive(ProductFactory.getActive());
+    product.setReleaseDate(dateString);
+
     return product;
   }
 
