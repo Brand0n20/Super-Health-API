@@ -174,27 +174,22 @@ public class Product {
     if (!Objects.equals(type, product.type)) {
       return false;
     }
-    if (releaseDate != null ? !releaseDate.equals(product.releaseDate)
-        : product.releaseDate != null) {
+    if (!Objects.equals(releaseDate, product.releaseDate)) {
       return false;
     }
-    if (primaryColorCode != null ? !primaryColorCode.equals(product.primaryColorCode)
-        : product.primaryColorCode != null) {
+    if (!Objects.equals(primaryColorCode, product.primaryColorCode)) {
       return false;
     }
-    if (secondaryColorCode != null ? !secondaryColorCode.equals(product.secondaryColorCode)
-        : product.secondaryColorCode != null) {
+    if (!Objects.equals(secondaryColorCode, product.secondaryColorCode)) {
       return false;
     }
-    if (styleNumber != null ? !styleNumber.equals(product.styleNumber)
-        : product.styleNumber != null) {
+    if (!Objects.equals(styleNumber, product.styleNumber)) {
       return false;
     }
-    if (globalProductCode != null ? !globalProductCode.equals(product.globalProductCode)
-        : product.globalProductCode != null) {
+    if (!Objects.equals(globalProductCode, product.globalProductCode)) {
       return false;
     }
-    return active != null ? active.equals(product.active) : product.active == null;
+    return Objects.equals(active, product.active);
   }
 
   @Override
