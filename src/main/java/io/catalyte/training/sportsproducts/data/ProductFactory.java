@@ -33,7 +33,8 @@ public class ProductFactory {
   private static final String[] demographics = {
       "Men",
       "Women",
-      "Kids"
+      "Kids",
+      "Non-Binary"
   };
   private static final String[] categories = {
       "Golf",
@@ -92,6 +93,31 @@ public class ProductFactory {
   public static String getDemographic() {
     Random randomGenerator = new Random();
     return demographics[randomGenerator.nextInt(demographics.length)];
+  }
+
+  public static String getCategory() {
+    Random randomGenerator = new Random();
+    return categories[randomGenerator.nextInt(categories.length)];
+  }
+
+  public static String getType() {
+    Random randomGenerator = new Random();
+    return types[randomGenerator.nextInt(types.length)];
+  }
+
+  public static String getAdjective() {
+    Random randomGenerator = new Random();
+    return adjectives[randomGenerator.nextInt(adjectives.length)];
+  }
+
+  public static String getColorCode() {
+    Random randomGenerator = new Random();
+    return colors[randomGenerator.nextInt(colors.length)];
+  }
+
+  public static Boolean getActive() {
+    Random randomGenerator = new Random();
+    return randomGenerator.nextInt(2) > 0;
   }
 
   /**
@@ -153,11 +179,21 @@ public class ProductFactory {
    * @return - a randomly generated product
    */
   public Product createRandomProduct() {
+    //Get the different types of randomly generated data needed
     Product product = new Product();
     String demographic = ProductFactory.getDemographic();
-    product.setCategory("Running");
-    product.setType("Short");
+    String category = ProductFactory.getCategory();
+    String primaryColorCode = ProductFactory.getColorCode();
+    String secondaryColorCode = ProductFactory.getColorCode();
+    String type = ProductFactory.getType();
+    String adjective = ProductFactory.getAdjective();
+    String description =
+        "A " + adjective + " " + category + " that's great for " + demographic + "!";
+    String name = adjective + " " + category + " " + type;
 
+
+    product.setActive(ProductFactory.getActive());
+    product.setCategory(category);
     product.setDemographic(demographic);
     product.setGlobalProductCode(ProductFactory.getRandomProductId());
     product.setStyleNumber(ProductFactory.getStyleCode());
