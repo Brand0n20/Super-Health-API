@@ -41,4 +41,19 @@ public class ProductController {
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
   }
 
+  @GetMapping(value = "/{category}/")
+  @ResponseStatus(value = HttpStatus.OK)
+  public ResponseEntity<Product> getProductByCategory(@PathVariable String category) {
+    logger.info("Request received for getProductsByCategory: " + category);
+
+    return new ResponseEntity<>(productService.getProductByCategory(category), HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/{type}/")
+  @ResponseStatus(value = HttpStatus.OK)
+  public ResponseEntity<Product> getProductByType(@PathVariable String type) {
+    logger.info("Request received for getProductsByType: " + type);
+
+    return new ResponseEntity<>(productService.getProductByType(type), HttpStatus.OK);
+  }
 }
