@@ -1,5 +1,6 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -158,21 +159,19 @@ public class Product {
 
     Product product = (Product) o;
 
-    if (name != null ? !name.equals(product.name) : product.name != null) {
+    if (!Objects.equals(name, product.name)) {
       return false;
     }
-    if (description != null ? !description.equals(product.description)
-        : product.description != null) {
+    if (!Objects.equals(description, product.description)) {
       return false;
     }
-    if (demographic != null ? !demographic.equals(product.demographic)
-        : product.demographic != null) {
+    if (!Objects.equals(demographic, product.demographic)) {
       return false;
     }
-    if (category != null ? !category.equals(product.category) : product.category != null) {
+    if (!Objects.equals(category, product.category)) {
       return false;
     }
-    if (type != null ? !type.equals(product.type) : product.type != null) {
+    if (!Objects.equals(type, product.type)) {
       return false;
     }
     if (releaseDate != null ? !releaseDate.equals(product.releaseDate)
