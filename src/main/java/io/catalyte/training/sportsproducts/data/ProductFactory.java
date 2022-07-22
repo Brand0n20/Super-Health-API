@@ -154,6 +154,7 @@ public class ProductFactory {
     return productList;
   }
 
+
   /**
    * Uses random generators to build a product.
    *
