@@ -1,5 +1,6 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -78,4 +79,24 @@ public class ProductServiceImplTest {
     );
   }
 
+  @Test
+  public void getProductsByIdReturnsStrings() {
+    Product actual = productServiceImpl.getProductById(123L);
+    assertAll(
+        () -> assertTrue(actual.getName() instanceof String),
+        () -> assertTrue(actual.getDemographic() instanceof String),
+        () -> assertTrue(actual.getCategory() instanceof String),
+        () -> assertTrue(actual.getType() instanceof String),
+        () -> assertTrue(actual.getReleaseDate() instanceof String),
+        () -> assertTrue(actual.getPrimaryColorCode() instanceof String),
+        () -> assertTrue(actual.getSecondaryColorCode() instanceof String),
+        () -> assertTrue(actual.getGlobalProductCode() instanceof String)
+    );
+  }
+
+  @Test
+  public void productsActivePropertyIsBoolean() {
+    Product actual = productServiceImpl.getProductById(123L);
+    assertTrue(actual.getActive() instanceof Boolean);
+  }
 }

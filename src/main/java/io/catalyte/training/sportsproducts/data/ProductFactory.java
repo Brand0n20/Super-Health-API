@@ -55,7 +55,6 @@ public class ProductFactory {
    *
    * @return - a category string
    */
-
   public static String getCategory() {
     Random randomGenerator = new Random();
     return categories[randomGenerator.nextInt(categories.length)];
@@ -66,7 +65,6 @@ public class ProductFactory {
    *
    * @return - a type string
    */
-
   public static String getType() {
     Random randomGenerator = new Random();
     return types[randomGenerator.nextInt(types.length)];
@@ -77,7 +75,6 @@ public class ProductFactory {
    *
    * @return - an adjective string
    */
-
   public static String getAdjective() {
     Random randomGenerator = new Random();
     return adjectives[randomGenerator.nextInt(adjectives.length)];
@@ -88,7 +85,6 @@ public class ProductFactory {
    *
    * @return - a color code string
    */
-
   public static String getColorCode() {
     Random randomGenerator = new Random();
     return colors[randomGenerator.nextInt(colors.length)];
@@ -154,7 +150,6 @@ public class ProductFactory {
     return productList;
   }
 
-
   /**
    * Uses random generators to build a product.
    *
@@ -191,5 +186,4 @@ public class ProductFactory {
 
     return product;
   }
-
 }

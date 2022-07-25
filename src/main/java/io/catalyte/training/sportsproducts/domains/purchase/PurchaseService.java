@@ -7,5 +7,4 @@ public interface PurchaseService {
   Purchase savePurchase(Purchase purchaseToSave);
 
   List<Purchase> findAllPurchases();
-
 }
