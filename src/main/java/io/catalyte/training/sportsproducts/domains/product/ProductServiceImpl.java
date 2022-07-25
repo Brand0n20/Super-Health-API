@@ -51,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
     try {
       product = productRepository.findById(id).orElse(null);
+
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
       throw new ServerError(e.getMessage());

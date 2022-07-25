@@ -1,6 +1,8 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -58,4 +60,22 @@ public class ProductServiceImplTest {
     when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
     assertThrows(ResourceNotFound.class, () -> productServiceImpl.getProductById(123L));
   }
+
+  @Test
+  public void getProductsByIdReturnsNonNullFields() {
+    Product actual = productServiceImpl.getProductById(123L);
+    assertAll(
+        () -> assertNotEquals(actual.getName(), null),
+        () -> assertNotEquals(actual.getDescription(), null),
+        () -> assertNotEquals(actual.getDemographic(), null),
+        () -> assertNotEquals(actual.getCategory(), null),
+        () -> assertNotEquals(actual.getType(), null),
+        () -> assertNotEquals(actual.getReleaseDate(), null),
+        () -> assertNotEquals(actual.getPrimaryColorCode(), null),
+        () -> assertNotEquals(actual.getSecondaryColorCode(), null),
+        () -> assertNotEquals(actual.getGlobalProductCode(), null),
+        () -> assertNotEquals(actual.getActive(), null)
+    );
+  }
+
 }
