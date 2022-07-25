@@ -40,5 +40,4 @@ public class ProductController {
 
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
   }
-
 }
