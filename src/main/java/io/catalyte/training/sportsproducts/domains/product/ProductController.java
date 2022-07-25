@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,7 @@ public class ProductController {
     return new ResponseEntity<>(productService.getProducts(product), HttpStatus.OK);
   }
 
-  @GetMapping(value = "/{id}/")
+  @GetMapping(value = "/{id}")
   @ResponseStatus(value = HttpStatus.OK)
   public ResponseEntity<Product> getProductById(@PathVariable Long id) {
     logger.info("Request received for getProductsById: " + id);
@@ -41,19 +42,17 @@ public class ProductController {
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
   }
 
-  @GetMapping(value = "/{category}/")
-  @ResponseStatus(value = HttpStatus.OK)
-  public ResponseEntity<Product> getProductByCategory(@PathVariable String category) {
-    logger.info("Request received for getProductsByCategory: " + category);
+  @GetMapping(value = "/types")
+  public ResponseEntity<List<String>> getUniqueType() {
+    logger.info("Request received for getUniqueTypes");
 
-    return new ResponseEntity<>(productService.getProductByCategory(category), HttpStatus.OK);
+    return new ResponseEntity<>(productService.getUniqueTypes(), HttpStatus.OK);
   }
 
-  @GetMapping(value = "/{type}/")
-  @ResponseStatus(value = HttpStatus.OK)
-  public ResponseEntity<Product> getProductByType(@PathVariable String type) {
-    logger.info("Request received for getProductsByType: " + type);
+  @GetMapping(value = "/categories")
+  public ResponseEntity<List<String>> getUniqueCategory() {
+    logger.info("Request received for getUniqueCategory");
 
-    return new ResponseEntity<>(productService.getProductByType(type), HttpStatus.OK);
+    return new ResponseEntity<>(productService.getUniqueCategories(), HttpStatus.OK);
   }
 }

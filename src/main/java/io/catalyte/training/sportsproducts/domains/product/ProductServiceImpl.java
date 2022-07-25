@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -65,12 +66,31 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Product getProductByType(String type) {
-    return null;
+  public List<String> getUniqueTypes() {
+    List<String> types;
+
+    try {
+      types = productRepository.findByType();
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return types;
   }
 
   @Override
-  public Product getProductByCategory(String category) {
-    return null;
+  public List<String> getUniqueCategories() {
+    List<String> categories;
+
+    try {
+      categories = productRepository.findByCategory();
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return categories;
   }
+
 }
