@@ -46,7 +46,6 @@ public class ProductServiceImplTest {
     productFactory = new ProductFactory();
     testProduct = productFactory.createRandomProduct();
 
-    System.out.println(testProduct);
     when(productRepository.findById(anyLong())).thenReturn(Optional.of(testProduct));
   }
 
