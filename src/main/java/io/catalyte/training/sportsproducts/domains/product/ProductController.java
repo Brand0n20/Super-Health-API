@@ -41,6 +41,7 @@ public class ProductController {
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
   }
 
+
   @GetMapping(value = "/types")
   public ResponseEntity<List<String>> getUniqueType() {
     logger.info("Request received for getUniqueTypes");
@@ -54,4 +55,5 @@ public class ProductController {
 
     return new ResponseEntity<>(productService.getUniqueCategories(), HttpStatus.OK);
   }
+
 }
