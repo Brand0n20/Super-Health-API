@@ -1,6 +1,7 @@
 package io.catalyte.training.sportsproducts.data;
 
 import io.catalyte.training.sportsproducts.domains.product.Product;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -101,6 +102,36 @@ public class ProductFactory {
   }
 
   /**
+   * Generates a random brand
+   *
+   * @return - a string brand
+   */
+  public static String getBrand() {
+    Random randomGenerator = new Random();
+    return brands[randomGenerator.nextInt(brands.length)];
+  }
+
+  /**
+   * Generates a random material
+   *
+   * @return - a string material
+   */
+  public static String getMaterial() {
+    Random randomGenerator = new Random();
+    return materials[randomGenerator.nextInt(materials.length)];
+  }
+
+  /**
+   * Generates a random image
+   *
+   * @return - a string url
+   */
+  public static String getImage() {
+    Random randomGenerator = new Random();
+    return images[randomGenerator.nextInt(images.length)];
+  }
+
+  /**
    * Generates a random active state.
    *
    * @return - an active state boolean
@@ -128,11 +159,32 @@ public class ProductFactory {
     return "sc" + RandomStringUtils.random(5, false, true);
   }
 
-
+/**
+ * Generates a random quantity number
+ *
+ * @return - a quantity integer
+ * */
   public static int getQuantity() {
     Random randomGenerator = new Random();
-    return randomGenerator.nextInt(250);
+    return randomGenerator.nextInt(251);
   }
+
+  /**
+   * Generates a random price
+   *
+   * @param min - the beginning bound
+   * @param max - the end bound
+   * @return - a price as double with a .00 precision
+   * */
+  public static double getPrice(double min, double max) {
+    Random randomGenerator = new Random();
+    double randomPrice = randomGenerator.nextDouble() * (max-min) + min;
+    DecimalFormat decimalFormatter = new DecimalFormat("#0.00");
+    double formattedPrice = Double.valueOf( decimalFormatter.format(randomPrice));
+
+    return formattedPrice;
+  }
+
   /**
    * Finds a random date between two date bounds.
    *
