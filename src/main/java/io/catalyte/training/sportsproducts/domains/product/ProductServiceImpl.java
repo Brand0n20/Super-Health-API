@@ -31,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
    * @param product - an example product to use for querying
    * @return - a list of products matching the example, or all products if no example was passed
    */
+  @Override
   public List<Product> getProducts(Product product) {
     try {
       return productRepository.findAll(Example.of(product));
@@ -46,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
    * @param id - the id of the product to retrieve
    * @return - the product
    */
+  @Override
   public Product getProductById(Long id) {
     Product product;
 
