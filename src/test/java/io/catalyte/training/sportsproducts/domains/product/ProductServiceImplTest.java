@@ -1,9 +1,9 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -42,60 +42,47 @@ public class ProductServiceImplTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-
     productFactory = new ProductFactory();
     testProduct = productFactory.createRandomProduct();
-
     when(productRepository.findById(anyLong())).thenReturn(Optional.of(testProduct));
   }
 
   @Test
-  public void getProductByIdReturnsProduct() {
+  public void getProductByIdReturnsProduct () {
     Product actual = productServiceImpl.getProductById(123L);
     assertEquals(testProduct, actual);
   }
 
   @Test
-  public void getProductByIdThrowsErrorWhenNotFound() {
+  public void getProductByIdThrowsErrorWhenNotFound () {
     when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
     assertThrows(ResourceNotFound.class, () -> productServiceImpl.getProductById(123L));
   }
 
+  /**
+   * Get a product by ID from the productRepository and assert that it has the required fields
+   */
   @Test
-  public void getProductsByIdReturnsNonNullFields() {
+  public void getProductByIdHasRequiredFields () {
     Product actual = productServiceImpl.getProductById(123L);
-    assertAll(
-        () -> assertNotEquals(actual.getName(), null),
-        () -> assertNotEquals(actual.getDescription(), null),
-        () -> assertNotEquals(actual.getDemographic(), null),
-        () -> assertNotEquals(actual.getCategory(), null),
-        () -> assertNotEquals(actual.getType(), null),
-        () -> assertNotEquals(actual.getReleaseDate(), null),
-        () -> assertNotEquals(actual.getPrimaryColorCode(), null),
-        () -> assertNotEquals(actual.getSecondaryColorCode(), null),
-        () -> assertNotEquals(actual.getGlobalProductCode(), null),
-        () -> assertNotEquals(actual.getActive(), null)
+    assertAll(() -> assertThat(actual, hasProperty("id")),
+        () -> assertThat(actual, hasProperty("active")),
+        () -> assertThat(actual, hasProperty("brand")),
+        () -> assertThat(actual, hasProperty("category")),
+        () -> assertThat(actual, hasProperty("demographic")),
+        () -> assertThat(actual, hasProperty("description")),
+        () -> assertThat(actual, hasProperty("category")),
+        () -> assertThat(actual, hasProperty("globalProductCode")),
+        () -> assertThat(actual, hasProperty("imageSrc")),
+        () -> assertThat(actual, hasProperty("material")),
+        () -> assertThat(actual, hasProperty("name")),
+        () -> assertThat(actual, hasProperty("price")),
+        () -> assertThat(actual, hasProperty("primaryColorCode")),
+        () -> assertThat(actual, hasProperty("quantity")),
+        () -> assertThat(actual, hasProperty("releaseDate")),
+        () -> assertThat(actual, hasProperty("secondaryColorCode")),
+        () -> assertThat(actual, hasProperty("styleNumber")),
+        () -> assertThat(actual, hasProperty("type"))
     );
-  }
-
-  @Test
-  public void getProductsByIdReturnsStrings() {
-    Product actual = productServiceImpl.getProductById(123L);
-    assertAll(
-        () -> assertTrue(actual.getName() instanceof String),
-        () -> assertTrue(actual.getDemographic() instanceof String),
-        () -> assertTrue(actual.getCategory() instanceof String),
-        () -> assertTrue(actual.getType() instanceof String),
-        () -> assertTrue(actual.getReleaseDate() instanceof String),
-        () -> assertTrue(actual.getPrimaryColorCode() instanceof String),
-        () -> assertTrue(actual.getSecondaryColorCode() instanceof String),
-        () -> assertTrue(actual.getGlobalProductCode() instanceof String)
-    );
-  }
-
-  @Test
-  public void productsActivePropertyIsBoolean() {
-    Product actual = productServiceImpl.getProductById(123L);
-    assertTrue(actual.getActive() instanceof Boolean);
   }
 }
