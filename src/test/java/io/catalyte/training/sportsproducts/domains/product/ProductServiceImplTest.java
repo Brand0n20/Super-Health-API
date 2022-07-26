@@ -98,4 +98,9 @@ public class ProductServiceImplTest {
     Product actual = productServiceImpl.getProductById(123L);
     assertTrue(actual.getActive() instanceof Boolean);
   }
+
+  @Test
+  public void getQuantity() {
+    System.out.println(ProductFactory.getQuantity());
+  }
 }

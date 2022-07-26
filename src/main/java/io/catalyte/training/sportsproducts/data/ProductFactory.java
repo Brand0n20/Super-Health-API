@@ -40,6 +40,16 @@ public class ProductFactory {
       "Sock", "Sunglasses", "Hat", "Helmet", "Belt", "Visor", "Shin Guard", "Elbow Pad", "Headband",
       "Wristband", "Hoodie", "Flip Flop", "Pool Noodle"};
 
+  private static final String[] brands = {"Nike", "Adidas", "Reebok", "New Balance", "Sketchers",
+      "Old Navy", "Under Armour", "PUMA", "The North Face", "Columbia", "Champion",
+      "Fruit of the Loom"};
+
+  private static final String[] materials = {"Cotton", "Wool", "Silk", "Leather", "Velvet", "Satin",
+      "Denim", "Tungsten", "Hand Blown Glass", "Bamboo", "Granite", "Vinyl"};
+
+  private static final String[] images = {
+      "https://m.media-amazon.com/images/I/A13usaonutL._CLa%7C2140%2C2000%7C611UQuMCZBL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"};
+
   /**
    * Returns a random demographic from the list of demographics.
    *
@@ -118,6 +128,11 @@ public class ProductFactory {
     return "sc" + RandomStringUtils.random(5, false, true);
   }
 
+
+  public static int getQuantity() {
+    Random randomGenerator = new Random();
+    return randomGenerator.nextInt(250);
+  }
   /**
    * Finds a random date between two date bounds.
    *
@@ -157,6 +172,7 @@ public class ProductFactory {
    */
   public Product createRandomProduct() {
     //Get the different types of randomly generated data needed
+
     Product product = new Product();
     String demographic = ProductFactory.getDemographic();
     String category = ProductFactory.getCategory();
