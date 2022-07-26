@@ -39,4 +39,16 @@ public class ProductApiTest {
     mockMvc.perform(get(PRODUCTS_PATH + "/1"))
         .andExpect(status().isOk());
   }
+
+  @Test
+  public void getUniqueTypeWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/types"))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void getUniqueCategoryWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/categories"))
+        .andExpect(status().isOk());
+  }
 }

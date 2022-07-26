@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -65,6 +64,11 @@ public class ProductServiceImpl implements ProductService {
     }
   }
 
+  /**
+   * Retrieves all unique types within the database.
+   *
+   * @return A list of strings with unique type.
+   */
   @Override
   public List<String> getUniqueTypes() {
     List<String> types;
@@ -79,6 +83,11 @@ public class ProductServiceImpl implements ProductService {
     return types;
   }
 
+  /**
+   * Retrieves all the unique categories within the databases.
+   *
+   * @return A list of strings with unique categories.
+   */
   @Override
   public List<String> getUniqueCategories() {
     List<String> categories;

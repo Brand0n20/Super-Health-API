@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT DISTINCT p.type FROM Product p")
-    List<String> findByType();
+  @Query("SELECT DISTINCT p.type FROM Product p")
+  List<String> findByType();
 
-    @Query("SELECT DISTINCT p.category FROM Product p")
-    List<String> findByCategory();
+  @Query("SELECT DISTINCT p.category FROM Product p")
+  List<String> findByCategory();
 
 }
