@@ -159,11 +159,11 @@ public class ProductFactory {
     return "sc" + RandomStringUtils.random(5, false, true);
   }
 
-/**
- * Generates a random quantity number
- *
- * @return - a quantity integer
- * */
+  /**
+   * Generates a random quantity number
+   *
+   * @return - a quantity integer
+   */
   public static int getQuantity() {
     Random randomGenerator = new Random();
     return randomGenerator.nextInt(251);
@@ -175,12 +175,12 @@ public class ProductFactory {
    * @param min - the beginning bound
    * @param max - the end bound
    * @return - a price as double with a .00 precision
-   * */
+   */
   public static double getPrice(double min, double max) {
     Random randomGenerator = new Random();
-    double randomPrice = randomGenerator.nextDouble() * (max-min) + min;
+    double randomPrice = randomGenerator.nextDouble() * (max - min) + min;
     DecimalFormat decimalFormatter = new DecimalFormat("#0.00");
-    double formattedPrice = Double.valueOf( decimalFormatter.format(randomPrice));
+    double formattedPrice = Double.valueOf(decimalFormatter.format(randomPrice));
 
     return formattedPrice;
   }
@@ -235,6 +235,11 @@ public class ProductFactory {
     String description =
         "A " + adjective + " " + category + " that's great for " + demographic + "!";
     String name = adjective + " " + category + " " + type;
+    String brand = ProductFactory.getBrand();
+    String material = ProductFactory.getMaterial();
+    String image = ProductFactory.getImage();
+    int quantity = ProductFactory.getQuantity();
+    double price = ProductFactory.getPrice(10.00D, 999.99D);
 
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     LocalDate date = ProductFactory.between(LocalDate.of(1970, 1, 1), LocalDate.now());
@@ -251,6 +256,11 @@ public class ProductFactory {
     product.setType(type);
     product.setActive(ProductFactory.getActive());
     product.setReleaseDate(dateString);
+    product.setBrand(brand);
+    product.setMaterial(material);
+    product.setImageSrc(image);
+    product.setQuantity(quantity);
+    product.setPrice(price);
 
     return product;
   }
