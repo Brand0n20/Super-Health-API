@@ -47,12 +47,18 @@ public class ProductServiceImplTest {
     when(productRepository.findById(anyLong())).thenReturn(Optional.of(testProduct));
   }
 
+  /**
+   * A product is returned when an id is given
+   */
   @Test
   public void getProductByIdReturnsProduct () {
     Product actual = productServiceImpl.getProductById(123L);
     assertEquals(testProduct, actual);
   }
 
+  /**
+   * An error is thrown when an id is given and no product is returned
+   */
   @Test
   public void getProductByIdThrowsErrorWhenNotFound () {
     when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
