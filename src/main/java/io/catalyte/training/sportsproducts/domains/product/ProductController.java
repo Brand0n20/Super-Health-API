@@ -30,13 +30,28 @@ public class ProductController {
   @Autowired
   private ProductService productService;
 
+  /**
+   * Controller method for getting all products in the database
+   *
+   * @param product
+   * @return - a list of products in database and a 200 status
+   */
   @GetMapping
   public ResponseEntity<List<Product>> getProducts(Product product,
       @RequestParam(required = false) Map<String, String> allParams) {
     logger.info("Request received for getProducts");
 
     return new ResponseEntity<>(productService.getProducts(product, allParams), HttpStatus.OK);
+
   }
+
+
+  /**
+   * Controller method for getting a product from database by id
+   *
+   * @param id - id to get product by
+   * @return - a product by id and a 200 status
+   */
 
   @GetMapping(value = "/{id}")
   @ResponseStatus(value = HttpStatus.OK)
@@ -45,4 +60,29 @@ public class ProductController {
 
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
   }
+
+  /**
+   * Controller method for getting a list of types from database
+   *
+   * @return - a list of strings with the unique types and a 200 status
+   */
+  @GetMapping(value = "/types")
+  public ResponseEntity<List<String>> getUniqueType() {
+    logger.info("Request received for getUniqueTypes");
+
+    return new ResponseEntity<>(productService.getUniqueTypes(), HttpStatus.OK);
+  }
+
+  /**
+   * Controller method for getting a list of categories from database
+   *
+   * @return - a list of strings with the unique categories and a 200 status
+   */
+  @GetMapping(value = "/categories")
+  public ResponseEntity<List<String>> getUniqueCategory() {
+    logger.info("Request received for getUniqueCategory");
+
+    return new ResponseEntity<>(productService.getUniqueCategories(), HttpStatus.OK);
+  }
+
 }

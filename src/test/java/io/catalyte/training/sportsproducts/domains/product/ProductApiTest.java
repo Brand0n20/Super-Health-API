@@ -54,6 +54,19 @@ public class ProductApiTest {
 
   }
 
+<<<<<<< HEAD
+  @Test
+  public void getUniqueTypeWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/types"))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void getUniqueCategoryWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/categories"))
+        .andExpect(status().isOk());
+  }
+=======
   /**
    * Get all products from the productRepository and check that they have the required fields
    */
@@ -99,4 +112,5 @@ public class ProductApiTest {
   }
 
   //EndOfFile
+>>>>>>> 3918a3456b7682511849c2371391619764841438
 }

@@ -1,14 +1,21 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-import java.util.Collection;
+
 import java.util.List;
-import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Product repository
+ */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, CustomProductRepository {
+
+  @Query("SELECT DISTINCT p.type FROM Product p")
+  List<String> findByType();
+
+  @Query("SELECT DISTINCT p.category FROM Product p")
+  List<String> findByCategory();
 
 }
