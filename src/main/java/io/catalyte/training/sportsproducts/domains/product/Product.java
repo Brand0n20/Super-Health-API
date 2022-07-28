@@ -38,6 +38,16 @@ public class Product {
 
   private Boolean active;
 
+  private String brand;
+
+  private String imageSrc;
+
+  private String material;
+
+  private Double price;
+
+  private Integer quantity;
+
   public Product() {
   }
 
@@ -66,6 +76,14 @@ public class Product {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getBrand() {
+    return brand;
+  }
+
+  public void setBrand(String brand) {
+    this.brand = brand;
   }
 
   public String getDescription() {
@@ -108,12 +126,28 @@ public class Product {
     this.releaseDate = releaseDate;
   }
 
+  public Double getPrice() {
+    return price;
+  }
+
+  public void setPrice ( Double price ) {
+    this.price = price;
+  }
+
   public String getPrimaryColorCode() {
     return primaryColorCode;
   }
 
   public void setPrimaryColorCode(String primaryColorCode) {
     this.primaryColorCode = primaryColorCode;
+  }
+
+  public Integer getQuantity () {
+    return quantity;
+  }
+
+  public void setQuantity ( Integer quantity ) {
+    this.quantity = quantity;
   }
 
   public String getSecondaryColorCode() {
@@ -140,6 +174,22 @@ public class Product {
     this.globalProductCode = globalProductCode;
   }
 
+  public String getImageSrc() {
+    return imageSrc;
+  }
+
+  public void setImageSrc(String imageSrc) {
+    this.imageSrc = imageSrc;
+  }
+
+  public String getMaterial() {
+    return material;
+  }
+
+  public void setMaterial(String material) {
+    this.material = material;
+  }
+
   public Boolean getActive() {
     return active;
   }
@@ -162,6 +212,11 @@ public class Product {
     if (!Objects.equals(name, product.name)) {
       return false;
     }
+
+    if (!Objects.equals(brand, product.brand)) {
+      return false;
+    }
+
     if (!Objects.equals(description, product.description)) {
       return false;
     }
@@ -177,7 +232,13 @@ public class Product {
     if (!Objects.equals(releaseDate, product.releaseDate)) {
       return false;
     }
+    if (!Objects.equals(price, product.price)) {
+      return false;
+    }
     if (!Objects.equals(primaryColorCode, product.primaryColorCode)) {
+      return false;
+    }
+    if (!Objects.equals(quantity, product.quantity)) {
       return false;
     }
     if (!Objects.equals(secondaryColorCode, product.secondaryColorCode)) {
@@ -189,12 +250,23 @@ public class Product {
     if (!Objects.equals(globalProductCode, product.globalProductCode)) {
       return false;
     }
+    if (!Objects.equals(imageSrc, product.imageSrc)) {
+      return false;
+    }
+    if (!Objects.equals(material, product.material)) {
+      return false;
+    }
     return Objects.equals(active, product.active);
   }
 
   @Override
   public int hashCode() {
     int result = name != null ? name.hashCode() : 0;
+    result = 31 * result + (brand != null ? brand.hashCode() : 0);
+    result = 31 * result + (imageSrc != null ? imageSrc.hashCode() : 0);
+    result = 31 * result + (material != null ? material.hashCode() : 0);
+    result = 31 * result + (price != null ? price.hashCode() : 0);
+    result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
     result = 31 * result + (description != null ? description.hashCode() : 0);
     result = 31 * result + (demographic != null ? demographic.hashCode() : 0);
     result = 31 * result + (category != null ? category.hashCode() : 0);
@@ -210,18 +282,23 @@ public class Product {
 
   @Override
   public String toString() {
-    return "Product{" +
+    return "Product { " +
         "id=" + id +
         ", name='" + name + '\'' +
+        ", brand='" + brand + '\'' +
         ", description='" + description + '\'' +
         ", demographic='" + demographic + '\'' +
         ", category='" + category + '\'' +
         ", type='" + type + '\'' +
         ", releaseDate='" + releaseDate + '\'' +
+        ", price='" + price + '\'' +
         ", primaryColorCode='" + primaryColorCode + '\'' +
+        ", quantity='" + quantity + '\'' +
         ", secondaryColorCode='" + secondaryColorCode + '\'' +
         ", styleNumber='" + styleNumber + '\'' +
         ", globalProductCode='" + globalProductCode + '\'' +
+        ", imageSrc='" + imageSrc + '\'' +
+        ", material='" + material + '\'' +
         ", active='" + active + '\'' +
         '}';
   }
