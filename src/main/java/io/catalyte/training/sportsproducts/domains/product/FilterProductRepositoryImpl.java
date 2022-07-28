@@ -46,7 +46,6 @@ public class FilterProductRepositoryImpl implements FilterProductRepository {
     return products;
   }
 
-  private String filterByPrice(Map.Entry<String, Set<String>> priceParam) {
 
-  }
+
 }
