@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * Product repository
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>, CustomProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Long>, FilterProductRepository {
 
   @Query("SELECT DISTINCT p.type FROM Product p")
   List<String> findByType();

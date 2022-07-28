@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface CustomProductRepository {
+public interface FilterProductRepository {
 
   List<Product> filterAllParameters(Map<String, String> allParams);
 }
