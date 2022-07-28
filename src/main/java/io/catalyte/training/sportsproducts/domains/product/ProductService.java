@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ProductService {
 
-  List<Product> getProducts(Product product);
+  List<Product> getProducts(Product product, Set<String> categories);
 
   Product getProductById(Long id);
 }

@@ -29,9 +29,11 @@ public class ProductController {
   private ProductService productService;
 
   @GetMapping
-  public ResponseEntity<List<Product>> getProducts(Product product) {
+  public ResponseEntity<List<Product>> getProducts(Product product,
+      @RequestParam(required = false) Set<String> category) {
     logger.info("Request received for getProducts");
-    return new ResponseEntity<>(productService.getProducts(product), HttpStatus.OK);
+
+    return new ResponseEntity<>(productService.getProducts(product, category), HttpStatus.OK);
   }
 
   @GetMapping(value = "/{id}")

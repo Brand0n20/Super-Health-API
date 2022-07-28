@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,14 @@ public class ProductServiceImpl implements ProductService {
 
   private final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
 
+
   ProductRepository productRepository;
+  CustomProductRepository customProductRepository;
 
   @Autowired
-  public ProductServiceImpl(ProductRepository productRepository) {
+  public ProductServiceImpl(ProductRepository productRepository, CustomProductRepository customProductRepository) {
     this.productRepository = productRepository;
+    this.customProductRepository = customProductRepository;
   }
 
   /**
@@ -33,11 +37,9 @@ public class ProductServiceImpl implements ProductService {
    * @return - a list of products matching the example, or all products if no example was passed
    */
   @Override
-  public List<Product> getProducts(Product product) {
+  public List<Product> getProducts(Product product, Set<String> categories) {
     try {
-
-      System.out.println(productRepository.getAllProducts());
-        return productRepository.findAll(Example.of(product));
+      return productRepository.findAll(Example.of(product));
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
       throw new ServerError(e.getMessage());
