@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<Product> getProducts(Product product, Map<String, String> allParams) {
     try {
-
+      System.out.println(allParams);
       return productRepository.findAll(Example.of(product));
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
