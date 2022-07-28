@@ -1,5 +1,6 @@
 package io.catalyte.training.sportsproducts.domains.purchase;
 
+
 import io.catalyte.training.sportsproducts.domains.product.Product;
 import io.catalyte.training.sportsproducts.domains.product.ProductService;
 import io.catalyte.training.sportsproducts.exceptions.ServerError;
@@ -29,13 +30,14 @@ public class PurchaseServiceImpl implements PurchaseService {
   }
 
   /**
-   * Retrieves all purchases from the database
+   * Find all purchases with email linked to an email in the database
    *
-   * @return
+   * @param email - the delivery address email in interest
+   * @return all purchases linked to the given email
    */
-  public List<Purchase> findAllPurchases() {
+  public List<Purchase> findPurchasesByEmail(String email) {
     try {
-      return purchaseRepository.findAll();
+      return purchaseRepository.findByBillingAddressEmail(email);
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
       throw new ServerError(e.getMessage());
