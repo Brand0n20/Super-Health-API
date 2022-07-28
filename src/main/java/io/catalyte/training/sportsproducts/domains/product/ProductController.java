@@ -2,7 +2,9 @@ package io.catalyte.training.sportsproducts.domains.product;
 
 import static io.catalyte.training.sportsproducts.constants.Paths.PRODUCTS_PATH;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,10 +32,10 @@ public class ProductController {
 
   @GetMapping
   public ResponseEntity<List<Product>> getProducts(Product product,
-      @RequestParam(required = false) Set<String> category) {
+      @RequestParam(required = false) Map<String, String> allParams) {
     logger.info("Request received for getProducts");
 
-    return new ResponseEntity<>(productService.getProducts(product, category), HttpStatus.OK);
+    return new ResponseEntity<>(productService.getProducts(product, allParams), HttpStatus.OK);
   }
 
   @GetMapping(value = "/{id}")

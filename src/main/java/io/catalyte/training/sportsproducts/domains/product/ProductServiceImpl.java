@@ -2,12 +2,13 @@ package io.catalyte.training.sportsproducts.domains.product;
 
 import io.catalyte.training.sportsproducts.exceptions.ResourceNotFound;
 import io.catalyte.training.sportsproducts.exceptions.ServerError;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService {
 
   private final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
-
 
 
   ProductRepository productRepository;
@@ -36,9 +36,9 @@ public class ProductServiceImpl implements ProductService {
    * @return - a list of products matching the example, or all products if no example was passed
    */
   @Override
-  public List<Product> getProducts(Product product, Set<String> categories) {
+  public List<Product> getProducts(Product product, Map<String, String> allParams) {
     try {
-      System.out.println(productRepository.filterByCategories(categories));
+
       return productRepository.findAll(Example.of(product));
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
