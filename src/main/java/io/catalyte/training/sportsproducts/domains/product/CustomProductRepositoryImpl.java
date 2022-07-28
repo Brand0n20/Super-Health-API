@@ -5,10 +5,8 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.springframework.context.annotation.Primary;
 
-
-public class CustomProductRepositoryImpl implements CustomProductRepository{
+public class CustomProductRepositoryImpl implements CustomProductRepository {
 
   @PersistenceContext
   private EntityManager entityManager;

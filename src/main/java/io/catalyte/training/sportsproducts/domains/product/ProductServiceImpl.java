@@ -21,13 +21,12 @@ public class ProductServiceImpl implements ProductService {
   private final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
 
 
+
   ProductRepository productRepository;
-  CustomProductRepository customProductRepository;
 
   @Autowired
-  public ProductServiceImpl(ProductRepository productRepository, CustomProductRepository customProductRepository) {
+  public ProductServiceImpl(ProductRepository productRepository) {
     this.productRepository = productRepository;
-    this.customProductRepository = customProductRepository;
   }
 
   /**
@@ -39,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<Product> getProducts(Product product, Set<String> categories) {
     try {
+      System.out.println(productRepository.filterByCategories(categories));
       return productRepository.findAll(Example.of(product));
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
