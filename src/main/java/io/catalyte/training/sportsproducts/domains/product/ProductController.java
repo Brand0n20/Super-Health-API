@@ -29,7 +29,6 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<List<Product>> getProducts(Product product) {
     logger.info("Request received for getProducts");
-
     return new ResponseEntity<>(productService.getProducts(product), HttpStatus.OK);
   }
 
@@ -37,7 +36,6 @@ public class ProductController {
   @ResponseStatus(value = HttpStatus.OK)
   public ResponseEntity<Product> getProductById(@PathVariable Long id) {
     logger.info("Request received for getProductsById: " + id);
-
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
   }
 }
