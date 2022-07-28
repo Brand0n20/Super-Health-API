@@ -1,6 +1,7 @@
 package io.catalyte.training.sportsproducts.data;
 
 import io.catalyte.training.sportsproducts.domains.product.Product;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,6 +40,16 @@ public class ProductFactory {
   private static final String[] types = {"Pant", "Short", "Shoe", "Glove", "Jacket", "Tank Top",
       "Sock", "Sunglasses", "Hat", "Helmet", "Belt", "Visor", "Shin Guard", "Elbow Pad", "Headband",
       "Wristband", "Hoodie", "Flip Flop", "Pool Noodle"};
+
+  private static final String[] brands = {"Nike", "Adidas", "Reebok", "New Balance", "Sketchers",
+      "Old Navy", "Under Armour", "PUMA", "The North Face", "Columbia", "Champion",
+      "Fruit of the Loom"};
+
+  private static final String[] materials = {"Cotton", "Wool", "Silk", "Leather", "Velvet", "Satin",
+      "Denim", "Tungsten", "Hand Blown Glass", "Bamboo", "Granite", "Vinyl"};
+
+  private static final String[] images = {
+      "https://m.media-amazon.com/images/I/A13usaonutL._CLa%7C2140%2C2000%7C611UQuMCZBL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"};
 
   /**
    * Returns a random demographic from the list of demographics.
@@ -91,6 +102,36 @@ public class ProductFactory {
   }
 
   /**
+   * Generates a random brand
+   *
+   * @return - a string brand
+   */
+  public static String getBrand() {
+    Random randomGenerator = new Random();
+    return brands[randomGenerator.nextInt(brands.length)];
+  }
+
+  /**
+   * Generates a random material
+   *
+   * @return - a string material
+   */
+  public static String getMaterial() {
+    Random randomGenerator = new Random();
+    return materials[randomGenerator.nextInt(materials.length)];
+  }
+
+  /**
+   * Generates a random image
+   *
+   * @return - a string url
+   */
+  public static String getImage() {
+    Random randomGenerator = new Random();
+    return images[randomGenerator.nextInt(images.length)];
+  }
+
+  /**
    * Generates a random active state.
    *
    * @return - an active state boolean
@@ -116,6 +157,32 @@ public class ProductFactory {
    */
   public static String getStyleCode() {
     return "sc" + RandomStringUtils.random(5, false, true);
+  }
+
+  /**
+   * Generates a random quantity number
+   *
+   * @return - a quantity integer
+   */
+  public static int getQuantity() {
+    Random randomGenerator = new Random();
+    return randomGenerator.nextInt(251);
+  }
+
+  /**
+   * Generates a random price
+   *
+   * @param min - the beginning bound
+   * @param max - the end bound
+   * @return - a price as double with a .00 precision
+   */
+  public static double getPrice(double min, double max) {
+    Random randomGenerator = new Random();
+    double randomPrice = randomGenerator.nextDouble() * (max - min) + min;
+    DecimalFormat decimalFormatter = new DecimalFormat("#0.00");
+    double formattedPrice = Double.valueOf(decimalFormatter.format(randomPrice));
+
+    return formattedPrice;
   }
 
   /**
@@ -157,6 +224,7 @@ public class ProductFactory {
    */
   public Product createRandomProduct() {
     //Get the different types of randomly generated data needed
+
     Product product = new Product();
     String demographic = ProductFactory.getDemographic();
     String category = ProductFactory.getCategory();
@@ -167,6 +235,11 @@ public class ProductFactory {
     String description =
         "A " + adjective + " " + category + " that's great for " + demographic + "!";
     String name = adjective + " " + category + " " + type;
+    String brand = ProductFactory.getBrand();
+    String material = ProductFactory.getMaterial();
+    String image = ProductFactory.getImage();
+    int quantity = ProductFactory.getQuantity();
+    double price = ProductFactory.getPrice(10.00D, 999.99D);
 
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     LocalDate date = ProductFactory.between(LocalDate.of(1970, 1, 1), LocalDate.now());
@@ -183,6 +256,11 @@ public class ProductFactory {
     product.setType(type);
     product.setActive(ProductFactory.getActive());
     product.setReleaseDate(dateString);
+    product.setBrand(brand);
+    product.setMaterial(material);
+    product.setImageSrc(image);
+    product.setQuantity(quantity);
+    product.setPrice(price);
 
     return product;
   }
