@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
-import org.apache.http.annotation.Contract;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,40 +36,59 @@ public class ProductApiTest {
 
 
   @Before
-  public void setUp () {
+  public void setUp() {
     mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
   }
 
+  /**
+   * Path for getting all products responds with 200 status
+   *
+   * @throws Exception
+   */
   @Test
-  public void getProductsReturns200 () throws Exception {
+  public void getProductsReturns200() throws Exception {
     mockMvc.perform(get(PRODUCTS_PATH))
         .andExpect(status().isOk());
   }
 
+  /**
+   * Path for getting product with given ID responds with 200 status
+   *
+   * @throws Exception
+   */
   @Test
-  public void getProductByIdReturnsProductWith200 () throws Exception {
+  public void getProductByIdReturnsProductWith200() throws Exception {
     mockMvc.perform(get(PRODUCTS_PATH + "/1"))
         .andExpect(status().isOk());
   }
 
-<<<<<<< HEAD
+  /**
+   * Path for getting all types of products in database responds with 200 status
+   *
+   * @throws Exception
+   */
   @Test
   public void getUniqueTypeWith200() throws Exception {
     mockMvc.perform(get(PRODUCTS_PATH + "/types"))
         .andExpect(status().isOk());
   }
 
+  /**
+   * Path for getting all categories of products in database responds with 200 status
+   *
+   * @throws Exception
+   */
   @Test
   public void getUniqueCategoryWith200() throws Exception {
     mockMvc.perform(get(PRODUCTS_PATH + "/categories"))
         .andExpect(status().isOk());
   }
-=======
+
   /**
    * Get all products from the productRepository and check that they have the required fields
    */
   @Test
-  public void findAllReturnsProductsWithCorrectFields () {
+  public void findAllReturnsProductsWithCorrectFields() {
     List<Product> products = productRepository.findAll();
     for (Product product : products) {
       assertAll(
@@ -101,15 +119,12 @@ public class ProductApiTest {
    * field values returned by getProductById()
    */
   @Test
-  public void getProductByIdMatchesProductsReturnedByFindAll () {
+  public void getProductByIdMatchesProductsReturnedByFindAll() {
     List<Product> products = productRepository.findAll();
     for (int i = 0; i < products.size(); i++) {
       Product expected = products.get(i);
       Product actual = productService.getProductById((long) (i + 1));
-      assertEquals("Products at ID = " + (i+1) + " do not match", expected, actual);
+      assertEquals("Products at ID = " + (i + 1) + " do not match", expected, actual);
     }
   }
-
-  //EndOfFile
->>>>>>> 3918a3456b7682511849c2371391619764841438
 }
