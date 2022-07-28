@@ -68,14 +68,15 @@ public class PurchaseServiceImpl implements PurchaseService {
    * @param purchase - the purchase object to handle lineitems for
    */
   private void handleLineItems(Purchase purchase) {
-    Set<LineItem> itemsList = purchase.getProducts();
 
+    Set<LineItem> itemsList = purchase.getProducts();
+    System.out.println(itemsList);
     if (itemsList != null) {
       itemsList.forEach(lineItem -> {
 
         // retrieve full product information from the database
         Product product = productService.getProductById(lineItem.getProduct().getId());
-
+        System.out.println(product);
         // set the product info into the lineitem
         if (product != null) {
           lineItem.setProduct(product);
