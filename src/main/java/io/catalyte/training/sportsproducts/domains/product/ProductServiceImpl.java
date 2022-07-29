@@ -37,7 +37,6 @@ public class ProductServiceImpl implements ProductService {
   public List<Product> getProducts(Product product, Map<String, String> allParams) {
     try {
       ProductFilter filter = new ProductFilter();
-      productRepository.findAll();
       return productRepository.queryFilter(filter.createFilterQuery(allParams));
 
     } catch (DataAccessException e) {

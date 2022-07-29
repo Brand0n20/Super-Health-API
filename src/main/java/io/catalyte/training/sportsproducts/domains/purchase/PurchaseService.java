@@ -9,4 +9,6 @@ public interface PurchaseService {
   List<Purchase> findAllPurchases();
 
   Purchase getPurchaseById(long id);
+
+  List<Purchase> findPurchasesByEmail(String email);
 }

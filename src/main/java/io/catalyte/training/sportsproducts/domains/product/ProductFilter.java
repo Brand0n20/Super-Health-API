@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class ProductFilter {
 
   private String[] currentFilters = new String[]{"brand", "category", "demographic", "color",
-      "material"};
+      "material", "price", "priceMin", "priceMax"};
 
   private ArrayList<String> queryList = new ArrayList<>();
 
@@ -34,8 +34,14 @@ public class ProductFilter {
   }
 
   private void generateQuery(String key) {
-
     switch (key) {
+      case "price":
+        generatePriceQuery();
+        break;
+      case "priceMin":
+      case "priceMax":
+        generateMinMaxPriceQuery();
+        break;
       case "color":
         generateColorQuery();
         break;
@@ -55,24 +61,40 @@ public class ProductFilter {
   }
 
   private void generateColorQuery() {
-    String colorValue = String.join("", this.uniqueParams.get("color"));
+    String[] formattedColorValues = this.formatColorParamValues(this.uniqueParams.get("color"));
+    String colorValue = String.join(", ", formattedColorValues);
     queryList.add(
-        String.format("(p.primaryColorCode IN ('#%s') OR p.secondaryColorCode IN ('#%s'))",
+        String.format("(p.primaryColorCode IN (%s) OR p.secondaryColorCode IN (%s))",
             colorValue, colorValue));
+  }
+
+  private void generatePriceQuery() {
+
+  }
+
+  private void generateMinMaxPriceQuery() {
+
   }
 
   private String[] formatParamValues(Set<String> paramValues) {
     String[] formattedValues = new String[paramValues.size()];
-    return paramValues.stream().map(value -> "'" + value + "'").collect(Collectors.toList())
+    return paramValues.stream().map(
+            value -> "'" + value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase() + "'")
+        .collect(Collectors.toList())
         .toArray(formattedValues);
   }
 
-  private String combineQueries() {
-    return String.format("SELECT p FROM Product p WHERE (%s)",
-        String.join(" AND ", queryList));
+  private String[] formatColorParamValues(Set<String> colorValues) {
+    String[] formattedColorValues = new String[colorValues.size()];
+    return colorValues.stream().map(value -> "'#" + value + "'").collect(Collectors.toList())
+        .toArray(formattedColorValues);
   }
 
-  private Boolean checkValidParamKeys() {
+  private String combineQueries() {
+    return String.format("SELECT p FROM Product p WHERE (%s)", String.join(" AND ", queryList));
+  }
+
+  public Boolean checkValidUserParamKeys() {
     for (String filter : this.currentFilters) {
       if (this.uniqueParams.containsKey(filter)) {
         return true;
