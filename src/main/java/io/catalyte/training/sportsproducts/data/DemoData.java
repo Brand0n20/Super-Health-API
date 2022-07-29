@@ -5,14 +5,16 @@ import io.catalyte.training.sportsproducts.domains.product.ProductRepository;
 import io.catalyte.training.sportsproducts.domains.purchase.BillingAddress;
 import io.catalyte.training.sportsproducts.domains.purchase.Purchase;
 import io.catalyte.training.sportsproducts.domains.purchase.PurchaseRepository;
-import io.catalyte.training.sportsproducts.domains.user.*;
-import java.util.List;
+import io.catalyte.training.sportsproducts.domains.user.User;
+import io.catalyte.training.sportsproducts.domains.user.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Because this class implements CommandLineRunner, the run method is executed as soon as the server
