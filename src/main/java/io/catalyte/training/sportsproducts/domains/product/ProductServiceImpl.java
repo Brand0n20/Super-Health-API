@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
   public List<Product> getProducts(Product product, Map<String, String> allParams) {
     try {
       ProductFilter filter = new ProductFilter();
+      productRepository.findAll();
       return productRepository.queryFilter(filter.createFilterQuery(allParams));
 
     } catch (DataAccessException e) {
