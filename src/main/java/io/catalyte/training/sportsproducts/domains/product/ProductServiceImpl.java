@@ -2,8 +2,10 @@ package io.catalyte.training.sportsproducts.domains.product;
 
 import io.catalyte.training.sportsproducts.exceptions.ResourceNotFound;
 import io.catalyte.training.sportsproducts.exceptions.ServerError;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +37,11 @@ public class ProductServiceImpl implements ProductService {
    */
   @Override
   public List<Product> getProducts(Product product, Map<String, String> allParams) {
+    ProductFilter filter = new ProductFilter();
     try {
-      ProductFilter filter = new ProductFilter();
-      return productRepository.queryFilter(filter.createFilterQuery(allParams));
+      HashMap<String, Set<String>> uniqueParams = filter.createUniqueParams(allParams);
+
+  return productRepository.findAll(Example.of(product));
 
     } catch (DataAccessException e) {
       logger.error(e.getMessage());

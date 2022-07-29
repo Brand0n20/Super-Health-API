@@ -40,7 +40,6 @@ public class ProductController {
   public ResponseEntity<List<Product>> getProducts(Product product,
       @RequestParam(required = false) Map<String, String> allParams) {
     logger.info("Request received for getProducts");
-
     return new ResponseEntity<>(productService.getProducts(product, allParams), HttpStatus.OK);
 
   }

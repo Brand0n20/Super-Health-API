@@ -1,5 +1,6 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,39 +12,43 @@ import java.util.stream.Collectors;
 public class ProductFilter {
 
   private String[] currentFilters = new String[]{"brand", "category", "demographic", "color",
-      "material", "price", "priceMin", "priceMax"};
+      "material", "price", "prices", "min", "max"};
 
   private ArrayList<String> queryList = new ArrayList<>();
 
-  private HashMap<String, Set<String>> uniqueParams = new HashMap<>();
+  private HashMap<String, Set<String>> uniqueParams;
 
-  public String createFilterQuery(Map<String, String> params) {
-    this.makeUniqueParams(params);
-    for (String key : this.uniqueParams.keySet()) {
+  public String createFilterQuery(HashMap<String, Set<String>> params) {
+    this.uniqueParams = params;
+    for (String key : params.keySet()) {
       this.generateQuery(key);
     }
     return this.combineQueries();
   }
 
-  private void makeUniqueParams(Map<String, String> params) {
+  public HashMap<String, Set<String>> createUniqueParams(Map<String, String> params) {
+    HashMap<String, Set<String>> uniqueParams = new HashMap<>();
     for (Map.Entry<String, String> param : params.entrySet()) {
       String[] values = param.getValue().split(",");
       Set<String> valuesSet = new HashSet<>(Arrays.asList(values));
-      this.uniqueParams.put(param.getKey(), valuesSet);
+      uniqueParams.put(param.getKey().toLowerCase(), valuesSet);
     }
+
+    return uniqueParams;
   }
 
   private void generateQuery(String key) {
     switch (key) {
       case "price":
-        generatePriceQuery();
+      case "prices":
+        generatePriceQuery(key);
         break;
-      case "priceMin":
-      case "priceMax":
-        generateMinMaxPriceQuery();
+      case "max":
+      case "min":
+        generateMinMaxPriceQuery(key);
         break;
       case "color":
-        generateColorQuery();
+        generateColorQuery(key);
         break;
       case "brand":
       case "demographic":
@@ -60,21 +65,35 @@ public class ProductFilter {
     this.queryList.add(queryString);
   }
 
-  private void generateColorQuery() {
-    String[] formattedColorValues = this.formatColorParamValues(this.uniqueParams.get("color"));
-    String colorValue = String.join(", ", formattedColorValues);
+  private void generateColorQuery(String key) {
+    String[] formattedColorValues = this.formatColorParamValues(this.uniqueParams.get(key));
+    String colorStringValue = String.join(", ", formattedColorValues);
     queryList.add(
         String.format("(p.primaryColorCode IN (%s) OR p.secondaryColorCode IN (%s))",
-            colorValue, colorValue));
+            colorStringValue, colorStringValue));
   }
 
-  private void generatePriceQuery() {
-
+  private void generatePriceQuery(String key) {
+    String[] formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
+    String priceStringValue = String.join(", ", formattedPriceValues);
+    queryList.add(
+        String.format("p.price IN (%s)", priceStringValue)
+    );
   }
 
-  private void generateMinMaxPriceQuery() {
-
+  private void generateMinMaxPriceQuery(String key) {
+    String[] formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
+    if (key.equals("min")) {
+      queryList.add(
+          String.format("(p.price >= %s)", formattedPriceValues[0])
+      );
+    } else {
+      queryList.add(
+          String.format("(p.price <= %s)", formattedPriceValues[0])
+      );
+    }
   }
+
 
   private String[] formatParamValues(Set<String> paramValues) {
     String[] formattedValues = new String[paramValues.size()];
@@ -88,6 +107,17 @@ public class ProductFilter {
     String[] formattedColorValues = new String[colorValues.size()];
     return colorValues.stream().map(value -> "'#" + value + "'").collect(Collectors.toList())
         .toArray(formattedColorValues);
+  }
+
+  private String[] formatPriceValues(Set<String> priceValues) {
+    Double[] priceValuesDoubles = new Double[priceValues.size()];
+    String[] formattedPriceValues = new String[priceValues.size()];
+    priceValues.stream().map(value -> Double.parseDouble(value.replace("$", "")))
+        .collect(Collectors.toList()).toArray(priceValuesDoubles);
+
+    return Arrays.stream(priceValuesDoubles).map(value -> String.valueOf(value))
+        .collect(Collectors.toList())
+        .toArray(formattedPriceValues);
   }
 
   private String combineQueries() {
