@@ -1,12 +1,7 @@
 package io.catalyte.training.sportsproducts.domains.purchase;
 
+import javax.persistence.*;
 import java.util.Set;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 /**
  * Describes a purchase object that holds the information for a transaction
@@ -33,7 +28,7 @@ public class Purchase {
   public Purchase() {
     billingAddress = new BillingAddress();
     deliveryAddress = new DeliveryAddress();
-    creditCard = new CreditCard();
+    this.creditCard = new CreditCard();
   }
 
   public Long getId() {

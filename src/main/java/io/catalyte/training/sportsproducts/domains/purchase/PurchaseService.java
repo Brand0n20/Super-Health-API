@@ -6,6 +6,7 @@ public interface PurchaseService {
 
   Purchase savePurchase(Purchase purchaseToSave);
 
-  List<Purchase> findPurchasesByEmail(String email);
+  List<Purchase> findAllPurchases();
 
+  Purchase getPurchaseById(long id);
 }
