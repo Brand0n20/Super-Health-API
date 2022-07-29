@@ -11,7 +11,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -66,11 +65,6 @@ public class PurchaseServiceImpl implements PurchaseService {
     return newPurchase;
   }
 
-  @Override
-  public List<Purchase> findAllPurchases() {
-    return null;
-  }
-
   /**
    * This helper method retrieves product information for each line item and persists it
    *
@@ -102,17 +96,6 @@ public class PurchaseServiceImpl implements PurchaseService {
         }
       });
     }
-  }
-
-
-  public Purchase getPurchaseById(long purchaseId) {
-    try {
-     return purchaseRepository.findPurchaseById(purchaseId);
-    } catch (NoSuchElementException e) {
-      logger.error(e.getMessage());
-      throw new RuntimeException(e.getMessage());
-    }
-
   }
 }
 
