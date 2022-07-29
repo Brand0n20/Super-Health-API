@@ -60,40 +60,4 @@ public class ProductServiceImplTest {
     when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
     assertThrows(ResourceNotFound.class, () -> productServiceImpl.getProductById(123L));
   }
-
-  @Test
-  public void getProductsByIdReturnsNonNullFields() {
-    Product actual = productServiceImpl.getProductById(123L);
-    assertAll(
-        () -> assertNotEquals(actual.getName(), null),
-        () -> assertNotEquals(actual.getDescription(), null),
-        () -> assertNotEquals(actual.getDemographic(), null),
-        () -> assertNotEquals(actual.getCategory(), null),
-        () -> assertNotEquals(actual.getType(), null),
-        () -> assertNotEquals(actual.getReleaseDate(), null),
-        () -> assertNotEquals(actual.getPrimaryColorCode(), null),
-        () -> assertNotEquals(actual.getSecondaryColorCode(), null),
-        () -> assertNotEquals(actual.getGlobalProductCode(), null),
-        () -> assertNotEquals(actual.getActive(), null)
-    );
-  }
-
-  @Test
-  public void getProductsByIdReturnsStrings() {
-    Product actual = productServiceImpl.getProductById(123L);
-    assertAll(() -> assertNotNull(actual.getName()),
-        () -> assertNotNull(actual.getDemographic()),
-        () -> assertNotNull(actual.getCategory()),
-        () -> assertNotNull(actual.getType()),
-        () -> assertNotNull(actual.getReleaseDate()),
-        () -> assertNotNull(actual.getPrimaryColorCode()),
-        () -> assertNotNull(actual.getSecondaryColorCode()),
-        () -> assertNotNull(actual.getGlobalProductCode()));
-  }
-
-  @Test
-  public void productsActivePropertyIsBoolean() {
-    Product actual = productServiceImpl.getProductById(123L);
-    assertNotNull(actual.getActive());
-  }
 }
