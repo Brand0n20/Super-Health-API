@@ -9,9 +9,4 @@ import java.util.List;
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
   List<Purchase> findByBillingAddressEmail(String email);
-  List<Purchase> findByCreditCard(String creditCard);
-
-   Purchase findPurchaseById(final long id);
-
-
 }

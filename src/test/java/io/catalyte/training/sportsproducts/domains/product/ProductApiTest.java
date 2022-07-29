@@ -27,13 +27,13 @@ public class ProductApiTest {
   @Autowired
   private WebApplicationContext wac;
 
+  private MockMvc mockMvc;
+
   @Autowired
   ProductRepository productRepository;
 
   @Autowired
   ProductServiceImpl productService;
-
-  private MockMvc mockMvc;
 
 
   @Before

@@ -20,79 +20,35 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static io.catalyte.training.sportsproducts.constants.Paths.PURCHASES_PATH;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PurchaseApiTest {
 
-    @Autowired
-    private WebApplicationContext wac;
+  @Autowired
+  private WebApplicationContext wac;
 
-    @MockBean
-    PurchaseRepository purchaseRepository;
+  private MockMvc mockMvc;
 
-    @Autowired
-    PurchaseServiceImpl purchaseService;
-
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    private final Purchase newPurchase = new Purchase();
-    private final CreditCard creditCard =
-            new CreditCard("1234567890123456", "836", "09/29", "Bob Evans");
-
-
-    @Before
-    public void setUp () {
-        mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
-
-
-    @Test
-    public void savePurchaseReturn201StatusCode() throws Exception {
-
-        String creditCardExample = "{\"cardNumber\": \"123456789012345s\", \"cvv\": \"234\","
-                + "\"expiration\": \"12/12\", \"cardholder\": \"Bob Ross\"}";
-        this.mockMvc
-        .perform(
-            post(PURCHASES_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(creditCardExample))
-        .andExpect(MockMvcResultMatchers.status().isCreated())
-        .andReturn()
-        .getResponse();
-    }
-
-  @Test
-  public void findAllPurchasesReturnAllPresentPurchases() throws Exception {
-    int totalNumberOfPurchases = 0;
-    List<Purchase> purchaseList = purchaseRepository.findAll();
-    assertEquals(totalNumberOfPurchases, purchaseList.size());
-    }
-
-  @Test
-  public void findAllPurchaseReturnActualPurchases()  {
-      List<Purchase> purchaseList = purchaseRepository.findAll();
-      purchaseList.forEach(
-              purchase ->
-                      assertAll(
-                              () -> Assert.assertThat(purchase, isA(Purchase.class)),
-                              () -> Assert.assertThat(purchase, hasProperty("creditCard"))
-                      ));
+  @Before
+  public void setUp() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
   }
 
 
+  @Test
+  public void savePurchaseReturn201StatusCode() throws Exception {
+
+    String creditCardExample = "{\"cardNumber\": \"123456789012345s\", \"cvv\": \"234\","
+        + "\"expiration\": \"12/12\", \"cardholder\": \"Bob Ross\"}";
+    this.mockMvc.perform(
+            post(PURCHASES_PATH).contentType(MediaType.APPLICATION_JSON).content(creditCardExample))
+        .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn().getResponse();
+  }
 
   @Test
   public void getPurchasesWithoutEmailReturns404() throws Exception {
