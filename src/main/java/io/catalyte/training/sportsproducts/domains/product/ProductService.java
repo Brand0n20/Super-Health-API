@@ -10,4 +10,8 @@ public interface ProductService {
   List<Product> getProducts(Product product);
 
   Product getProductById(Long id);
+
+  List<String> getUniqueTypes();
+
+  List<String> getUniqueCategories();
 }

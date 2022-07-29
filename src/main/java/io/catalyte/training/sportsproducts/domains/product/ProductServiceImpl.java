@@ -31,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
    * @param product - an example product to use for querying
    * @return - a list of products matching the example, or all products if no example was passed
    */
+  @Override
   public List<Product> getProducts(Product product) {
     try {
       return productRepository.findAll(Example.of(product));
@@ -46,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
    * @param id - the id of the product to retrieve
    * @return - the product
    */
+  @Override
   public Product getProductById(Long id) {
     Product product;
 
@@ -63,4 +65,43 @@ public class ProductServiceImpl implements ProductService {
       throw new ResourceNotFound("Get by id failed, it does not exist in the database: " + id);
     }
   }
+
+  /**
+   * Retrieves all unique types within the database.
+   *
+   * @return A list of strings with unique type.
+   */
+  @Override
+  public List<String> getUniqueTypes() {
+    List<String> types;
+
+    try {
+      types = productRepository.findByType();
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return types;
+  }
+
+  /**
+   * Retrieves all the unique categories within the databases.
+   *
+   * @return A list of strings with unique categories.
+   */
+  @Override
+  public List<String> getUniqueCategories() {
+    List<String> categories;
+
+    try {
+      categories = productRepository.findByCategory();
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return categories;
+  }
+
 }

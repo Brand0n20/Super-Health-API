@@ -1,6 +1,7 @@
 package io.catalyte.training.sportsproducts.domains.purchase;
 
 import java.util.Set;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,10 +21,13 @@ public class Purchase {
   @OneToMany(mappedBy = "purchase")
   private Set<LineItem> products;
 
+  @Embedded
   private DeliveryAddress deliveryAddress;
 
+  @Embedded
   private BillingAddress billingAddress;
 
+  @Embedded
   private CreditCard creditCard;
 
   public Purchase() {
