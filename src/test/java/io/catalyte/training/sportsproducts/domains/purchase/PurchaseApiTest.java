@@ -8,12 +8,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -39,17 +37,42 @@ public class PurchaseApiTest {
     mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
   }
 
-
+  /**
+   * Purchases with valid credit card can be added into database
+   *
+   * @throws Exception
+   */
   @Test
   public void savePurchaseReturn201StatusCode() throws Exception {
+    CreditCard example = new CreditCard("1234567890123456", "234", "10/22", "Bob Ross");
+    Purchase purchaseExample = new Purchase();
+    purchaseExample.setCreditCard(example);
 
-    String creditCardExample = "{\"cardNumber\": \"123456789012345s\", \"cvv\": \"234\","
-        + "\"expiration\": \"12/12\", \"cardholder\": \"Bob Ross\"}";
     this.mockMvc.perform(
-            post(PURCHASES_PATH).contentType(MediaType.APPLICATION_JSON).content(creditCardExample))
-        .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn().getResponse();
+        post(PURCHASES_PATH).contentType(MediaType.APPLICATION_JSON).content(
+            asJsonString(purchaseExample))).andExpect(status().isCreated());
+
   }
 
+  /**
+   * Mapper to parse object into string for mockMvc
+   *
+   * @param obj - obj to parse
+   * @return
+   */
+  public static String asJsonString(final Object obj) {
+    try {
+      return new ObjectMapper().writeValueAsString(obj);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   *Path for getting purchases with no email specified responds with 404 status
+   *
+   * @throws Exception
+   */
   @Test
   public void getPurchasesWithoutEmailReturns404() throws Exception {
     mockMvc.perform(get(PURCHASES_PATH)).andExpect(status().isNotFound());
