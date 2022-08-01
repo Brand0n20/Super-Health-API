@@ -6,7 +6,7 @@ import javax.persistence.*;
  * User entity in database
  */
 @Entity
-@Table(name = "users")
+@Table(name = "users")  // this specifies what we want the table name to be, otherwise, it would just be named @Entity
 public class User {
 
   @Id
@@ -75,7 +75,7 @@ public class User {
   }
 
   @Override
-  public String toString() {
+  public String toString() {  // this just displays this stuff in the Java console
     return "User{" +
         "id=" + id +
         ", email='" + email + '\'' +
