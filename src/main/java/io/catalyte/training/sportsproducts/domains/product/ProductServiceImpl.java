@@ -32,9 +32,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   /**
-   * Retrieves all products from the database, optionally making use of an example if it is passed.
+   * Retrieves all products from the database, optionally making use of params if passed.
    *
-   * @param product - an example product to use for querying
    * @return - a list of products matching the example, or all products if no example was passed
    */
   @Override
@@ -42,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     try {
       if (allParams.isEmpty() || allParams == null) {
-        return productRepository.findAll(Example.of(product));
+        return productRepository.findAll();
       }
 
      for(String value : allParams.values()) {
@@ -54,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
       ProductFilter filter = new ProductFilter();
       filter.createUniqueParams(allParams);
 
-      if(!filter.validParamKeys()) {
+      if(!filter.validParams()) {
         return Collections.emptyList();
       }
 

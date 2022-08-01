@@ -39,40 +39,41 @@ public class ProductFilter {
     switch (key) {
       case "price":
       case "prices":
-        generateMultiValuePriceQuery(key);
+        generatePriceQuery(key);
         break;
       case "max":
       case "min":
         generateMinMaxPriceQuery(key);
         break;
       case "color":
-        generateMultiValueColorQuery(key);
+        generateColorQuery(key);
         break;
       case "brand":
       case "demographic":
       case "category":
       case "material":
-        generateMultiValueQuery(key);
+        generateDefaultQuery(key);
         break;
     }
   }
 
-  private void generateMultiValueQuery(String key) {
-    String[] formattedValues = this.formatParamValues(uniqueParams.get(key));
+  private void generateDefaultQuery(String key) {
+    ArrayList<String> formattedValues = this.formatParamValues(uniqueParams.get(key));
     String queryString = String.format("p.%s IN (%s)", key, String.join(", ", formattedValues));
     this.queryList.add(queryString);
   }
 
-  private void generateMultiValueColorQuery(String key) {
-    String[] formattedColorValues = this.formatColorParamValues(this.uniqueParams.get(key));
+  private void generateColorQuery(String key) {
+    ArrayList<String> formattedColorValues = this.formatColorParamValues(
+        this.uniqueParams.get(key));
     String colorStringValue = String.join(", ", formattedColorValues);
     queryList.add(
         String.format("(p.primaryColorCode IN (%s) OR p.secondaryColorCode IN (%s))",
             colorStringValue, colorStringValue));
   }
 
-  private void generateMultiValuePriceQuery(String key) {
-    String[] formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
+  private void generatePriceQuery(String key) {
+    ArrayList<String> formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
     String priceStringValue = String.join(", ", formattedPriceValues);
     queryList.add(
         String.format("p.price IN (%s)", priceStringValue)
@@ -80,51 +81,75 @@ public class ProductFilter {
   }
 
   private void generateMinMaxPriceQuery(String key) {
-    String[] formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
+    ArrayList<String> formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
     if (key.equals("min")) {
       queryList.add(
-          String.format("(p.price >= %s)", formattedPriceValues[formattedPriceValues.length - 1])
+          String.format("(p.price >= %s)", formattedPriceValues.get(0))
       );
     } else {
       queryList.add(
-          String.format("(p.price <= %s)", formattedPriceValues[formattedPriceValues.length - 1])
+          String.format("(p.price <= %s)", formattedPriceValues.get(0))
       );
     }
   }
 
+  private ArrayList<String> formatParamValues(Set<String> paramValues) {
+    ArrayList<String> formattedValues = new ArrayList<>();
 
-  private String[] formatParamValues(Set<String> paramValues) {
-    String[] formattedValues = new String[paramValues.size()];
-    return paramValues.stream().map(
-            value -> "'" + value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase() + "'")
-        .collect(Collectors.toList())
-        .toArray(formattedValues);
+    for (String value : paramValues) {
+      String trimmedValue = value.trim();
+      if (trimmedValue.contains(" ")) {
+        formattedValues.add(formatMultiWordValue(value));
+      } else {
+        formattedValues.add(formatSingleWordValue(value));
+      }
+    }
+    return formattedValues;
   }
 
-  private String[] formatColorParamValues(Set<String> colorValues) {
-    String[] formattedColorValues = new String[colorValues.size()];
-    return colorValues.stream().map(value -> "'#" + value.toLowerCase() + "'")
-        .collect(Collectors.toList())
-        .toArray(formattedColorValues);
+  private String formatMultiWordValue(String value) {
+    String[] splitWordsArray = value.split(" ");
+
+    Arrays.stream(splitWordsArray)
+        .map(word -> this.capitalizeWord(word))
+        .collect(Collectors.toList()).toArray(splitWordsArray);
+
+    return "'" + String.join(" ", splitWordsArray) + "'";
   }
 
-  private String[] formatPriceValues(Set<String> priceValues) {
-    Double[] priceValuesDoubles = new Double[priceValues.size()];
-    String[] formattedPriceValues = new String[priceValues.size()];
-    priceValues.stream().map(value -> Double.parseDouble(value.replace("$", "")))
-        .collect(Collectors.toList()).toArray(priceValuesDoubles);
+  private String formatSingleWordValue(String word) {
+    return "'" + this.capitalizeWord(word) + "'";
+  }
 
-    return Arrays.stream(priceValuesDoubles).map(value -> String.valueOf(value))
-        .collect(Collectors.toList())
-        .toArray(formattedPriceValues);
+  private String capitalizeWord(String word) {
+    return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+  }
+
+  private ArrayList<String> formatColorParamValues(Set<String> colorValues) {
+    ArrayList<String> formattedColorValues = new ArrayList<>();
+
+    formattedColorValues.addAll(
+        colorValues.stream().map(value -> "'#" + value.toLowerCase() + "'").collect(
+            Collectors.toList()));
+
+    return formattedColorValues;
+  }
+
+  private ArrayList<String> formatPriceValues(Set<String> priceValues) {
+
+    ArrayList<String> formattedPriceValues = new ArrayList<>();
+
+    formattedPriceValues.addAll(
+        priceValues.stream().map(value -> value.replace("$", ""))
+            .collect(Collectors.toList()));
+    return formattedPriceValues;
   }
 
   private String combineQueries() {
     return String.format("SELECT p FROM Product p WHERE (%s)", String.join(" AND ", queryList));
   }
 
-  public Boolean validParamKeys() {
-
+  public Boolean validParams() {
     for (String key : this.uniqueParams.keySet()) {
       if (!filters.contains(key)) {
         return false;
@@ -132,6 +157,12 @@ public class ProductFilter {
 
       if (key.equals("price") || key.equals("prices") || key.equals("max") || key.equals("min")) {
         if (!this.validPriceValues(key)) {
+          return false;
+        }
+      }
+
+      if (key.equals("max") || key.equals("min")) {
+        if (!this.validMaxMinValue(key)) {
           return false;
         }
       }
@@ -146,6 +177,13 @@ public class ProductFilter {
       if (!Pattern.matches(regex, formattedValue)) {
         return false;
       }
+    }
+    return true;
+  }
+
+  public Boolean validMaxMinValue(String key) {
+    if (this.uniqueParams.get(key).size() > 1) {
+      return false;
     }
     return true;
   }
