@@ -12,6 +12,13 @@ public class FilterProductRepositoryImpl implements FilterProductRepository {
   @PersistenceContext
   private EntityManager entityManager;
 
+  /**
+   * Queries the database with a custom valid product query string
+   *
+   * @param filterQuery
+   * @return - List of Products based on the filter query
+   */
+  @Override
   public List<Product> queryFilter(String filterQuery) {
     if (filterQuery == null) {
       return Collections.emptyList();

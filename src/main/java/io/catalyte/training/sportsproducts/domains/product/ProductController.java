@@ -31,7 +31,8 @@ public class ProductController {
   private ProductService productService;
 
   /**
-   * Controller method for getting all products in the database
+   * Controller method for getting all products in the database, optionally can filter products
+   * returned with a valid filter
    *
    * @param product
    * @return - a list of products in database and a 200 status

@@ -10,6 +10,9 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Product Filter for multiple queries for the product endpoint
+ */
 public class ProductFilter {
 
   private HashSet<String> filters = new HashSet<>(
@@ -20,6 +23,11 @@ public class ProductFilter {
 
   private HashMap<String, Set<String>> uniqueParams = new HashMap<>();
 
+  /**
+   * Creates a query string based on the unique params that were passed into the Product Controller
+   *
+   * @return String that can query the database
+   */
   public String createFilterQuery() {
     for (String key : this.uniqueParams.keySet()) {
       this.generateQuery(key);
@@ -27,6 +35,11 @@ public class ProductFilter {
     return this.combineQueries();
   }
 
+  /**
+   * Creates unique parameters from the parameters that were passed from Product Controller
+   *
+   * @param params
+   */
   public void createUniqueParams(Map<String, String> params) {
     for (Map.Entry<String, String> param : params.entrySet()) {
       String[] values = param.getValue().split(",");
@@ -35,6 +48,11 @@ public class ProductFilter {
     }
   }
 
+  /**
+   * Control function to generate a query based on the name of the key passed in
+   *
+   * @param key
+   */
   private void generateQuery(String key) {
     switch (key) {
       case "price":
@@ -57,12 +75,22 @@ public class ProductFilter {
     }
   }
 
+  /**
+   * Generates default WHERE IN query for database
+   *
+   * @param key
+   */
   private void generateDefaultQuery(String key) {
     ArrayList<String> formattedValues = this.formatParamValues(uniqueParams.get(key));
     String queryString = String.format("p.%s IN (%s)", key, String.join(", ", formattedValues));
     this.queryList.add(queryString);
   }
 
+  /**
+   * Generates a query to find products with a given color code
+   *
+   * @param key
+   */
   private void generateColorQuery(String key) {
     ArrayList<String> formattedColorValues = this.formatColorParamValues(
         this.uniqueParams.get(key));
@@ -72,6 +100,11 @@ public class ProductFilter {
             colorStringValue, colorStringValue));
   }
 
+  /**
+   * Generates a query to find a product with a given price
+   *
+   * @param key
+   */
   private void generatePriceQuery(String key) {
     ArrayList<String> formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
     String priceStringValue = String.join(", ", formattedPriceValues);
@@ -80,6 +113,11 @@ public class ProductFilter {
     );
   }
 
+  /**
+   * Generates either a max or min price query based on the value of key
+   *
+   * @param key
+   */
   private void generateMinMaxPriceQuery(String key) {
     ArrayList<String> formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
     if (key.equals("min")) {
@@ -93,22 +131,34 @@ public class ProductFilter {
     }
   }
 
+  /**
+   * Formats value to be used to generate a valid query
+   *
+   * @param paramValues
+   * @return - String formatted for IN queries
+   */
   private ArrayList<String> formatParamValues(Set<String> paramValues) {
     ArrayList<String> formattedValues = new ArrayList<>();
 
     for (String value : paramValues) {
       String trimmedValue = value.trim();
-      if (trimmedValue.contains(" ")) {
-        formattedValues.add(formatMultiWordValue(value));
+      if (trimmedValue.contains("-")) {
+        formattedValues.add(formatMultiWordValue(trimmedValue));
       } else {
-        formattedValues.add(formatSingleWordValue(value));
+        formattedValues.add(formatSingleWordValue(trimmedValue));
       }
     }
     return formattedValues;
   }
 
-  private String formatMultiWordValue(String value) {
-    String[] splitWordsArray = value.split(" ");
+  /**
+   * Formats a value that contains multiple words in String
+   *
+   * @param words
+   * @return - String formatted for IN queries
+   */
+  private String formatMultiWordValue(String words) {
+    String[] splitWordsArray = words.split("-");
 
     Arrays.stream(splitWordsArray)
         .map(word -> this.capitalizeWord(word))
@@ -117,14 +167,32 @@ public class ProductFilter {
     return "'" + String.join(" ", splitWordsArray) + "'";
   }
 
+  /**
+   * Formats a value to be used for IN queries
+   *
+   * @param word
+   * @return - Formatted string for IN queries
+   */
   private String formatSingleWordValue(String word) {
     return "'" + this.capitalizeWord(word) + "'";
   }
 
+  /**
+   * Capitalizes any word that is passed in
+   *
+   * @param word
+   * @return - Capitalized String
+   */
   private String capitalizeWord(String word) {
     return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
   }
 
+  /**
+   * Formats a color value for color queries
+   *
+   * @param colorValues
+   * @return - Formatted color code String
+   */
   private ArrayList<String> formatColorParamValues(Set<String> colorValues) {
     ArrayList<String> formattedColorValues = new ArrayList<>();
 
@@ -135,8 +203,13 @@ public class ProductFilter {
     return formattedColorValues;
   }
 
+  /**
+   * Formats price value for product price queries
+   *
+   * @param priceValues
+   * @return - Formatted Price String
+   */
   private ArrayList<String> formatPriceValues(Set<String> priceValues) {
-
     ArrayList<String> formattedPriceValues = new ArrayList<>();
 
     formattedPriceValues.addAll(
@@ -145,10 +218,21 @@ public class ProductFilter {
     return formattedPriceValues;
   }
 
+  /**
+   * Combines all generated queries into one query for the database
+   *
+   * @return - Query String
+   */
   private String combineQueries() {
     return String.format("SELECT p FROM Product p WHERE (%s)", String.join(" AND ", queryList));
   }
 
+  /**
+   * Validates all params based on whether it is a valid filter for products and valid values for
+   * prices
+   *
+   * @return - Boolean for valid params
+   */
   public Boolean validParams() {
     for (String key : this.uniqueParams.keySet()) {
       if (!filters.contains(key)) {
@@ -170,7 +254,13 @@ public class ProductFilter {
     return true;
   }
 
-  public Boolean validPriceValues(String key) {
+  /**
+   * Validates all price values with price regex
+   *
+   * @param key
+   * @return - Boolean for valid price
+   */
+  private Boolean validPriceValues(String key) {
     String regex = "^\\d{0,8}(\\.\\d{1,2})?$";
     for (String priceValue : this.uniqueParams.get(key)) {
       String formattedValue = priceValue.replace("$", "");
@@ -181,7 +271,13 @@ public class ProductFilter {
     return true;
   }
 
-  public Boolean validMaxMinValue(String key) {
+  /**
+   * Validates min and max key values; should only contain one value for each key
+   *
+   * @param key
+   * @return Boolean for valid min or max value
+   */
+  private Boolean validMaxMinValue(String key) {
     if (this.uniqueParams.get(key).size() > 1) {
       return false;
     }

@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     try {
       if (allParams.isEmpty() || allParams == null) {
-        return productRepository.findAll();
+        return productRepository.findAll(Example.of(product));
       }
 
      for(String value : allParams.values()) {
