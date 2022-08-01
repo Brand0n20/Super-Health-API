@@ -35,6 +35,7 @@ public class ProductController {
    * returned with a valid filter
    *
    * @param product
+   * @param allParams
    * @return - a list of products in database and a 200 status
    */
   @GetMapping
