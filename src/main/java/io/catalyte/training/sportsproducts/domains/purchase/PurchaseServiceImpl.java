@@ -22,6 +22,8 @@ public class PurchaseServiceImpl implements PurchaseService {
   ProductService productService;
   LineItemRepository lineItemRepository;
 
+  CreditCardValidation creditCardValidation = new CreditCardValidation();
+
   @Autowired
   public PurchaseServiceImpl(PurchaseRepository purchaseRepository, ProductService productService,
       LineItemRepository lineItemRepository) {
@@ -53,7 +55,9 @@ public class PurchaseServiceImpl implements PurchaseService {
    */
   public Purchase savePurchase(Purchase newPurchase) {
     try {
-      purchaseRepository.save(newPurchase);
+      if (creditCardValidation.isValidCreditCard(newPurchase)) {
+        purchaseRepository.save(newPurchase);
+      }
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
       throw new ServerError(e.getMessage());

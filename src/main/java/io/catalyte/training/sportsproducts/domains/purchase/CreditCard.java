@@ -1,16 +1,19 @@
 package io.catalyte.training.sportsproducts.domains.purchase;
 
-import javax.persistence.Embeddable;
-
 /**
  * Describes Credit Card information for transactions
  */
-@Embeddable
+
+
 public class CreditCard {
 
   private String cardNumber;
+
   private String cvv;
+
   private String expiration;
+
+
   private String cardholder;
 
   public CreditCard() {

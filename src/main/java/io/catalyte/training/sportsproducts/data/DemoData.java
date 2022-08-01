@@ -2,7 +2,9 @@ package io.catalyte.training.sportsproducts.data;
 
 import io.catalyte.training.sportsproducts.domains.product.Product;
 import io.catalyte.training.sportsproducts.domains.product.ProductRepository;
+import io.catalyte.training.sportsproducts.domains.promoCode.PromoCodeRepository;
 import io.catalyte.training.sportsproducts.domains.purchase.BillingAddress;
+import io.catalyte.training.sportsproducts.domains.purchase.CreditCard;
 import io.catalyte.training.sportsproducts.domains.purchase.Purchase;
 import io.catalyte.training.sportsproducts.domains.purchase.PurchaseRepository;
 import io.catalyte.training.sportsproducts.domains.user.User;
@@ -35,6 +37,9 @@ public class DemoData implements CommandLineRunner {
 
   @Autowired
   private PurchaseRepository purchaseRepository;
+
+  @Autowired
+  private PromoCodeRepository promoCodeRepository;
 
   @Autowired
   private Environment env;
@@ -84,14 +89,31 @@ public class DemoData implements CommandLineRunner {
     BillingAddress billingAddress = new BillingAddress();
     billingAddress.setEmail("bob@ross.com");
     purchase1.setBillingAddress(billingAddress);
+    purchase1.setCreditCard(new CreditCard(
+        "6543210987654321",
+        "342",
+        "12/26",
+        "Bob Ross"));
     purchaseRepository.save(purchase1);
 
     Purchase purchase2 = new Purchase();
     purchase2.setBillingAddress(billingAddress);
+    purchase2.setCreditCard(new CreditCard(
+        "1234567890123456",
+        "512",
+        "05/23",
+        "Bob Ross"
+    ));
     purchaseRepository.save(purchase2);
 
     Purchase purchase3 = new Purchase();
     purchase3.setBillingAddress(billingAddress);
+    purchase3.setCreditCard(new CreditCard(
+        "4539379343750493",
+        "472",
+        "02/27",
+        "Bob Ross"
+    ));
     purchaseRepository.save(purchase3);
 
     Purchase purchase4 = new Purchase();
@@ -101,6 +123,13 @@ public class DemoData implements CommandLineRunner {
     userRepository.save(user);
 
     purchase4.setBillingAddress(billingAddress);
+    purchase4.setCreditCard(new CreditCard(
+        "5527407157029653",
+        "852",
+        "11/23",
+        "Amir Sharapov"
+
+    ));
 
     purchaseRepository.save(purchase4);
 
