@@ -11,7 +11,7 @@ import javax.persistence.Query;
  * Custom filter repository to filter products in the database
  */
 
-public class FilterProductRepositoryImpl implements FilterProductRepository {
+public class ProductFilterRepositoryImpl implements ProductFilterRepository {
 
   @PersistenceContext
   private EntityManager entityManager;
