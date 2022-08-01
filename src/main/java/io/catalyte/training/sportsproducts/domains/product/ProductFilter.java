@@ -7,48 +7,46 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ProductFilter {
 
-  private String[] currentFilters = new String[]{"brand", "category", "demographic", "color",
-      "material", "price", "prices", "min", "max"};
+  private HashSet<String> filters = new HashSet<>(
+      Arrays.asList("brand", "category", "demographic", "color",
+          "material", "price", "prices", "min", "max"));
 
   private ArrayList<String> queryList = new ArrayList<>();
 
-  private HashMap<String, Set<String>> uniqueParams;
+  private HashMap<String, Set<String>> uniqueParams = new HashMap<>();
 
-  public String createFilterQuery(HashMap<String, Set<String>> params) {
-    this.uniqueParams = params;
-    for (String key : params.keySet()) {
+  public String createFilterQuery() {
+    for (String key : this.uniqueParams.keySet()) {
       this.generateQuery(key);
     }
     return this.combineQueries();
   }
 
-  public HashMap<String, Set<String>> createUniqueParams(Map<String, String> params) {
-    HashMap<String, Set<String>> uniqueParams = new HashMap<>();
+  public void createUniqueParams(Map<String, String> params) {
     for (Map.Entry<String, String> param : params.entrySet()) {
       String[] values = param.getValue().split(",");
       Set<String> valuesSet = new HashSet<>(Arrays.asList(values));
-      uniqueParams.put(param.getKey().toLowerCase(), valuesSet);
+      this.uniqueParams.put(param.getKey().toLowerCase(), valuesSet);
     }
-
-    return uniqueParams;
   }
 
   private void generateQuery(String key) {
     switch (key) {
       case "price":
       case "prices":
-        generatePriceQuery(key);
+        generateMultiValuePriceQuery(key);
         break;
       case "max":
       case "min":
         generateMinMaxPriceQuery(key);
         break;
       case "color":
-        generateColorQuery(key);
+        generateMultiValueColorQuery(key);
         break;
       case "brand":
       case "demographic":
@@ -65,7 +63,7 @@ public class ProductFilter {
     this.queryList.add(queryString);
   }
 
-  private void generateColorQuery(String key) {
+  private void generateMultiValueColorQuery(String key) {
     String[] formattedColorValues = this.formatColorParamValues(this.uniqueParams.get(key));
     String colorStringValue = String.join(", ", formattedColorValues);
     queryList.add(
@@ -73,7 +71,7 @@ public class ProductFilter {
             colorStringValue, colorStringValue));
   }
 
-  private void generatePriceQuery(String key) {
+  private void generateMultiValuePriceQuery(String key) {
     String[] formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
     String priceStringValue = String.join(", ", formattedPriceValues);
     queryList.add(
@@ -85,11 +83,11 @@ public class ProductFilter {
     String[] formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
     if (key.equals("min")) {
       queryList.add(
-          String.format("(p.price >= %s)", formattedPriceValues[0])
+          String.format("(p.price >= %s)", formattedPriceValues[formattedPriceValues.length - 1])
       );
     } else {
       queryList.add(
-          String.format("(p.price <= %s)", formattedPriceValues[0])
+          String.format("(p.price <= %s)", formattedPriceValues[formattedPriceValues.length - 1])
       );
     }
   }
@@ -105,7 +103,8 @@ public class ProductFilter {
 
   private String[] formatColorParamValues(Set<String> colorValues) {
     String[] formattedColorValues = new String[colorValues.size()];
-    return colorValues.stream().map(value -> "'#" + value + "'").collect(Collectors.toList())
+    return colorValues.stream().map(value -> "'#" + value.toLowerCase() + "'")
+        .collect(Collectors.toList())
         .toArray(formattedColorValues);
   }
 
@@ -124,13 +123,31 @@ public class ProductFilter {
     return String.format("SELECT p FROM Product p WHERE (%s)", String.join(" AND ", queryList));
   }
 
-  public Boolean checkValidUserParamKeys() {
-    for (String filter : this.currentFilters) {
-      if (this.uniqueParams.containsKey(filter)) {
-        return true;
+  public Boolean validParamKeys() {
+
+    for (String key : this.uniqueParams.keySet()) {
+      if (!filters.contains(key)) {
+        return false;
+      }
+
+      if (key.equals("price") || key.equals("prices") || key.equals("max") || key.equals("min")) {
+        if (!this.validPriceValues(key)) {
+          return false;
+        }
       }
     }
-    return false;
+    return true;
+  }
+
+  public Boolean validPriceValues(String key) {
+    String regex = "^\\d{0,8}(\\.\\d{1,2})?$";
+    for (String priceValue : this.uniqueParams.get(key)) {
+      String formattedValue = priceValue.replace("$", "");
+      if (!Pattern.matches(regex, formattedValue)) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

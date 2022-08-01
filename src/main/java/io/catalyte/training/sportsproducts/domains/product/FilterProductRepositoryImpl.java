@@ -1,6 +1,7 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +14,7 @@ public class FilterProductRepositoryImpl implements FilterProductRepository {
 
   public List<Product> queryFilter(String filterQuery) {
     if (filterQuery == null) {
-      return new ArrayList<>();
+      return Collections.emptyList();
     }
 
     Query query = entityManager.createQuery(filterQuery);

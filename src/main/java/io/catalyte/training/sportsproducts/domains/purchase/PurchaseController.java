@@ -59,8 +59,7 @@ public class PurchaseController {
   @GetMapping
   public ResponseEntity findAllPurchasesByEmail() {
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
+  }
 }
 
 

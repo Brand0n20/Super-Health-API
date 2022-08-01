@@ -2,12 +2,14 @@ package io.catalyte.training.sportsproducts.domains.product;
 
 import io.catalyte.training.sportsproducts.exceptions.ResourceNotFound;
 import io.catalyte.training.sportsproducts.exceptions.ServerError;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Example;
@@ -37,11 +39,26 @@ public class ProductServiceImpl implements ProductService {
    */
   @Override
   public List<Product> getProducts(Product product, Map<String, String> allParams) {
-    ProductFilter filter = new ProductFilter();
-    try {
-      HashMap<String, Set<String>> uniqueParams = filter.createUniqueParams(allParams);
 
-  return productRepository.findAll(Example.of(product));
+    try {
+      if (allParams.isEmpty() || allParams == null) {
+        return productRepository.findAll(Example.of(product));
+      }
+
+     for(String value : allParams.values()) {
+       if(value.equals("")) {
+         return Collections.emptyList();
+       }
+     }
+
+      ProductFilter filter = new ProductFilter();
+      filter.createUniqueParams(allParams);
+
+      if(!filter.validParamKeys()) {
+        return Collections.emptyList();
+      }
+
+     return productRepository.queryFilter(filter.createFilterQuery());
 
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
