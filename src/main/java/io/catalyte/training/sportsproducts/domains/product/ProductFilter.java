@@ -11,13 +11,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Product Filter for multiple queries for the product endpoint
+ * Product Filter to create a database query based on params passed into ProductController
  */
 public class ProductFilter {
 
   private HashSet<String> filters = new HashSet<>(
       Arrays.asList("brand", "category", "demographic", "color",
-          "material", "price", "prices", "min", "max"));
+          "material", "price", "min", "max"));
 
   private ArrayList<String> queryList = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class ProductFilter {
   public void createUniqueParams(Map<String, String> params) {
     for (Map.Entry<String, String> param : params.entrySet()) {
       String[] values = param.getValue().split(",");
-      Set<String> valuesSet = new HashSet<>(Arrays.asList(values));
+      Set<String> valuesSet = new HashSet<>(Arrays.asList(this.removeWhiteSpaces(values)));
       this.uniqueParams.put(param.getKey().toLowerCase(), valuesSet);
     }
   }
@@ -56,7 +56,6 @@ public class ProductFilter {
   private void generateQuery(String key) {
     switch (key) {
       case "price":
-      case "prices":
         generatePriceQuery(key);
         break;
       case "max":
@@ -141,11 +140,10 @@ public class ProductFilter {
     ArrayList<String> formattedValues = new ArrayList<>();
 
     for (String value : paramValues) {
-      String trimmedValue = value.trim();
-      if (trimmedValue.contains("-")) {
-        formattedValues.add(formatMultiWordValue(trimmedValue));
+      if (value.contains("-")) {
+        formattedValues.add(formatMultiWordValue(value));
       } else {
-        formattedValues.add(formatSingleWordValue(trimmedValue));
+        formattedValues.add(formatSingleWordValue(value));
       }
     }
     return formattedValues;
@@ -185,6 +183,19 @@ public class ProductFilter {
    */
   private String capitalizeWord(String word) {
     return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+  }
+
+  /**
+   * Removes whitespace in all words in Array
+   *
+   * @param words
+   * @return - String Array of trimmed words
+   */
+  private String[] removeWhiteSpaces(String[] words) {
+    String[] trimmedWordsArray = new String[words.length];
+
+    return Arrays.stream(words).map(word -> word.trim()).collect(Collectors.toList())
+        .toArray(trimmedWordsArray);
   }
 
   /**

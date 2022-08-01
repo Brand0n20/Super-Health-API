@@ -37,11 +37,11 @@ public class ProductServiceImpl implements ProductService {
    * @return - a list of products matching the example, or all products if no example was passed
    */
   @Override
-  public List<Product> getProducts(Product product, Map<String, String> allParams) {
+  public List<Product> getProducts(Map<String, String> allParams) {
 
     try {
       if (allParams.isEmpty() || allParams == null) {
-        return productRepository.findAll(Example.of(product));
+        return productRepository.findAll();
       }
 
      for(String value : allParams.values()) {

@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public interface ProductService {
 
-  List<Product> getProducts(Product product, Map<String, String> categories);
+  List<Product> getProducts(Map<String, String> categories);
 
   Product getProductById(Long id);
 

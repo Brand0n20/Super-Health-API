@@ -39,10 +39,9 @@ public class ProductController {
    * @return - a list of products in database and a 200 status
    */
   @GetMapping
-  public ResponseEntity<List<Product>> getProducts(Product product,
-      @RequestParam(required = false) Map<String, String> allParams) {
+  public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) Map<String, String> allParams) {
     logger.info("Request received for getProducts");
-    return new ResponseEntity<>(productService.getProducts(product, allParams), HttpStatus.OK);
+    return new ResponseEntity<>(productService.getProducts(allParams), HttpStatus.OK);
 
   }
 
