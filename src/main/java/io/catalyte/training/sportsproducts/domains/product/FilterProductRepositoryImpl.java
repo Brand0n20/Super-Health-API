@@ -7,6 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+/**
+ * Custom filter repository to filter products in the database
+ */
+
 public class FilterProductRepositoryImpl implements FilterProductRepository {
 
   @PersistenceContext
