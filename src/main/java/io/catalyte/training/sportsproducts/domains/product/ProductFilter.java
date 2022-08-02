@@ -43,7 +43,6 @@ public class ProductFilter {
   public void createUniqueParams(Map<String, String> params) {
     for (Map.Entry<String, String> param : params.entrySet()) {
       String[] values = param.getValue().split(",");
-      System.out.println(param.getKey());
       Set<String> valuesSet = new HashSet<>(Arrays.asList(this.removeWhiteSpaces(values)));
       this.uniqueParams.put(param.getKey().toLowerCase(), valuesSet);
     }
