@@ -289,10 +289,6 @@ public class ProductFilter {
    * @return Boolean for valid min or max value
    */
   private Boolean validMaxMinValue(String key) {
-    if (this.uniqueParams.get(key).size() > 1) {
-      return false;
-    }
-    return true;
+    return this.uniqueParams.get(key).size() > 1;
   }
-
 }
