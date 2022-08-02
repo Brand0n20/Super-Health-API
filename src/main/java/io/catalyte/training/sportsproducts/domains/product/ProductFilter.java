@@ -17,7 +17,7 @@ public class ProductFilter {
 
   private HashSet<String> filters = new HashSet<>(
       Arrays.asList("brand", "category", "demographic", "color",
-          "material", "price", "min", "max"));
+          "material", "price", "min-price", "max-price"));
 
   private ArrayList<String> queryList = new ArrayList<>();
 
@@ -43,6 +43,7 @@ public class ProductFilter {
   public void createUniqueParams(Map<String, String> params) {
     for (Map.Entry<String, String> param : params.entrySet()) {
       String[] values = param.getValue().split(",");
+      System.out.println(param.getKey());
       Set<String> valuesSet = new HashSet<>(Arrays.asList(this.removeWhiteSpaces(values)));
       this.uniqueParams.put(param.getKey().toLowerCase(), valuesSet);
     }
@@ -58,8 +59,8 @@ public class ProductFilter {
       case "price":
         generatePriceQuery(key);
         break;
-      case "max":
-      case "min":
+      case "max-price":
+      case "min-price":
         generateMinMaxPriceQuery(key);
         break;
       case "color":
@@ -119,7 +120,7 @@ public class ProductFilter {
    */
   private void generateMinMaxPriceQuery(String key) {
     ArrayList<String> formattedPriceValues = this.formatPriceValues(this.uniqueParams.get(key));
-    if (key.equals("min")) {
+    if (key.equals("min-price")) {
       queryList.add(
           String.format("(p.price >= %s)", formattedPriceValues.get(0))
       );
@@ -250,13 +251,13 @@ public class ProductFilter {
         return false;
       }
 
-      if (key.equals("price") || key.equals("prices") || key.equals("max") || key.equals("min")) {
+      if (key.equals("price") || key.equals("max-price") || key.equals("min-price")) {
         if (!this.validPriceValues(key)) {
           return false;
         }
       }
 
-      if (key.equals("max") || key.equals("min")) {
+      if (key.equals("max-price") || key.equals("min-price")) {
         if (!this.validMaxMinValue(key)) {
           return false;
         }
@@ -289,6 +290,9 @@ public class ProductFilter {
    * @return Boolean for valid min or max value
    */
   private Boolean validMaxMinValue(String key) {
-    return this.uniqueParams.get(key).size() > 1;
+    if(this.uniqueParams.get(key).size() > 1) {
+      return false;
+    }
+    return true;
   }
 }
