@@ -89,7 +89,7 @@ public class CreditCardValidation {
       errorList.append("Card Holder must not be blank or null. ");
     } else if (!cardHolder.matches("^[A-Z][a-z-']+\\s[A-Z][a-z-']+$")) {
       errorList.append(
-              "Must be a valid name Format: firstName lastName (first letter must be capital and a alphabetic can contain hyphens and apostrophes), Entered: [")
+              "Card holder name must contain first and last name, and can only contain alphabetic characters, hyphens, and apostrophes, Entered: [")
           .append(cardHolder).append("]. ");
     }
 
