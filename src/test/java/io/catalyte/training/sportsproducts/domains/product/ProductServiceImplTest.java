@@ -10,6 +10,9 @@ import static org.mockito.Mockito.when;
 
 import io.catalyte.training.sportsproducts.data.ProductFactory;
 import io.catalyte.training.sportsproducts.exceptions.ResourceNotFound;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Rule;
@@ -91,4 +94,6 @@ public class ProductServiceImplTest {
         () -> assertThat(actual, hasProperty("type"))
     );
   }
+
+
 }

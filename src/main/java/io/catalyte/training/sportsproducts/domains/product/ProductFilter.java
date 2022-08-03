@@ -142,6 +142,7 @@ public class ProductFilter {
    * Formats value to be used to generate a valid query
    *
    * @param paramValues
+   * @param key
    * @return - String formatted for IN queries
    */
   private ArrayList<String> formatParamValues(String key, Set<String> paramValues) {

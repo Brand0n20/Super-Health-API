@@ -1,5 +1,6 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -129,4 +130,5 @@ public class ProductApiTest {
       assertEquals("Products at ID = " + (i + 1) + " do not match", expected, actual);
     }
   }
+
 }
