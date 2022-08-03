@@ -82,6 +82,10 @@ public class ProductFilterTest {
     assertEquals(expected, productFilter.createFilterQuery());
   }
 
+  @Test void createsMultiKeyQuery() {
+    Map<String, String> params = Map.
+  }
+
   @Test
   public void returnsNullWithNoUniqueParamCreated() {
     assertNull(productFilter.createFilterQuery());

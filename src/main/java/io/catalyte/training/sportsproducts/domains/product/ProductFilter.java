@@ -88,7 +88,7 @@ public class ProductFilter {
    * @param key
    */
   private void generateDefaultQuery(String key) {
-    ArrayList<String> formattedValues = this.formatParamValues(uniqueParams.get(key));
+    ArrayList<String> formattedValues = this.formatParamValues(key, uniqueParams.get(key));
     String queryString = String.format("p.%s IN (%s)", key, String.join(", ", formattedValues));
     this.queryList.add(queryString);
   }
@@ -144,11 +144,14 @@ public class ProductFilter {
    * @param paramValues
    * @return - String formatted for IN queries
    */
-  private ArrayList<String> formatParamValues(Set<String> paramValues) {
+  private ArrayList<String> formatParamValues(String key, Set<String> paramValues) {
     ArrayList<String> formattedValues = new ArrayList<>();
 
     for (String value : paramValues) {
-      if (value.contains("-")) {
+      String lowerCaseValue = value.toLowerCase();
+      if (lowerCaseValue.equals("non-binary") && key.equals("demographic")) {
+        formattedValues.add("'Non-Binary'");
+      } else if (value.contains("-")) {
         formattedValues.add(formatMultiWordValue(value));
       } else {
         formattedValues.add(formatSingleWordValue(value));
