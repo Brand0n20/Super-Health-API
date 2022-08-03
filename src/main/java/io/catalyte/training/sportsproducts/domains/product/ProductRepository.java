@@ -4,11 +4,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 /**
-* Product repository
-* */
+ * Product repository
+ */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductFilterRepository {
 
   @Query("SELECT DISTINCT p.type FROM Product p")
   List<String> findByType();
