@@ -108,7 +108,7 @@ public class ProductFilterTest {
   }
 
   @Disabled
-  public void createsMultiKeyMultiValueQuery() {
+  public void createsMultiKeyMultiValueQueryTest() {
     Map<String, String> params = Map.ofEntries(
         entry("brand", "Nike, Adidas"),
         entry("category", "basketball, Football"),
