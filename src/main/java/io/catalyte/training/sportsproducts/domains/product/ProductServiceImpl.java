@@ -61,8 +61,8 @@ public class ProductServiceImpl implements ProductService {
     if (product != null) {
       return product;
     } else {
-      logger.info("Get by id failed, it does not exist in the database: " + id);
-      throw new ResourceNotFound("Get by id failed, it does not exist in the database: " + id);
+      logger.info("Product with id " + id + " does not exist in the database");
+      throw new ResourceNotFound("Product with id " + id + " does not exist in the database");
     }
   }
 
