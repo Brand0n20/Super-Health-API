@@ -29,6 +29,10 @@ public class ProductFilter {
    * @return String that can query the database
    */
   public String createFilterQuery() {
+    if (this.uniqueParams == null || this.uniqueParams.isEmpty()) {
+      return null;
+    }
+
     for (String key : this.uniqueParams.keySet()) {
       this.generateQuery(key);
     }
@@ -41,6 +45,10 @@ public class ProductFilter {
    * @param params
    */
   public void createUniqueParams(Map<String, String> params) {
+    if (params.isEmpty()) {
+      return;
+    }
+
     for (Map.Entry<String, String> param : params.entrySet()) {
       String[] values = param.getValue().split(",");
       Set<String> valuesSet = new HashSet<>(Arrays.asList(this.removeWhiteSpaces(values)));
@@ -289,7 +297,7 @@ public class ProductFilter {
    * @return Boolean for valid min or max value
    */
   private Boolean validMaxMinValue(String key) {
-    if(this.uniqueParams.get(key).size() > 1) {
+    if (this.uniqueParams.get(key).size() > 1) {
       return false;
     }
     return true;

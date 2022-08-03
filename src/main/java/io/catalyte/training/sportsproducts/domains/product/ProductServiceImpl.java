@@ -44,8 +44,8 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
       }
 
-     for(String value : allParams.values()) {
-       if(value.equals("")) {
+     for(Map.Entry<String, String> param : allParams.entrySet()) {
+       if(param.getKey().equals("") || param.getValue().equals("")) {
          return Collections.emptyList();
        }
      }
