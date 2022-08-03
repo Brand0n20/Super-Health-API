@@ -110,7 +110,7 @@ public class CreditCardValidationTest {
         () -> creditCardValidation.isValidCreditCard(input));
 
     assertEquals(
-        "400 BAD_REQUEST \"Card Number must only contain numbers, Entered: [aaaaaaaaaaaaaaaa]. CVV must only contain numbers, Entered: [aaa]. Expiration date must follow MM/yy format, Entered: [12/1]. Must be a valid name Format: firstName lastName (first letter must be capital and a alphabetic can contain hyphens and apostrophes), Entered: [Bob marely]. \"",
+        "400 BAD_REQUEST \"Card Number must only contain numbers, Entered: [aaaaaaaaaaaaaaaa]. CVV must only contain numbers, Entered: [aaa]. Expiration date must follow MM/yy format, Entered: [12/1]. Card holder name must contain first and last name, and can only contain alphabetic characters, hyphens, and apostrophes, Entered: [Bob marely]. \"",
         thrown.getMessage());
   }
 
