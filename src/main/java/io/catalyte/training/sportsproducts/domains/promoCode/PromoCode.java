@@ -9,7 +9,8 @@ import javax.persistence.Id;
  * promo_code entity in database
  */
 @Entity // This annotation specifies that the class is an entity and is mapped to a database table
-public class PromoCode  {
+public class PromoCode {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -19,54 +20,50 @@ public class PromoCode  {
   private String description;
   private String rate;
 
-
-  public PromoCode(String description, String type, String rate, String title) {
-    this.description = description;
-    this.type = type;
-    this.rate = rate;
+  public PromoCode(String title, String type, String description, String rate) {
     this.title = title;
-
-  }
-
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public void setType(String type) {
     this.type = type;
-  }
-
-  public void setRate(String rate) {
+    this.description = description;
     this.rate = rate;
   }
-
-
-  public void setTitle(String title) { this.title = title; }
-
 
   public Long getId() {
     return id;
   }
 
-  public String getDescription() {
-    return description;
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public String getType() {
     return type;
   }
 
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public String getRate() {
     return rate;
   }
 
-  public String getTitle() { return title; }
-
-
+  public void setRate(String rate) {
+    this.rate = rate;
+  }
 }
-
