@@ -1,4 +1,4 @@
-package PromoCode;
+package io.catalyte.training.sportsproducts.domains.PromoCode;
 
 import io.catalyte.training.sportsproducts.domains.promoCode.PromoCode;
 import io.catalyte.training.sportsproducts.domains.promoCode.PromoCodeRepository;
