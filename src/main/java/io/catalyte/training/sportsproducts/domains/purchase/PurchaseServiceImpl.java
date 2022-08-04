@@ -8,10 +8,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -55,7 +57,8 @@ public class PurchaseServiceImpl implements PurchaseService {
    */
   public Purchase savePurchase(Purchase newPurchase) {
     try {
-      if (creditCardValidation.isValidCreditCard(newPurchase)) {
+      if (creditCardValidation.isValidCreditCard(newPurchase) && isActive(newPurchase)) {
+
         purchaseRepository.save(newPurchase);
       }
     } catch (DataAccessException e) {
@@ -70,6 +73,29 @@ public class PurchaseServiceImpl implements PurchaseService {
   }
 
   /**
+   * Checks products within a purchase, and throws a 422 status if and products are inactive
+   *
+   * @param purchase - the purchase that contains products to check if they are active
+   * @return true if all products are active
+   */
+  public boolean isActive(Purchase purchase){
+    Set<LineItem> itemsList = purchase.getProducts();
+    StringBuilder inactiveList = new StringBuilder();
+    if (itemsList != null) {
+      for (LineItem lineItem : itemsList) {
+        Product product = productService.getProductById(lineItem.getProduct().getId());
+        if(!product.getActive()){
+          inactiveList.append(product.getName() + ", ");
+        }
+      }
+      if (inactiveList.length() != 0){
+        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "This purchase contains inactive products: " + inactiveList);
+      }
+    }
+    return true;
+  }
+
+  /**
    * This helper method retrieves product information for each line item and persists it
    *
    * @param purchase - the purchase object to handle lineitems for
@@ -77,13 +103,13 @@ public class PurchaseServiceImpl implements PurchaseService {
   private void handleLineItems(Purchase purchase) {
 
     Set<LineItem> itemsList = purchase.getProducts();
-    System.out.println(itemsList);
+
     if (itemsList != null) {
       itemsList.forEach(lineItem -> {
 
         // retrieve full product information from the database
         Product product = productService.getProductById(lineItem.getProduct().getId());
-        System.out.println(product);
+
         // set the product info into the lineitem
         if (product != null) {
           lineItem.setProduct(product);
@@ -91,6 +117,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         // set the purchase on the line item
         lineItem.setPurchase(purchase);
+
 
         // persist the populated lineitem
         try {
@@ -100,6 +127,7 @@ public class PurchaseServiceImpl implements PurchaseService {
           throw new ServerError(e.getMessage());
         }
       });
+      
     }
   }
 }
