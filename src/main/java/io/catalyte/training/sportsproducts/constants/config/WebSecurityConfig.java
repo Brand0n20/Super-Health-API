@@ -1,4 +1,4 @@
-package io.catalyte.training.sportsproducts.config;
+package io.catalyte.training.sportsproducts.constants.config;
 
 import org.springframework.context.annotation.*;
 import org.springframework.http.*;
