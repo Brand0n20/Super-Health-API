@@ -1,4 +1,4 @@
-package PromoCode;
+package io.catalyte.training.sportsproducts.domains.PromoCode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.catalyte.training.sportsproducts.domains.promoCode.PromoCode;
@@ -26,9 +26,6 @@ public class PromoCodeApiTest {
   private WebApplicationContext wac;
   private MockMvc mockMvc;
 
-  public PromoCodeControllerTest(PromoCode newPromoCode) {
-    this.newPromoCode = newPromoCode;
-  }
 
   @Before
   public void setUp() {
