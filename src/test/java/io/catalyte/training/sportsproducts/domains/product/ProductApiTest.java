@@ -1,6 +1,5 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +13,13 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static io.catalyte.training.sportsproducts.constants.Paths.PRODUCTS_PATH;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -54,6 +55,18 @@ public class ProductApiTest {
   }
 
   /**
+   * Check that get request return only active product.
+   *
+   * @throws Exception
+   */
+  @Test
+  public void getProductReturnsOnlyActiveProducts() throws Exception {
+  mockMvc.perform(get(PRODUCTS_PATH))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[*].active", hasItems(true)));
+    }
+
+  /**
    * Path for getting product with given ID responds with 200 status
    *
    * @throws Exception
@@ -62,7 +75,6 @@ public class ProductApiTest {
   public void getProductByIdReturnsProductWith200() throws Exception {
     mockMvc.perform(get(PRODUCTS_PATH + "/1"))
         .andExpect(status().isOk());
-
   }
 
   /**

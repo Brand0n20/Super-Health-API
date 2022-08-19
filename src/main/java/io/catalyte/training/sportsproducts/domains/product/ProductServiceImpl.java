@@ -2,18 +2,15 @@ package io.catalyte.training.sportsproducts.domains.product;
 
 import io.catalyte.training.sportsproducts.exceptions.ResourceNotFound;
 import io.catalyte.training.sportsproducts.exceptions.ServerError;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides the implementation for the ProductService interface.
@@ -44,20 +41,20 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
       }
 
-     for(Map.Entry<String, String> param : allParams.entrySet()) {
-       if(param.getKey().equals("") || param.getValue().equals("")) {
-         return Collections.emptyList();
-       }
-     }
+      for (Map.Entry<String, String> param : allParams.entrySet()) {
+        if (param.getKey().equals("") || param.getValue().equals("")) {
+          return Collections.emptyList();
+        }
+      }
 
       ProductFilter filter = new ProductFilter();
       filter.createUniqueParams(allParams);
 
-      if(!filter.validParams()) {
+      if (!filter.validParams()) {
         return Collections.emptyList();
       }
 
-     return productRepository.queryFilter(filter.createFilterQuery());
+      return productRepository.queryFilter(filter.createFilterQuery());
 
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
@@ -88,6 +85,24 @@ public class ProductServiceImpl implements ProductService {
       logger.info("Product with id " + id + " does not exist in the database");
       throw new ResourceNotFound("Product with id " + id + " does not exist in the database");
     }
+  }
+
+  /**
+   * Persists a purchase to the database
+   *
+   * @param newProduct - the purchase to persist
+   * @return the persisted purchase with ids
+   */
+
+  @Override
+  public Product saveProduct(Product newProduct) {
+    try {
+      productRepository.save(newProduct);
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+    return newProduct;
   }
 
   /**
