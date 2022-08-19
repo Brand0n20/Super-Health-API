@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,12 +36,12 @@ public class ProductController {
    * Controller method for getting all products in the database, optionally can filter products
    * returned with a valid filter
    *
-   * @param product
    * @param allParams
    * @return - a list of products in database and a 200 status
    */
   @GetMapping
-  public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) Map<String, String> allParams) {
+  public ResponseEntity<List<Product>> getProducts(
+      @RequestParam(required = false) Map<String, String> allParams) {
     logger.info("Request received for getProducts");
     return new ResponseEntity<>(productService.getProducts(allParams), HttpStatus.OK);
 
@@ -58,6 +60,21 @@ public class ProductController {
   public ResponseEntity<Product> getProductById(@PathVariable Long id) {
     logger.info("Request received for getProductsById: " + id);
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
+  }
+
+
+  /**
+   * Controller method for creating new product
+   *
+   * @param product - new product
+   * @return 201 created status
+   */
+  @PostMapping
+  public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+
+    productService.saveProduct(product);
+
+    return new ResponseEntity<>(product, HttpStatus.CREATED);
   }
 
   /**

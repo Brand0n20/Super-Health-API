@@ -247,7 +247,8 @@ public class ProductFilter {
    * @return - Query String
    */
   private String combineQueries() {
-    return String.format("SELECT p FROM Product p WHERE (%s)", String.join(" AND ", queryList));
+    return String.format("SELECT p FROM Product p WHERE (%s)",
+        String.join(" AND ", queryList));
   }
 
   /**
