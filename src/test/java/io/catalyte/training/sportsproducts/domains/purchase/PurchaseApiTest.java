@@ -1,7 +1,13 @@
 package io.catalyte.training.sportsproducts.domains.purchase;
 
+import static io.catalyte.training.sportsproducts.constants.Paths.PURCHASES_PATH;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,14 +21,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.List;
-
-import static io.catalyte.training.sportsproducts.constants.Paths.PURCHASES_PATH;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PurchaseApiTest {
@@ -31,6 +29,20 @@ public class PurchaseApiTest {
   private WebApplicationContext wac;
 
   private MockMvc mockMvc;
+
+  /**
+   * Mapper to parse object into string for mockMvc
+   *
+   * @param obj - obj to parse
+   * @return
+   */
+  public static String asJsonString(final Object obj) {
+    try {
+      return new ObjectMapper().writeValueAsString(obj);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   @Before
   public void setUp() {
@@ -55,21 +67,7 @@ public class PurchaseApiTest {
   }
 
   /**
-   * Mapper to parse object into string for mockMvc
-   *
-   * @param obj - obj to parse
-   * @return
-   */
-  public static String asJsonString(final Object obj) {
-    try {
-      return new ObjectMapper().writeValueAsString(obj);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  /**
-   *Path for getting purchases with no email specified responds with 404 status
+   * Path for getting purchases with no email specified responds with 404 status
    *
    * @throws Exception
    */

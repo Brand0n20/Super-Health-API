@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * Describes one line item of a purchase transaction
@@ -25,7 +24,6 @@ public class LineItem {
   private Purchase purchase;
 
   @ManyToOne
-  @JsonIgnoreProperties("products")
   private Product product;
 
   private int quantity;

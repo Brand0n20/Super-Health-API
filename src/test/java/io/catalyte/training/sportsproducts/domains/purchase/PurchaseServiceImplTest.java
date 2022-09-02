@@ -13,28 +13,23 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 @RunWith(MockitoJUnitRunner.class)
-@WebMvcTest(PurchaseServiceImpl.class)
-public class PurchaseServiceImplTest {
 
-  @InjectMocks
-  private PurchaseServiceImpl purchaseServiceImpl;
+public class PurchaseServiceImplTest {
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
-
+  List<Purchase> testPurchase;
+  @InjectMocks
+  private PurchaseServiceImpl purchaseServiceImpl;
   @Mock
   private PurchaseRepository purchaseRepository;
 
-  List<Purchase> testPurchase;
-
   @Before
   public void setUp() {
-    MockitoAnnotations.initMocks(this);
+//    MockitoAnnotations.initMocks(this);
 
     BillingAddress billingAddress = new BillingAddress();
     BillingAddress billingAddress2 = new BillingAddress();
@@ -54,6 +49,7 @@ public class PurchaseServiceImplTest {
     purchase4.setBillingAddress(billingAddress2);
 
     testPurchase = Arrays.asList(purchase1, purchase2, purchase3, purchase4);
+
     when(purchaseRepository.findByBillingAddressEmail(anyString())).thenReturn(testPurchase);
   }
 

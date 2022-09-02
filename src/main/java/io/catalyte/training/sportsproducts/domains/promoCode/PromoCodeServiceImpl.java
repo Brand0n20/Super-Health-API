@@ -18,14 +18,12 @@ public class PromoCodeServiceImpl implements PromoCodeService {
 
   private final Logger logger = LogManager.getLogger(PromoCodeServiceImpl.class);
   PromoCodeRepository promoRepository;
-
+  PromoCodeValidation promoCodeValidation = new PromoCodeValidation();
 
   @Autowired
   public PromoCodeServiceImpl(PromoCodeRepository promoRepository) {
     this.promoRepository = promoRepository;
   }
-
-  PromoCodeValidation promoCodeValidation = new PromoCodeValidation();
 
   /**
    * Will find all the promo codes created and return them
@@ -41,15 +39,18 @@ public class PromoCodeServiceImpl implements PromoCodeService {
       throw new ServerError(e.getMessage());
     }
   }
+
   /**
    * Will try the validity methods, and if they pass, then the object is saved to the database
+   *
    * @param newPromoCode - code that will be saved
    * @return newPromoCode - newly saved object
    */
   public PromoCode savePromoCode(PromoCode newPromoCode) {
     try {
       promoCodeValidation.codeValidation(newPromoCode);  // checks if the title is valid
-      PromoCode existingPromoCode = promoRepository.findByTitle(newPromoCode.getTitle()).orElse(null);
+      PromoCode existingPromoCode = promoRepository.findByTitle(newPromoCode.getTitle())
+          .orElse(null);
       if (existingPromoCode == null) {
         return promoRepository.save(newPromoCode);
       }

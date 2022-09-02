@@ -11,5 +11,4 @@ public interface PromoCodeService {
 
   PromoCode savePromoCode(PromoCode codeToSave);
 
-
 }

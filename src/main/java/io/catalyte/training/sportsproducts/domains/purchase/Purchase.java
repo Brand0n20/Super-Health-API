@@ -1,7 +1,12 @@
 package io.catalyte.training.sportsproducts.domains.purchase;
 
-import javax.persistence.*;
-import java.util.Set;
+import java.util.Collection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * Describes a purchase object that holds the information for a transaction
@@ -14,7 +19,7 @@ public class Purchase {
   private Long id;
 
   @OneToMany(mappedBy = "purchase")
-  private Set<LineItem> products;
+  private Collection<LineItem> products;
 
   @Embedded
   private DeliveryAddress deliveryAddress;
@@ -25,10 +30,16 @@ public class Purchase {
   @Embedded
   private CreditCard creditCard;
 
+  private String purchaseDate;
+
+  private String userEmail;
+
   public Purchase() {
     billingAddress = new BillingAddress();
     deliveryAddress = new DeliveryAddress();
     this.creditCard = new CreditCard();
+    this.purchaseDate = new String();
+    this.userEmail = new String();
   }
 
   public Long getId() {
@@ -39,11 +50,27 @@ public class Purchase {
     this.id = id;
   }
 
-  public Set<LineItem> getProducts() {
+  public String getPurchaseDate() {
+    return purchaseDate;
+  }
+
+  public void setPurchaseDate(String purchaseDate) {
+    this.purchaseDate = purchaseDate;
+  }
+
+  public String getUserEmail() {
+    return userEmail;
+  }
+
+  public void setUserEmail(String userEmail) {
+    this.userEmail = userEmail;
+  }
+
+  public Collection<LineItem> getProducts() {
     return products;
   }
 
-  public void setProducts(Set<LineItem> products) {
+  public void setProducts(Collection<LineItem> products) {
     this.products = products;
   }
 

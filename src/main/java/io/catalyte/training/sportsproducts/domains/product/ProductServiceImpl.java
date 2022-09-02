@@ -2,15 +2,15 @@ package io.catalyte.training.sportsproducts.domains.product;
 
 import io.catalyte.training.sportsproducts.exceptions.ResourceNotFound;
 import io.catalyte.training.sportsproducts.exceptions.ServerError;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class provides the implementation for the ProductService interface.
@@ -19,7 +19,6 @@ import java.util.Map;
 public class ProductServiceImpl implements ProductService {
 
   private final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
-
 
   ProductRepository productRepository;
 
@@ -143,4 +142,64 @@ public class ProductServiceImpl implements ProductService {
     return categories;
   }
 
+  @Override
+  public List<String> getUniqueDemographics() {
+    List<String> demographics;
+
+    try {
+      demographics = productRepository.findByDemographic();
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return demographics;
+  }
+
+  @Override
+  public List<String> getUniqueBrands() {
+    List<String> brands;
+
+    try {
+      brands = productRepository.findByBrand();
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return brands;
+  }
+
+  @Override
+  public List<String> getUniqueMaterials() {
+    List<String> materials;
+
+    try {
+      materials = productRepository.findByMaterial();
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return materials;
+  }
+
+  @Override
+  public List<String> getUniqueColors() {
+    List<String> colors1;
+    List<String> colors2;
+    List<String> colors;
+
+    try {
+      colors1 = productRepository.findByPrimaryColor();
+      colors2 = productRepository.findBySecondaryColor();
+      colors1.addAll(colors2);
+      colors = colors1.stream().distinct().collect(Collectors.toList());
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    return colors;
+  }
 }

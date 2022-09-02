@@ -1,17 +1,5 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.List;
-
 import static io.catalyte.training.sportsproducts.constants.Paths.PRODUCTS_PATH;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
@@ -22,21 +10,28 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProductApiTest {
 
   @Autowired
-  private WebApplicationContext wac;
-
-  private MockMvc mockMvc;
-
-  @Autowired
   ProductRepository productRepository;
-
   @Autowired
   ProductServiceImpl productService;
-
+  @Autowired
+  private WebApplicationContext wac;
+  private MockMvc mockMvc;
 
   @Before
   public void setUp() {
@@ -61,10 +56,10 @@ public class ProductApiTest {
    */
   @Test
   public void getProductReturnsOnlyActiveProducts() throws Exception {
-  mockMvc.perform(get(PRODUCTS_PATH))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[*].active", hasItems(true)));
-    }
+    mockMvc.perform(get(PRODUCTS_PATH))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[*].active", hasItems(true)));
+  }
 
   /**
    * Path for getting product with given ID responds with 200 status
@@ -96,6 +91,50 @@ public class ProductApiTest {
   @Test
   public void getUniqueCategoryWith200() throws Exception {
     mockMvc.perform(get(PRODUCTS_PATH + "/categories"))
+        .andExpect(status().isOk());
+  }
+
+  /**
+   * Path for getting all brands of products in database responds with 200 status
+   *
+   * @throws Exception
+   */
+  @Test
+  public void getUniqueBrandWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/brands"))
+        .andExpect(status().isOk());
+  }
+
+  /**
+   * Path for getting all demographics of products in database responds with 200 status
+   *
+   * @throws Exception
+   */
+  @Test
+  public void getUniqueDemographicWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/demographics"))
+        .andExpect(status().isOk());
+  }
+
+  /**
+   * Path for getting all colors of products in database responds with 200 status
+   *
+   * @throws Exception
+   */
+  @Test
+  public void getUniqueColorWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/colors"))
+        .andExpect(status().isOk());
+  }
+
+  /**
+   * Path for getting all colors of products in database responds with 200 status
+   *
+   * @throws Exception
+   */
+  @Test
+  public void getUniqueMaterialWith200() throws Exception {
+    mockMvc.perform(get(PRODUCTS_PATH + "/materials"))
         .andExpect(status().isOk());
   }
 

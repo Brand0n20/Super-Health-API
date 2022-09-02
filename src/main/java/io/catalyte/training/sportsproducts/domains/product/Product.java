@@ -1,10 +1,14 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
+import io.catalyte.training.sportsproducts.domains.reviews.Review;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * This class is a representation of a sports apparel product.
@@ -12,10 +16,11 @@ import javax.persistence.Id;
 @Entity
 public class Product {
 
+  @OneToMany(mappedBy = "product")
+  Set<Review> reviews = new HashSet<>();
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
   private String name;
 
   private String description;
@@ -130,7 +135,7 @@ public class Product {
     return price;
   }
 
-  public void setPrice ( Double price ) {
+  public void setPrice(Double price) {
     this.price = price;
   }
 
@@ -142,11 +147,11 @@ public class Product {
     this.primaryColorCode = primaryColorCode;
   }
 
-  public Integer getQuantity () {
+  public Integer getQuantity() {
     return quantity;
   }
 
-  public void setQuantity ( Integer quantity ) {
+  public void setQuantity(Integer quantity) {
     this.quantity = quantity;
   }
 
@@ -282,8 +287,8 @@ public class Product {
 
   @Override
   public String toString() {
-    return "Product { " +
-        "id=" + id +
+    return "Product {" +
+        "id='" + id + '\'' +
         ", name='" + name + '\'' +
         ", brand='" + brand + '\'' +
         ", description='" + description + '\'' +

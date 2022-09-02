@@ -15,8 +15,8 @@ import org.apache.commons.lang3.RandomStringUtils;
  */
 public class ProductFactory {
 
-  private static final String[] colors = {"#000000", // white
-      "#ffffff", // black
+  private static final String[] colors = {"#000000", // black
+      "#ffffff", // white
       "#39add1", // light blue
       "#3079ab", // dark blue
       "#c25975", // mauve
@@ -42,8 +42,8 @@ public class ProductFactory {
       "Wristband", "Hoodie", "Flip Flop", "Pool Noodle"};
 
   private static final String[] brands = {"Nike", "Adidas", "Reebok", "New Balance", "Sketchers",
-      "Old Navy", "Under Armour", "PUMA", "The North Face", "Columbia", "Champion",
-      "Fruit of the Loom"};
+      "Old Navy", "Under Armour", "Puma", "The North Face", "Columbia", "Champion",
+      "Fruit Of The Loom"};
 
   private static final String[] materials = {"Cotton", "Wool", "Silk", "Leather", "Velvet", "Satin",
       "Denim", "Tungsten", "Hand Blown Glass", "Bamboo", "Granite", "Vinyl"};

@@ -1,6 +1,5 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-import io.catalyte.training.sportsproducts.domains.purchase.Purchase;
 import java.util.List;
 import java.util.Map;
 
@@ -19,5 +18,11 @@ public interface ProductService {
 
   List<String> getUniqueCategories();
 
-}
+  List<String> getUniqueDemographics();
 
+  List<String> getUniqueBrands();
+
+  List<String> getUniqueMaterials();
+
+  List<String> getUniqueColors();
+}

@@ -1,6 +1,5 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-
 import static io.catalyte.training.sportsproducts.constants.Paths.PRODUCTS_PATH;
 
 import java.util.List;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 
 /**
  * The ProductController exposes endpoints for product related actions.
@@ -43,10 +41,9 @@ public class ProductController {
   public ResponseEntity<List<Product>> getProducts(
       @RequestParam(required = false) Map<String, String> allParams) {
     logger.info("Request received for getProducts");
+    logger.info(allParams);
     return new ResponseEntity<>(productService.getProducts(allParams), HttpStatus.OK);
-
   }
-
 
   /**
    * Controller method for getting a product from database by id
@@ -59,9 +56,9 @@ public class ProductController {
   @ResponseStatus(value = HttpStatus.OK)
   public ResponseEntity<Product> getProductById(@PathVariable Long id) {
     logger.info("Request received for getProductsById: " + id);
+    logger.info("getProducts");
     return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
   }
-
 
   /**
    * Controller method for creating new product
@@ -101,4 +98,51 @@ public class ProductController {
     return new ResponseEntity<>(productService.getUniqueCategories(), HttpStatus.OK);
   }
 
+  /**
+   * Controller method for getting a list of demographics from database
+   *
+   * @return - a list of strings with the unique demographics and a 200 status
+   */
+  @GetMapping(value = "/demographics")
+  public ResponseEntity<List<String>> getUniqueDemographic() {
+    logger.info("Request received for getUniqueDemographic");
+
+    return new ResponseEntity<>(productService.getUniqueDemographics(), HttpStatus.OK);
+  }
+
+  /**
+   * Controller method for getting a list of brands from database
+   *
+   * @return - a list of strings with the unique brands and a 200 status
+   */
+  @GetMapping(value = "/brands")
+  public ResponseEntity<List<String>> getUniqueBrand() {
+    logger.info("Request received for getUniqueBrand");
+
+    return new ResponseEntity<>(productService.getUniqueBrands(), HttpStatus.OK);
+  }
+
+  /**
+   * Controller method for getting a list of materials from database
+   *
+   * @return - a list of strings with the unique materials and a 200 status
+   */
+  @GetMapping(value = "/materials")
+  public ResponseEntity<List<String>> getUniqueMaterial() {
+    logger.info("Request received for getUniqueMaterial");
+
+    return new ResponseEntity<>(productService.getUniqueMaterials(), HttpStatus.OK);
+  }
+
+  /**
+   * Controller method for getting a list of colors from database
+   *
+   * @return - a list of strings with the unique colors and a 200 status
+   */
+  @GetMapping(value = "/colors")
+  public ResponseEntity<List<String>> getUniqueColor() {
+    logger.info("Request received for getUniqueColor");
+
+    return new ResponseEntity<>(productService.getUniqueColors(), HttpStatus.OK);
+  }
 }
