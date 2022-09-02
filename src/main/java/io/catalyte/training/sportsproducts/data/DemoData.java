@@ -7,16 +7,19 @@ import io.catalyte.training.sportsproducts.domains.purchase.BillingAddress;
 import io.catalyte.training.sportsproducts.domains.purchase.CreditCard;
 import io.catalyte.training.sportsproducts.domains.purchase.Purchase;
 import io.catalyte.training.sportsproducts.domains.purchase.PurchaseRepository;
+import io.catalyte.training.sportsproducts.domains.reviews.Review;
+import io.catalyte.training.sportsproducts.domains.reviews.ReviewRepository;
+import io.catalyte.training.sportsproducts.domains.shippingCost.ShippingCost;
+import io.catalyte.training.sportsproducts.domains.shippingCost.ShippingCostRepository;
 import io.catalyte.training.sportsproducts.domains.user.User;
 import io.catalyte.training.sportsproducts.domains.user.UserRepository;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Because this class implements CommandLineRunner, the run method is executed as soon as the server
@@ -27,26 +30,26 @@ import java.util.List;
 @Component
 public class DemoData implements CommandLineRunner {
 
+  public static final int DEFAULT_NUMBER_OF_PRODUCTS = 500;
   private final Logger logger = LogManager.getLogger(DemoData.class);
-
+  ProductFactory productFactory = new ProductFactory();
+  ShippingCostFactory shippingCostFactory = new ShippingCostFactory();
+  ReviewFactory reviewFactory = new ReviewFactory();
+  UserFactory userFactory = new UserFactory();
   @Autowired
   private UserRepository userRepository;
-
   @Autowired
   private ProductRepository productRepository;
-
   @Autowired
   private PurchaseRepository purchaseRepository;
-
   @Autowired
   private PromoCodeRepository promoCodeRepository;
-
+  @Autowired
+  private ReviewRepository reviewRepository;
+  @Autowired
+  private ShippingCostRepository shippingCostRepository;
   @Autowired
   private Environment env;
-
-  ProductFactory productFactory = new ProductFactory();
-
-  public static final int DEFAULT_NUMBER_OF_PRODUCTS = 500;
 
   @Override
   public void run(String... strings) {
@@ -67,6 +70,19 @@ public class DemoData implements CommandLineRunner {
 
   private void seedDatabase() {
     int numberOfProducts;
+    String[] usStates = {"Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas",
+        "California", "Colorado", "Connecticut", "Delaware", "District of Columbia",
+        "Federated States of Micronesia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
+        "Illinois",
+        "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Marshall Islands",
+        "Maryland",
+        "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",
+        "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
+        "North Dakota", "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon", "Palau",
+        "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota",
+        "Tennessee",
+        "Texas", "Utah", "Vermont", "Virgin Island", "Virginia", "Washington", "West Virginia",
+        "Wisconsin", "Wyoming"};
 
     try {
       // Retrieve the value of custom property in application.yml
@@ -80,9 +96,29 @@ public class DemoData implements CommandLineRunner {
     // Generate products
     List<Product> productList = productFactory.generateRandomProducts(numberOfProducts);
 
+    //Generate users
+    List<User> userList = userFactory.generateUsers();
+
+    //Generate reviews
+    List<Review> reviewList = reviewFactory.generateRandomReviews(productList, userList);
+
+    //Generate shipping costs
+    List<ShippingCost> shippingCostList = shippingCostFactory.addStatesToList(usStates);
+
     // Persist them to the database
     logger.info("Loading " + numberOfProducts + " products...");
     productRepository.saveAll(productList);
+
+    logger.info("Loading " + userList.size() + " users...");
+    userRepository.saveAll(userList);
+
+    logger.info("Loading " + reviewList.size() + " reviews...");
+    reviewRepository.saveAll(reviewList);
+
+    logger.info("Loading " + shippingCostList.size() + " shipping costs...");
+    shippingCostRepository.saveAll(shippingCostList);
+
+    // Persist them to the database
     logger.info("Data load completed. You can make requests now.");
 
     Purchase purchase1 = new Purchase();
@@ -118,9 +154,6 @@ public class DemoData implements CommandLineRunner {
 
     Purchase purchase4 = new Purchase();
     billingAddress.setEmail("blah");
-
-    User user = new User("amir@amir.com", "Customer", "Amir", "Sharapov");
-    userRepository.save(user);
 
     purchase4.setBillingAddress(billingAddress);
     purchase4.setCreditCard(new CreditCard(

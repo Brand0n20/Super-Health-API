@@ -1,6 +1,7 @@
 package io.catalyte.training.sportsproducts.domains.promoCode;
 
 import static io.catalyte.training.sportsproducts.constants.Paths.PROMO_CODE;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = PROMO_CODE)
 public class PromoCodeController {
+
   Logger logger = LogManager.getLogger(PromoCodeController.class);
 
   private PromoCodeService promoCodeService;  // references the actual service
@@ -28,6 +30,7 @@ public class PromoCodeController {
 
   /**
    * Controller method for posting a promo code
+   *
    * @param promoCode - code to be entered
    * @return PromoCode
    */
@@ -35,6 +38,7 @@ public class PromoCodeController {
   public ResponseEntity<PromoCode> postPromo(@RequestBody PromoCode promoCode) {
     logger.info("Request received for postPromo");
     promoCodeService.savePromoCode(promoCode);
-    return new ResponseEntity<>(promoCode, HttpStatus.CREATED);   // ResponseEntity represents HTTP response, including headers, body, and status
+    return new ResponseEntity<>(promoCode,
+        HttpStatus.CREATED);   // ResponseEntity represents HTTP response, including headers, body, and status
   }
 }

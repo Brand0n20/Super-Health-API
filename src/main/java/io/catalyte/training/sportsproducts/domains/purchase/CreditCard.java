@@ -4,7 +4,6 @@ package io.catalyte.training.sportsproducts.domains.purchase;
  * Describes Credit Card information for transactions
  */
 
-
 public class CreditCard {
 
   private String cardNumber;
@@ -12,7 +11,6 @@ public class CreditCard {
   private String cvv;
 
   private String expiration;
-
 
   private String cardholder;
 

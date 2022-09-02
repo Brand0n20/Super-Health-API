@@ -1,6 +1,5 @@
 package io.catalyte.training.sportsproducts.domains.promoCode;
 
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.http.HttpStatus;
@@ -26,6 +25,7 @@ public class PromoCodeValidation {
 
   /**
    * Checks over each field and sees if any is empty, also validates based on given values
+   *
    * @param code - promo code entered by user
    * @return true
    */
@@ -57,10 +57,10 @@ public class PromoCodeValidation {
       if (rate != null) {
         Matcher m = p.matcher(rate);
         if (!m.find()) {
-          errorList.append("Flat should always have two decimal precision, and should be positive non-zero number. ");
+          errorList.append(
+              "Flat should always have two decimal precision, and should be positive non-zero number. ");
         }
-      }
-      else if (rate == null) {
+      } else if (rate == null) {
         errorList.append("Rate field cannot be blank or null. ");
       }
     } else {
@@ -76,10 +76,10 @@ public class PromoCodeValidation {
       Pattern p = Pattern.compile("^[A-Z\\d]+$");
       Matcher m = p.matcher(title);
       if (!m.find()) {
-        errorList.append("Title of promo code should contain only capital letters and/or numbers. ");
+        errorList.append(
+            "Title of promo code should contain only capital letters and/or numbers. ");
       }
     }
-
 
     if (errorList.length() != 0) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorList.toString());

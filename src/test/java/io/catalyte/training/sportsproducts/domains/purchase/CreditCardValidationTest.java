@@ -66,7 +66,8 @@ public class CreditCardValidationTest {
   }
 
   /**
-   * Validation for credit cards returns true if credit card is valid and all fields are filled properly
+   * Validation for credit cards returns true if credit card is valid and all fields are filled
+   * properly
    */
   @Test
   public void isValidCard() {

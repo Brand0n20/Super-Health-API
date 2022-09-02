@@ -1,6 +1,5 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

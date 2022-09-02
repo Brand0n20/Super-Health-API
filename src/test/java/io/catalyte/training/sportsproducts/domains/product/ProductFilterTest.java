@@ -1,14 +1,13 @@
 package io.catalyte.training.sportsproducts.domains.product;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
-
-import java.util.Map;
-
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 
 public class ProductFilterTest {
 
@@ -26,7 +25,7 @@ public class ProductFilterTest {
     productFilter.createUniqueParams(params);
 
     String expected = "SELECT p FROM Product p WHERE" +
-            " (p.brand IN ('Nike'))";
+        " (p.brand IN ('Nike'))";
 
     assertEquals(expected, productFilter.createFilterQuery());
   }
@@ -49,7 +48,7 @@ public class ProductFilterTest {
     productFilter.createUniqueParams(params);
 
     String expected = "SELECT p FROM Product p WHERE ((p.primaryColorCode IN ('#e15258') OR " +
-            "p.secondaryColorCode IN ('#e15258')))";
+        "p.secondaryColorCode IN ('#e15258')))";
 
     assertEquals(expected, productFilter.createFilterQuery());
   }
@@ -123,10 +122,10 @@ public class ProductFilterTest {
     productFilter.createUniqueParams(params);
 
     String expected = "SELECT p FROM Product p WHERE ((p.primaryColorCode IN ('#e15258') OR" +
-            " p.secondaryColorCode IN ('#e15258')) AND p.material IN ('Silk', 'Tungsten') AND " +
-            "p.price IN (50.00, 20.55) AND (p.price <= 400) AND (p.price >= 300) AND " +
-            "p.category IN ('Basketball', 'Football') AND p.brand IN ('Nike', 'Adidas') " +
-            "AND p.demographic IN ('Women', 'Men'))";
+        " p.secondaryColorCode IN ('#e15258')) AND p.material IN ('Silk', 'Tungsten') AND " +
+        "p.price IN (50.00, 20.55) AND (p.price <= 400) AND (p.price >= 300) AND " +
+        "p.category IN ('Basketball', 'Football') AND p.brand IN ('Nike', 'Adidas') " +
+        "AND p.demographic IN ('Women', 'Men'))";
 
     assertEquals(expected, productFilter.createFilterQuery());
   }

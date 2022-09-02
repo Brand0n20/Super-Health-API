@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 /**
  * A controller advice allows you to use exactly the same exception handling techniques but apply
  * them across the whole application, not just to an individual controller. You can think of them as
- * an annotation driven interceptor. More info: https://www.baeldung.com/exception-handling-for-rest-with-spring
+ * an annotation driven interceptor. More info:
+ * https://www.baeldung.com/exception-handling-for-rest-with-spring
  *
  * <p>Handles exception responses for HTTP codes 400 (Bad Request), 404(Not Found), 409 (Conflict),
  * and 500(Server Error).
