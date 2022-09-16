@@ -31,5 +31,4 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 
   @Query("SELECT DISTINCT p.secondaryColorCode FROM Product p WHERE p.active = TRUE")
   List<String> findBySecondaryColor();
-
 }

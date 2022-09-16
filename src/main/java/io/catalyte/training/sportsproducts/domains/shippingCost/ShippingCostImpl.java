@@ -25,29 +25,6 @@ public class ShippingCostImpl implements ShippingCostService {
   }
 
   /**
-   * Finds the cost of shipping for a specific state.
-   *
-   * @param state - a string containing the state or territory
-   * @return - shipping cost
-   */
-  public Integer findCostByState(String state) {
-    Integer shippingCost = 0;
-    List<ShippingCost> shippingCostList = shippingCostRepository.findAll();
-
-    try {
-      for (ShippingCost object : shippingCostList) {
-        if (Objects.equals(object.getState(), state)) {
-          shippingCost = object.getCost();
-        }
-      }
-    } catch (DataAccessException e) {
-      logger.error(e.getMessage());
-      throw new ServerError(e.getMessage());
-    }
-    return shippingCost;
-  }
-
-  /**
    * Retrieves all shipping costs from the database.
    *
    * @return - list of shipping costs
@@ -62,6 +39,30 @@ public class ShippingCostImpl implements ShippingCostService {
       throw new ServerError(e.getMessage());
     }
 
+    return shippingCost;
+  }
+
+  /**
+   * Retrieves a shipping cost object by state from the database.
+   *
+   * @return - a shipping cost object
+   */
+  @Override
+  public ShippingCost getShippingCostObjectByState(String state) {
+    List<ShippingCost> shippingCostList = shippingCostRepository.findAll();
+    ShippingCost shippingCost = null;
+
+    try {
+      for (ShippingCost object : shippingCostList) {
+        if (Objects.equals(object.getState(), state)) {
+          shippingCost = object;
+        }
+      }
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+    System.out.println(shippingCost);
     return shippingCost;
   }
 

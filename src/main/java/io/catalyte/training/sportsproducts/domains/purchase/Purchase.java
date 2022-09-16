@@ -30,16 +30,29 @@ public class Purchase {
   @Embedded
   private CreditCard creditCard;
 
+  /**
+   * The purchase date
+   *
+   * @author - Andrew Salerno
+   */
   private String purchaseDate;
 
+  /**
+   * The users email
+   *
+   * @author - Andrew Salerno
+   */
   private String userEmail;
 
+  /**
+   * Constructor for a new purchase
+   */
   public Purchase() {
-    billingAddress = new BillingAddress();
-    deliveryAddress = new DeliveryAddress();
+    this.billingAddress = new BillingAddress();
+    this.deliveryAddress = new DeliveryAddress();
     this.creditCard = new CreditCard();
-    this.purchaseDate = new String();
-    this.userEmail = new String();
+    this.purchaseDate = "";
+    this.userEmail = "";
   }
 
   public Long getId() {
@@ -50,18 +63,42 @@ public class Purchase {
     this.id = id;
   }
 
+  /**
+   * Gets the date of a Purchase
+   *
+   * @return - The purchase date
+   * @author - Andrew Salerno
+   */
   public String getPurchaseDate() {
     return purchaseDate;
   }
 
+  /**
+   * Sets the date of a Purchase
+   *
+   * @param purchaseDate - The purchase date
+   * @author - Andrew Salerno
+   */
   public void setPurchaseDate(String purchaseDate) {
     this.purchaseDate = purchaseDate;
   }
 
+  /**
+   * Gets the user email linked to a Purchase
+   *
+   * @return - The users email address
+   * @author - Andrew Salerno
+   */
   public String getUserEmail() {
     return userEmail;
   }
 
+  /**
+   * Sets the user email of a Purchase
+   *
+   * @param userEmail - The users email address
+   * @author - Andrew Salerno
+   */
   public void setUserEmail(String userEmail) {
     this.userEmail = userEmail;
   }

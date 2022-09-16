@@ -23,6 +23,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
    *
    * @param email - A users email
    * @return - A users purchase history data
+   * @author - Andrew Salerno
    */
   List<Purchase> findByUserEmail(String email);
 }

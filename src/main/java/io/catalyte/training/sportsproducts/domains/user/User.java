@@ -2,6 +2,7 @@ package io.catalyte.training.sportsproducts.domains.user;
 
 import io.catalyte.training.sportsproducts.domains.reviews.Review;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,9 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
+  @Column(name = "last_active")
+
+  String date;
   String email;
   String role;
   String firstName;
@@ -35,7 +39,8 @@ public class User {
   public User() {
   }
 
-  public User(Long id, String email, String role, String firstName, String lastName, String street, String city, String state, String zip) {
+  public User(Long id, String email, String role, String firstName, String lastName, String street,
+      String city, String state, String zip, String date) {
     this.id = id;
     this.email = email;
     this.role = role;
@@ -45,9 +50,11 @@ public class User {
     this.city = city;
     this.state = state;
     this.zip = zip;
+    this.date = date;
   }
 
-  public User(String email, String role, String firstName, String lastName ,String street, String city, String state, String zip) {
+  public User(String email, String role, String firstName, String lastName, String street,
+      String city, String state, String zip, String date) {
     this.email = email;
     this.role = role;
     this.firstName = firstName;
@@ -56,6 +63,7 @@ public class User {
     this.city = city;
     this.state = state;
     this.zip = zip;
+    this.date = date;
   }
 
   public Long getId() {
@@ -96,37 +104,47 @@ public class User {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
-  }  public String getStreet () {
+  }
+
+  public String getStreet() {
     return street;
   }
 
-  public String getCity () {
+  public String getCity() {
     return city;
   }
 
-  public String getState () {
+  public String getState() {
     return state;
   }
 
-  public String getZip () {
+  public String getZip() {
     return zip;
   }
-  public void setStreet ( String street ) {
+
+  public String getDate() {
+    return date;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
+  }
+
+  public void setStreet(String street) {
     this.street = street;
   }
 
-  public void setCity ( String city ) {
+  public void setCity(String city) {
     this.city = city;
   }
 
-  public void setState ( String state ) {
+  public void setState(String state) {
     this.state = state;
   }
 
-  public void setZip ( String zip ) {
+  public void setZip(String zip) {
     this.zip = zip;
   }
-
 
 
   @Override
@@ -141,6 +159,7 @@ public class User {
         ", city='" + city + '\'' +
         ", state='" + state + '\'' +
         ", zip='" + zip + '\'' +
+        ", last active='" + date +
         '}';
   }
 }

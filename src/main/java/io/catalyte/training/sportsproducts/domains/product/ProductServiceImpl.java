@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,6 +28,8 @@ public class ProductServiceImpl implements ProductService {
     this.productRepository = productRepository;
   }
 
+  ProductValidation productValidation = new ProductValidation();
+
   /**
    * Retrieves all products from the database, optionally making use of params if passed.
    *
@@ -37,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
 
     try {
       if (allParams.isEmpty() || allParams == null) {
-        return productRepository.findAll();
+        return productRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
       }
 
       for (Map.Entry<String, String> param : allParams.entrySet()) {
@@ -96,12 +99,54 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Product saveProduct(Product newProduct) {
     try {
-      productRepository.save(newProduct);
+      if (productValidation.validProduct(newProduct)) {
+        productRepository.save(newProduct);
+      }
     } catch (DataAccessException e) {
       logger.error(e.getMessage());
       throw new ServerError(e.getMessage());
     }
     return newProduct;
+  }
+
+  public Product updateProduct(Product updatedProduct) {
+    Product productToBeUpdated;
+    try {
+      productValidation.validProduct(updatedProduct);
+      productToBeUpdated = productRepository.findById(updatedProduct.getId()).orElse(null);
+
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+
+    if (productToBeUpdated == null) {
+      logger.error("Product with id: " + updatedProduct.getId() + " does not exist");
+      throw new ResourceNotFound("Product with id: " + updatedProduct.getId() + " does not exist");
+    }
+
+    if (productToBeUpdated.getId() == null) {
+      productToBeUpdated.setId(updatedProduct.getId());
+    }
+
+    try {
+      logger.info("Updated product " + updatedProduct.getId());
+      return productRepository.save(updatedProduct);
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+  }
+
+  @Override
+  public void deleteProduct(Product productToDelete) {
+    try {
+      logger.info("Deleted product " + productToDelete.getId());
+      productRepository.deleteById(productToDelete.getId());
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getLocalizedMessage());
+    }
   }
 
   /**

@@ -1,4 +1,4 @@
-package io.catalyte.training.sportsproducts.domains.promoCode;
+package io.catalyte.training.sportsproducts.constants.promoCode;
 
 import io.catalyte.training.sportsproducts.exceptions.ServerError;
 import java.util.List;

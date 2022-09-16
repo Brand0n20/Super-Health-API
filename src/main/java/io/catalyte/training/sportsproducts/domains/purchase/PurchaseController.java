@@ -60,11 +60,25 @@ public class PurchaseController {
    *
    * @param email - Users email address
    * @return a list of purchases linked to the email and 202 status code
+   * @author - Andrew Salerno
    */
   @GetMapping(value = "/{email}")
   public ResponseEntity findUserPurchasesByEmail(
       @PathVariable(name = "email", required = false) String email) {
-      return new ResponseEntity<>(purchaseService.findUserPurchasesByEmail(email), HttpStatus.OK);
+    return new ResponseEntity<>(purchaseService.findUserPurchasesByEmail(email), HttpStatus.OK);
+  }
+
+  /**
+   * Controller method for getting purchases linked to a product ID
+   *
+   * @param productId
+   * @return - a list of purchases linked to the purchased product
+   */
+
+  @GetMapping(value = "/product/{productId}")
+  public ResponseEntity findPurchaseByProductId(
+      @PathVariable(name = "productId", required = false) long productId) {
+    return new ResponseEntity<>(purchaseService.findPurchasesByProductId(productId), HttpStatus.OK);
   }
 
   /**

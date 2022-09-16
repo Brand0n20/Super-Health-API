@@ -1,4 +1,4 @@
-package io.catalyte.training.sportsproducts.domains.promoCode;
+package io.catalyte.training.sportsproducts.constants.promoCode;
 
 import static io.catalyte.training.sportsproducts.constants.Paths.PROMO_CODE;
 
@@ -21,7 +21,7 @@ public class PromoCodeController {
 
   Logger logger = LogManager.getLogger(PromoCodeController.class);
 
-  private PromoCodeService promoCodeService;  // references the actual service
+  private final PromoCodeService promoCodeService;  // references the actual service
 
   @Autowired
   public PromoCodeController(PromoCodeService promoCodeService) {

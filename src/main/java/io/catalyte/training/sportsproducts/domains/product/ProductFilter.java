@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
  */
 public class ProductFilter {
 
-  private HashSet<String> filters = new HashSet<>(
+  private final HashSet<String> filters = new HashSet<>(
       Arrays.asList("brand", "category", "demographic", "color",
           "material", "price", "min-price", "max-price"));
 
-  private ArrayList<String> queryList = new ArrayList<>();
+  private final ArrayList<String> queryList = new ArrayList<>();
 
-  private HashMap<String, Set<String>> uniqueParams = new HashMap<>();
+  private final HashMap<String, Set<String>> uniqueParams = new HashMap<>();
 
   /**
    * Creates a query string based on the unique params that were passed into the Product Controller
@@ -144,7 +144,7 @@ public class ProductFilter {
    * @param key
    * @return - String formatted for IN queries
    */
-  private ArrayList<String> formatParamValues(String key, Set<String> paramValues) {
+  public ArrayList<String> formatParamValues(String key, Set<String> paramValues) {
     ArrayList<String> formattedValues = new ArrayList<>();
 
     for (String value : paramValues) {
@@ -301,9 +301,6 @@ public class ProductFilter {
    * @return Boolean for valid min or max value
    */
   private Boolean validMaxMinValue(String key) {
-    if (this.uniqueParams.get(key).size() > 1) {
-      return false;
-    }
-    return true;
+    return this.uniqueParams.get(key).size() <= 1;
   }
 }

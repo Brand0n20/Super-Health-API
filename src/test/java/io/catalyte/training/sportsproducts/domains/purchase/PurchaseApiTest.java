@@ -114,4 +114,15 @@ public class PurchaseApiTest {
         purchases.stream().filter(p -> p.getBillingAddress().getEmail().contains("bob@ross.com"))
             .count(), purchases.size());
   }
+
+  /**
+   * Get purchases by user email returns status 200
+   *
+   * @throws Exception
+   * @author - Andrew Salerno
+   */
+  @Test
+  public void getUserPurchasesByEmailReturnsEmptyWith200() throws Exception {
+    mockMvc.perform(get(PURCHASES_PATH + "/asalerno@catalyte.io")).andExpect(status().isOk());
+  }
 }

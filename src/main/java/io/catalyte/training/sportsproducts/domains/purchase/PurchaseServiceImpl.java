@@ -78,11 +78,29 @@ public class PurchaseServiceImpl implements PurchaseService {
   }
 
   /**
+   * Find all purchases with product ID linked to an product in the database
+   *
+   * @param productId - the product ID of interest
+   * @return all purchases linked to the given ID
+   */
+
+  @Override
+  public List<LineItem> findPurchasesByProductId(long productId) {
+    try {
+      return lineItemRepository.findLineItemsByProductId(productId);
+    } catch (DataAccessException e) {
+      logger.error(e.getMessage());
+      throw new ServerError(e.getMessage());
+    }
+  }
+
+  /**
    * Find all purchases associated with a users email address and then Build and return a
    * UserPurchase response
    *
    * @param email - The users email address
    * @return - A list of User Purchases
+   * @author - Andrew Salerno
    */
   @Override
   public List<UserPurchase> findUserPurchasesByEmail(String email) {
@@ -182,7 +200,7 @@ public class PurchaseServiceImpl implements PurchaseService {
    *
    * @param purchase - the purchase object to handle lineitems for
    */
-  private void handleLineItems(Purchase purchase) {
+  void handleLineItems(Purchase purchase) {
 
     Collection<LineItem> itemsList = purchase.getProducts();
 

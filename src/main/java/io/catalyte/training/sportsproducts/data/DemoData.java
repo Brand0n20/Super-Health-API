@@ -1,8 +1,8 @@
 package io.catalyte.training.sportsproducts.data;
 
+import io.catalyte.training.sportsproducts.constants.promoCode.PromoCodeRepository;
 import io.catalyte.training.sportsproducts.domains.product.Product;
 import io.catalyte.training.sportsproducts.domains.product.ProductRepository;
-import io.catalyte.training.sportsproducts.domains.promoCode.PromoCodeRepository;
 import io.catalyte.training.sportsproducts.domains.purchase.BillingAddress;
 import io.catalyte.training.sportsproducts.domains.purchase.CreditCard;
 import io.catalyte.training.sportsproducts.domains.purchase.Purchase;
@@ -70,19 +70,6 @@ public class DemoData implements CommandLineRunner {
 
   private void seedDatabase() {
     int numberOfProducts;
-    String[] usStates = {"Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas",
-        "California", "Colorado", "Connecticut", "Delaware", "District of Columbia",
-        "Federated States of Micronesia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
-        "Illinois",
-        "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Marshall Islands",
-        "Maryland",
-        "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",
-        "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
-        "North Dakota", "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon", "Palau",
-        "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota",
-        "Tennessee",
-        "Texas", "Utah", "Vermont", "Virgin Island", "Virginia", "Washington", "West Virginia",
-        "Wisconsin", "Wyoming"};
 
     try {
       // Retrieve the value of custom property in application.yml
@@ -103,7 +90,7 @@ public class DemoData implements CommandLineRunner {
     List<Review> reviewList = reviewFactory.generateRandomReviews(productList, userList);
 
     //Generate shipping costs
-    List<ShippingCost> shippingCostList = shippingCostFactory.addStatesToList(usStates);
+    List<ShippingCost> shippingCostList = shippingCostFactory.addStatesToList();
 
     // Persist them to the database
     logger.info("Loading " + numberOfProducts + " products...");

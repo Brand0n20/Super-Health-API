@@ -14,6 +14,10 @@ public interface ProductService {
 
   Product saveProduct(Product productToSave);
 
+  Product updateProduct(Product productToUpdate);
+
+  void deleteProduct(Product productToDelete);
+
   List<String> getUniqueTypes();
 
   List<String> getUniqueCategories();

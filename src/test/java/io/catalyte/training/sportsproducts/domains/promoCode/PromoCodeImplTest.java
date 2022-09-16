@@ -1,5 +1,7 @@
 package io.catalyte.training.sportsproducts.domains.promoCode;
 
+import io.catalyte.training.sportsproducts.constants.promoCode.PromoCodeRepository;
+import io.catalyte.training.sportsproducts.constants.promoCode.PromoCodeServiceImpl;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
