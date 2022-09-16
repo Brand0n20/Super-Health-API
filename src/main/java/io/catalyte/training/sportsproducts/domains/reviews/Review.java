@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "reviews")
-@JsonIgnoreProperties({"product"})
+// @JsonIgnoreProperties({"product"})
 public class Review {
 
   @Id
@@ -49,13 +49,13 @@ public class Review {
     this.title = title;
     this.comment = comment;
     this.rating = rating;
+    this.user = getUser();
+    this.product = getProduct();
   }
 
   public String getPostedDate() {
     return postedDate;
   }
-
-  ;
 
   public void setPostedDate(String postedDate) {
     this.postedDate = postedDate;

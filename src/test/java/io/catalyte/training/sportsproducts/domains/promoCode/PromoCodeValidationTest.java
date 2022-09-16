@@ -3,6 +3,8 @@ package io.catalyte.training.sportsproducts.domains.promoCode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import io.catalyte.training.sportsproducts.constants.promoCode.PromoCode;
+import io.catalyte.training.sportsproducts.constants.promoCode.PromoCodeValidation;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.server.ResponseStatusException;

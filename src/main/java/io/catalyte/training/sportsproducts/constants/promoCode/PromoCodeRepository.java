@@ -1,4 +1,4 @@
-package io.catalyte.training.sportsproducts.domains.promoCode;
+package io.catalyte.training.sportsproducts.constants.promoCode;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

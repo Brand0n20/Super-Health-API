@@ -7,7 +7,9 @@ import java.util.List;
  */
 public interface ShippingCostService {
 
-  Integer findCostByState(String state);
 
   List<ShippingCost> getCostAndState();
+
+
+  ShippingCost getShippingCostObjectByState(String state);
 }

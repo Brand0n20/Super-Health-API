@@ -22,7 +22,7 @@ public class ShippingCostController {
   Logger logger = LogManager.getLogger(ShippingCostController.class);
 
   @Autowired
-  private ShippingCostService shippingCostService;
+  private final ShippingCostService shippingCostService;
 
   public ShippingCostController(ShippingCostService shippingCostService) {
     this.shippingCostService = shippingCostService;
@@ -30,7 +30,7 @@ public class ShippingCostController {
 
   /**
    * Retrieve all shipping costs.
-   * 
+   * <p>
    * return - list of all shipping costs
    */
   @GetMapping
@@ -40,14 +40,15 @@ public class ShippingCostController {
   }
 
   /**
-   * Retrieve shipping cost by state
+   * Retrieve shipping cost object by state
    *
    * @param state
-   * @return - shipping cost
+   * @return - shipping cost object
    */
   @GetMapping(value = "/{state}")
-  public ResponseEntity<Integer> getCostByState(@PathVariable String state) {
+  public ResponseEntity<ShippingCost> getCostByState(@PathVariable String state) {
     logger.info("Request received for getCostByState");
-    return new ResponseEntity<>(shippingCostService.findCostByState(state), HttpStatus.OK);
+    return new ResponseEntity<>(shippingCostService.getShippingCostObjectByState(state),
+        HttpStatus.OK);
   }
 }

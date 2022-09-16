@@ -1,13 +1,7 @@
 package io.catalyte.training.sportsproducts.domains.reviews;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
-
 import io.catalyte.training.sportsproducts.domains.product.Product;
 import io.catalyte.training.sportsproducts.domains.user.User;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,12 +11,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ReviewServiceImplTest {
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
   List<Review> testReviews;
+  Review newReview;
   @InjectMocks
   private ReviewServiceImpl reviewServiceImpl;
   @Mock
@@ -48,6 +50,23 @@ public class ReviewServiceImplTest {
 
     testReviews = Arrays.asList(review1, review2);
     when(reviewRepository.findReviewsByProductId(anyLong())).thenReturn(testReviews);
+
+    String reviewTitle = "Review Test";
+    String reviewComment = "This is a test for posting a review";
+    double reviewRating = 4d;
+    User reviewUser = new User();
+    reviewUser.setFirstName("Billy");
+    reviewUser.setLastName("Miller");
+    reviewUser.setEmail("Billy@Billy.com");
+    reviewUser.setRole("Customer");
+    reviewUser.setId(1L);
+    String reviewPostedDate = "09/14/2021";
+    Product reviewProduct = new Product();
+    reviewProduct.setId(9L);
+    newReview = new Review(reviewTitle, reviewComment, reviewRating);
+    newReview.setProduct(reviewProduct);
+    newReview.setUser(reviewUser);
+    newReview.setPostedDate(reviewPostedDate);
   }
 
   // List of Reviews provided with product id;
@@ -56,6 +75,13 @@ public class ReviewServiceImplTest {
   public void getReviewsByProductIdReturnsListOfReviews() {
     List<Review> actual = reviewServiceImpl.getReviewsByProductId(10L);
     assertEquals(testReviews, actual);
+  }
+
+  @Test
+  public void saveReviewReturnThePostedReview() {
+
+    Review actual = reviewServiceImpl.saveReview(newReview);
+    assertEquals(newReview, actual);
   }
 
 }

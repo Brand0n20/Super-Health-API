@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +58,7 @@ public class UserController {
    * @param bearerToken String value in the Authorization property of the header
    * @return User - Updated user
    */
+  @CrossOrigin
   @PutMapping(path = "/{id}")
   public ResponseEntity<User> updateUser(
       @PathVariable Long id,

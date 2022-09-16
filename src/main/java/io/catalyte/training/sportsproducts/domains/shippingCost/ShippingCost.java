@@ -20,12 +20,15 @@ public class ShippingCost {
 
   private Integer cost;
 
+  private Double tax;
+
   public ShippingCost() {
   }
 
-  public ShippingCost(String state, Integer cost) {
+  public ShippingCost(String state, Integer cost, Double tax) {
     this.state = state;
     this.cost = cost;
+    this.tax = tax;
   }
 
   public Long getId() {
@@ -52,13 +55,12 @@ public class ShippingCost {
     this.cost = cost;
   }
 
-  @Override
-  public String toString() {
-    return "ShippingCost{" +
-        "Id=" + Id +
-        ", state='" + state + '\'' +
-        ", cost=" + cost +
-        '}';
+  public Double getTax() {
+    return tax;
+  }
+
+  public void setTax(Double tax) {
+    this.tax = tax;
   }
 
   @Override
@@ -70,12 +72,23 @@ public class ShippingCost {
       return false;
     }
     ShippingCost that = (ShippingCost) o;
-    return Objects.equals(Id, that.Id) && Objects.equals(state, that.state)
-        && Objects.equals(cost, that.cost);
+    return Id.equals(that.Id) && state.equals(that.state) && cost.equals(that.cost) && tax.equals(
+        that.tax);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(Id, state, cost);
+    return Objects.hash(Id, state, cost, tax);
+  }
+
+  @Override
+  public String toString() {
+    return "ShippingCost{" +
+        "Id=" + Id +
+        ", state='" + state + '\'' +
+        ", cost=" + cost +
+        ", tax=" + tax +
+        '}';
+
   }
 }

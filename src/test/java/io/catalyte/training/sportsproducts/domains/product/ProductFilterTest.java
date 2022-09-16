@@ -4,14 +4,26 @@ import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Disabled;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProductFilterTest {
 
   ProductFilter productFilter;
+
+  @Mock
+  private ProductFilterRepositoryImpl productFilterRepository;
+
 
   @Before
   public void setup() {
@@ -143,4 +155,30 @@ public class ProductFilterTest {
     assertNull(productFilter.createFilterQuery());
   }
 
+  /**
+   * No coverage here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!??????????
+   *
+   * @author - Andrew Salerno
+   */
+  @Test
+  public void queryFilterReturnsEmptyOnNullFilter() {
+    List<Product> products = productFilterRepository.queryFilter("  ");
+  }
+
+  /**
+   * Asserts that formatParamValues() returns the correct formatting for non-binary
+   *
+   * @author - Andrew Salerno
+   */
+  @Test
+  public void formatParamValuesFormatsNonBinary() {
+    Set<String> paramValues = new HashSet<>();
+    ArrayList<String> expected = new ArrayList<>();
+    String key = "demographic";
+    paramValues.add("non-binary");
+    expected.add("'Non-Binary'");
+
+    ArrayList<String> actual = productFilter.formatParamValues(key, paramValues);
+    assertEquals(expected, actual);
+  }
 }

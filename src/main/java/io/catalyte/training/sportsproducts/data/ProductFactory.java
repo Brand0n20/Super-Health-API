@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -48,8 +49,42 @@ public class ProductFactory {
   private static final String[] materials = {"Cotton", "Wool", "Silk", "Leather", "Velvet", "Satin",
       "Denim", "Tungsten", "Hand Blown Glass", "Bamboo", "Granite", "Vinyl"};
 
-  private static final String[] images = {
-      "https://m.media-amazon.com/images/I/A13usaonutL._CLa%7C2140%2C2000%7C611UQuMCZBL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"};
+  private static final Map<String, String> images = Map.ofEntries(
+      Map.entry("Pant",
+          "https://www.freshidealiving.com.au/assets/full/HL98239_BWS_L.jpg?20210226194903"),
+      Map.entry("Short",
+          "https://i5.walmartimages.com/asr/4fd5cb51-ecbc-456e-b80d-821f9709b4f5_1.446a735a15f656b08601108abf0c3ada.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF"),
+      Map.entry("Glove", "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRQAoeay12gBdOsikc5A6Qff_24LvKR4YA2YQEcU-5JmqxqHRIDbpUPfS-Da7xLbRSsNTe507kWSA&usqp=CAc"),
+      Map.entry("Shoe",
+          "https://assets.vogue.com/photos/6216806693122fd329921153/master/w_1280%2Cc_limit/slide_21.jpg"),
+      Map.entry("Jacket", "https://m.media-amazon.com/images/I/51G1w0S6HjL._AC_UX569_.jpg"),
+      Map.entry("Tank Top",
+          "https://www.brooksrunning.com/dw/image/v2/BGPF_PRD/on/demandware.static/-/Sites-brooks-master-catalog/default/dw9c793ac3/original/221545/221545-510-lf-distance-tank-womens-sleeveless-running-top.png?sw=868&sh=868&sm=fit"),
+      Map.entry("Sock",
+          "https://cdn.shopify.com/s/files/1/0234/4461/products/i-love-cheese-socks_1200x.jpg?v=1653166789"),
+      Map.entry("Sunglasses",
+          "https://assets.oakley.com/is/image/OakleyEYE/888392266811__STD__shad__qt.png?impolicy=OO_ratio&width=2000"),
+      Map.entry("Hat",
+          "https://cdn.vox-cdn.com/thumbor/lhc1uc903lsSPwYDJAUT51oIHbU=/0x0:2048x1638/920x613/filters:focal(852x711:1178x1037):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/66585997/1__59_.0.png"),
+      Map.entry("Helmet",
+          "https://cdn.shopify.com/s/files/1/0685/9327/products/helmet-paint_grande.jpg?v=1648583141"),
+      Map.entry("Belt",
+          "https://scheels.scene7.com/is/image/Scheels/88779137601?wid=400&hei=400&qlt=50"),
+      Map.entry("Visor", "https://static.augustasportswear.com/product/6227_045_aws_640.jpg"),
+      Map.entry("Shin Guard",
+          "https://images.dickssportinggoods.com/is/image/GolfGalaxy/17NIKAJGRDBLCKXXXSCS_White?qlt=70&wid=1100&fmt=webp"),
+      Map.entry("Elbow Pad",
+          "https://www.sweetprotection.com/dw/image/v2/BCKX_PRD/on/demandware.static/-/Sites-masterCatalog_Sweet/default/dw10df661e/images/hi-res/835013_Elbow-Guards_BLACK_PRODUCT_1_Sweetprotection.jpg?sw=628&sh=618"),
+      Map.entry("Headband",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwU9XzD-U1NKYAxpMODZHHKYVsZfghsauiZvWe8_PDx19MY6wSk-U0ljjzWG-Zi5nAB5s&usqp=CAU"),
+      Map.entry("Wristband",
+          "https://c.static-nike.com/a/images/t_PDP_1280_v1/f_auto/dcxxfifsfjtwpeelld43/swoosh-wristbands-CwPs55.jpg"),
+      Map.entry("Hoodie",
+          "https://cdn.shopify.com/s/files/1/0258/9160/2490/products/4200918-9134-fr_chrome-sport-hoodie-web_2000x2000.jpg?v=1614601349"),
+      Map.entry("Flip Flop",
+          "https://www.orthoticshop.com/images/magictoolbox_cache/5d599ff3f9afd17d2a191ee4d861bf84/3/2/3279/thumb600x500/2017052391/sole-sport-flips-men-Raven_alt_front.jpg"),
+      Map.entry("Pool Noodle", "https://m.media-amazon.com/images/I/81J6gHdjMaL._AC_SL1500_.jpg")
+  );
 
   /**
    * Returns a random demographic from the list of demographics.
@@ -122,13 +157,12 @@ public class ProductFactory {
   }
 
   /**
-   * Generates a random image
+   * Gets an image based on type
    *
    * @return - a string url
    */
-  public static String getImage() {
-    Random randomGenerator = new Random();
-    return images[randomGenerator.nextInt(images.length)];
+  public static String getImage(String type) {
+    return images.get(type);
   }
 
   /**
@@ -237,7 +271,7 @@ public class ProductFactory {
     String name = adjective + " " + category + " " + type;
     String brand = ProductFactory.getBrand();
     String material = ProductFactory.getMaterial();
-    String image = ProductFactory.getImage();
+    String image = ProductFactory.getImage(type);
     int quantity = ProductFactory.getQuantity();
     double price = ProductFactory.getPrice(10.00D, 999.99D);
 
