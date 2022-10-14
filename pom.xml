@@ -146,7 +146,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <mainClass>io.catalyte.training.sportsproducts.AppRunner</mainClass>
+          <mainClass>io.catalyte.training.superhealthapi.AppRunner</mainClass>
         </configuration>
         <executions>
           <execution>
