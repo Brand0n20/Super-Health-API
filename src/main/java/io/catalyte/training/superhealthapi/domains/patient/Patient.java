@@ -13,37 +13,40 @@ public class Patient {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  long id;
+  private Long id;
 
-  String firstName;
+  private String firstName;
 
-  String lastName;
+  private String lastName;
 
-  String ssn;
+  private String ssn;
 
-  String email;
+  private String email;
 
-  String street;
+  private String street;
 
-  String city;
+  private String city;
 
-  String state;
+  private String state;
 
-  String postal;
+  private String postal;
 
-  double age;
+  private int age;
 
-  double height;
+  private int height;
 
-  double weight;
+  private int weight;
 
-  String insurance;
+  private String insurance;
 
-  String gender;
+  private String gender;
+
+  public Patient() {
+  }
 
   public Patient(String firstName, String lastName, String ssn, String email,
       String street,
-      String city, String state, String postal, double age, double height, double weight,
+      String city, String state, String postal, int age, int height, int weight,
       String insurance, String gender) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -60,7 +63,7 @@ public class Patient {
     this.gender = gender;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -96,15 +99,15 @@ public class Patient {
     this.postal = postal;
   }
 
-  public void setAge(double age) {
+  public void setAge(int age) {
     this.age = age;
   }
 
-  public void setHeight(double height) {
+  public void setHeight(int height) {
     this.height = height;
   }
 
-  public void setWeight(double weight) {
+  public void setWeight(int weight) {
     this.weight = weight;
   }
 
@@ -116,7 +119,7 @@ public class Patient {
     this.gender = gender;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
@@ -152,15 +155,15 @@ public class Patient {
     return postal;
   }
 
-  public double getAge() {
+  public int getAge() {
     return age;
   }
 
-  public double getHeight() {
+  public int getHeight() {
     return height;
   }
 
-  public double getWeight() {
+  public int getWeight() {
     return weight;
   }
 

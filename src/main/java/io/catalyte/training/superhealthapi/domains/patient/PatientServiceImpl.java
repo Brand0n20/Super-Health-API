@@ -7,8 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -23,6 +24,11 @@ public class PatientServiceImpl implements PatientService{
     this.patientRepository = patientRepository;
   }
 
+  /**
+   * Will get all the patients in the database
+   * @param patient - the patient that will get added to the movie list
+   * @return a list of all the patients in the database
+   */
   @Override
   public List<Patient> getAllPatients(Patient patient) {
     try {
@@ -53,7 +59,20 @@ public class PatientServiceImpl implements PatientService{
 
   @Override
   public Patient savePatient(Patient patient) {
-    return null;
+    Patient existingPatient = patientRepository.findByEmail(patient.getEmail());
+    Patient savedPatient = null;
+    if (existingPatient == null) {
+      try {
+        savedPatient =  patientRepository.save(patient);
+      } catch (DataAccessException e) {
+        logger.error(e.getMessage());
+        throw new ServerError(e.getMessage());
+      }
+    } else {
+      logger.error("That email is already in use");
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "That email is already in use");
+    }
+  return savedPatient;
   }
 
   @Override
