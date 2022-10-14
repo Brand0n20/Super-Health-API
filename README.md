@@ -1,4 +1,4 @@
-# Sports Apparel API
+# Super Health Inc. API
 
 ## Getting Started
 
