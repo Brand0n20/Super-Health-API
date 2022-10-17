@@ -1,4 +1,4 @@
-package io.catalyte.training.superhealthapi.domains.patient;
+package io.catalyte.training.superhealthapi.domains.Patient;
 
 import java.util.List;
 

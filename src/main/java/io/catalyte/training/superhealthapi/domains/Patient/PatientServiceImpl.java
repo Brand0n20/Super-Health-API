@@ -1,4 +1,4 @@
-package io.catalyte.training.superhealthapi.domains.patient;
+package io.catalyte.training.superhealthapi.domains.Patient;
 
 import io.catalyte.training.superhealthapi.exceptions.ResourceNotFound;
 import io.catalyte.training.superhealthapi.exceptions.ServerError;
@@ -18,6 +18,8 @@ public class PatientServiceImpl implements PatientService{
   private final Logger logger = LogManager.getLogger(PatientServiceImpl.class);
 
   private final PatientRepository patientRepository;
+
+  PatientValidation patientValidation = new PatientValidation();
 
   @Autowired
   public PatientServiceImpl(PatientRepository patientRepository) {
@@ -39,6 +41,11 @@ public class PatientServiceImpl implements PatientService{
     }
   }
 
+  /**
+   * Will get the patient by its id
+   * @param patientId - id that will identify the movie
+   * @return the patient by the id given
+   */
   @Override
   public Patient getPatientById(long patientId) {
     Patient patient;
@@ -57,8 +64,14 @@ public class PatientServiceImpl implements PatientService{
     }
   }
 
+  /**
+   * Will post a patient to the database
+   * @param patient - patient entity to be posted
+   * @return the persisted movie
+   */
   @Override
   public Patient savePatient(Patient patient) {
+    patientValidation.isValidPatient(patient);
     Patient existingPatient = patientRepository.findByEmail(patient.getEmail());
     Patient savedPatient = null;
     if (existingPatient == null) {
@@ -80,8 +93,23 @@ public class PatientServiceImpl implements PatientService{
     return null;
   }
 
+  /**
+   * Will delete a patient if its id provided exists in the database
+   * @param patientId
+   */
   @Override
   public void deletePatient(long patientId) {
-
+    Patient existingPatient = patientRepository.findById(patientId).orElse(null);
+    if (existingPatient != null) {
+      try {
+        patientRepository.deleteById(patientId);
+      } catch (DataAccessException e) {
+        logger.error(e.getMessage());
+        throw new ServerError(e.getMessage());
+      }
+    } else {
+      throw new ResourceNotFound("Patient with id " + patientId + " does not exist in the database");
+    }
   }
+
 }

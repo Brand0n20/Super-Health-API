@@ -1,4 +1,4 @@
-package io.catalyte.training.superhealthapi.domains.patient;
+package io.catalyte.training.superhealthapi.domains.Patient;
 
 import static io.catalyte.training.superhealthapi.constants.Paths.PATIENTS_PATH;
 
@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +59,17 @@ public class PatientController {
   @PostMapping
   public ResponseEntity<Patient> savePatient(@RequestBody Patient patient) {
     return new ResponseEntity<>(patientService.savePatient(patient), HttpStatus.CREATED);
+  }
+
+  /**
+   * Will delete a patient based on its given id
+   * @param id - way to identify patient
+   * @return - a NO_CONTENT status of 204
+   */
+  @DeleteMapping(value = "/{id}")
+  public ResponseEntity<Void> deletePatient (@PathVariable long id) {
+    patientService.deletePatient(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
 }

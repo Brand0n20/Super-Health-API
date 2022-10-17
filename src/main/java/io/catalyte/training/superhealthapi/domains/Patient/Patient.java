@@ -1,4 +1,4 @@
-package io.catalyte.training.superhealthapi.domains.patient;
+package io.catalyte.training.superhealthapi.domains.Patient;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,11 +31,11 @@ public class Patient {
 
   private String postal;
 
-  private int age;
+  private Integer age;
 
-  private int height;
+  private Integer height;
 
-  private int weight;
+  private Integer weight;
 
   private String insurance;
 
@@ -46,7 +46,7 @@ public class Patient {
 
   public Patient(String firstName, String lastName, String ssn, String email,
       String street,
-      String city, String state, String postal, int age, int height, int weight,
+      String city, String state, String postal, Integer age, Integer height, Integer weight,
       String insurance, String gender) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -99,15 +99,15 @@ public class Patient {
     this.postal = postal;
   }
 
-  public void setAge(int age) {
+  public void setAge(Integer age) {
     this.age = age;
   }
 
-  public void setHeight(int height) {
+  public void setHeight(Integer height) {
     this.height = height;
   }
 
-  public void setWeight(int weight) {
+  public void setWeight(Integer weight) {
     this.weight = weight;
   }
 
@@ -155,15 +155,15 @@ public class Patient {
     return postal;
   }
 
-  public int getAge() {
+  public Integer getAge() {
     return age;
   }
 
-  public int getHeight() {
+  public Integer getHeight() {
     return height;
   }
 
-  public int getWeight() {
+  public Integer getWeight() {
     return weight;
   }
 
