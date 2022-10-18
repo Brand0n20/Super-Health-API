@@ -26,6 +26,7 @@ public class DemoData implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     loadPatients();
+    loadEncounters();
   }
 
   private void loadPatients() {
@@ -39,5 +40,9 @@ public class DemoData implements CommandLineRunner {
     encounterRepository.save(new Encounter(2L, "Provided iboprofen for 3 days", " H7J 8W2", "Blue Cross", "123.456.789-12", "A22",
         BigDecimal.valueOf(55.50), BigDecimal.valueOf(20), "Had a flue",
         23, 100, 80, "2022-10-17"));
+
+    encounterRepository.save(new Encounter(2L, "Gavem them cough syrup", " H8Y 8M3", "Aetna", "129.458.780-19", "B23",
+        BigDecimal.valueOf(100), BigDecimal.valueOf(40), "Had a a bad cough",
+        28, 90, 75, "2022-10-09"));
   }
 }

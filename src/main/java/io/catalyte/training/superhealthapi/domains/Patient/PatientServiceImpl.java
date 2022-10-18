@@ -3,6 +3,7 @@ package io.catalyte.training.superhealthapi.domains.Patient;
 import io.catalyte.training.superhealthapi.exceptions.ResourceNotFound;
 import io.catalyte.training.superhealthapi.exceptions.ServerError;
 import java.util.List;
+import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,9 +89,33 @@ public class PatientServiceImpl implements PatientService{
   return savedPatient;
   }
 
+  /**
+   * Will update existing patient information
+   * @param patient - payload coming in
+   * @param patientId - identifier for patient
+   * @return - a newly updated movie
+   */
   @Override
   public Patient updatePatient(Patient patient, long patientId) {
-    return null;
+    Patient existingPatient = patientRepository.findById(patientId).orElse(null);
+    Patient anotherPatient = patientRepository.findByEmail(patient.getEmail());
+
+    if (existingPatient == null) {
+      throw new ResourceNotFound("Patient with id: " + patientId + " does not exist");
+    } else {
+      if (Objects.equals(existingPatient.getEmail(), patient.getEmail())
+          && Objects.equals(anotherPatient.getId(), existingPatient.getId()) || anotherPatient == null) {
+        try {
+          patient = patientRepository.save(patient);
+        } catch (DataAccessException e) {
+          logger.error(e.getMessage());
+          throw new ServerError(e.getMessage());
+        }
+      } else {
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "That email is already in use by somebody else");
+      }
+    }
+    return patient;
   }
 
   /**
