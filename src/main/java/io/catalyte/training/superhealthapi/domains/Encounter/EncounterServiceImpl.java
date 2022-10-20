@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class EncounterServiceImpl implements EncounterService{
+public class EncounterServiceImpl implements EncounterService {
 
   private final Logger logger = LogManager.getLogger(EncounterServiceImpl.class);
 
@@ -23,9 +23,12 @@ public class EncounterServiceImpl implements EncounterService{
 
   private final PatientRepository patientRepository;
 
+  public EncouterValidation encouterValidation = new EncouterValidation();
+
 
   @Autowired
-  public EncounterServiceImpl(EncounterRepository encounterRepository, PatientRepository patientRepository) {
+  public EncounterServiceImpl(EncounterRepository encounterRepository,
+      PatientRepository patientRepository) {
     this.encounterRepository = encounterRepository;
     this.patientRepository = patientRepository;
   }
@@ -43,11 +46,12 @@ public class EncounterServiceImpl implements EncounterService{
   @Override
   public Encounter getSingleEncounterByPatientId(long patientId, long encounterId) {
     Encounter encounter = null;
-    List<Long> encounterListIds = encounterRepository.findEncountersByPatientId(patientId).stream().map(Encounter::getId).collect(
-        Collectors.toList());
+    List<Long> encounterListIds = encounterRepository.findEncountersByPatientId(patientId).stream()
+        .map(Encounter::getId).collect(
+            Collectors.toList());
     if (encounterListIds.contains(encounterId)) {
       try {
-        encounter =  encounterRepository.findById(encounterId).orElse(null);
+        encounter = encounterRepository.findById(encounterId).orElse(null);
       } catch (DataAccessException e) {
         logger.error(e.getMessage());
         throw new ServerError(e.getMessage());
@@ -61,6 +65,7 @@ public class EncounterServiceImpl implements EncounterService{
     Encounter savedEncounter = null;
     if (patientRepository.existsById(patientId)) {
       if (patientId == encounter.getPatientId()) {
+        encouterValidation.isValidEncounter(encounter);
         try {
           savedEncounter = encounterRepository.save(encounter);
         } catch (DataAccessException e) {
@@ -72,9 +77,36 @@ public class EncounterServiceImpl implements EncounterService{
             "Body patient id must match path variable id");
       }
     } else {
-      throw new ResourceNotFound("Patient with id of " + patientId + " does not exist in the database");
+      throw new ResourceNotFound(
+          "Patient with id of " + patientId + " does not exist in the database. ");
     }
     return savedEncounter;
+  }
+
+  @Override
+  public Encounter updateEncounter(long patientId, long encounterId, Encounter encounter) {
+    Encounter updatedEncounter = null;
+    if (patientRepository.existsById(patientId) && encounterRepository.existsById(encounterId)) {
+      if (patientId == encounter.getPatientId() && encounterId == encounter.getId()) {
+        encouterValidation.isValidEncounter(encounter);
+        try {
+          updatedEncounter = encounterRepository.save(encounter);
+        } catch (DataAccessException e) {
+          logger.error(e.getMessage());
+          throw new ServerError(e.getMessage());
+        }
+      } else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Both patient and encounter id need to match in the body and in the path. ");
+      }
+    } else if (!encounterRepository.existsById(encounterId)) {
+      throw new ResourceNotFound(
+          "Encounter with id of " + encounterId + " does not exist in the database");
+    } else {
+      throw new ResourceNotFound(
+          "Patient with id of" + patientId + " does not exist in the database");
+    }
+    return updatedEncounter;
   }
 
 }

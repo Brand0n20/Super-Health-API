@@ -32,11 +32,11 @@ public class Encounter {
 
   private String chiefComplaint;
 
-  private Integer pulse;
+  private Float pulse;
 
-  private Integer systolic;
+  private Float systolic;
 
-  private Integer diastolic;
+  private Float diastolic;
 
   private String date;
 
@@ -46,7 +46,7 @@ public class Encounter {
   public Encounter(Long patientId, String notes, String visitCode, String provider,
       String billingCode, String icd10, BigDecimal totalCost, BigDecimal copay,
       String chiefComplaint,
-      Integer pulse, Integer systolic, Integer diastolic, String date) {
+      Float pulse, Float systolic, Float diastolic, String date) {
     this.patientId = patientId;
     this.notes = notes;
     this.visitCode = visitCode;
@@ -102,15 +102,15 @@ public class Encounter {
     this.chiefComplaint = chiefComplaint;
   }
 
-  public void setPulse(Integer pulse) {
+  public void setPulse(Float pulse) {
     this.pulse = pulse;
   }
 
-  public void setSystolic(Integer systolic) {
+  public void setSystolic(Float systolic) {
     this.systolic = systolic;
   }
 
-  public void setDiastolic(Integer diastolic) {
+  public void setDiastolic(Float diastolic) {
     this.diastolic = diastolic;
   }
 
@@ -158,15 +158,15 @@ public class Encounter {
     return chiefComplaint;
   }
 
-  public Integer getPulse() {
+  public Float getPulse() {
     return pulse;
   }
 
-  public Integer getSystolic() {
+  public Float getSystolic() {
     return systolic;
   }
 
-  public Integer getDiastolic() {
+  public Float getDiastolic() {
     return diastolic;
   }
 

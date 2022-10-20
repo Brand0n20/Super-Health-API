@@ -1,9 +1,12 @@
 package io.catalyte.training.superhealthapi.domains.Patient;
 
+import io.catalyte.training.superhealthapi.domains.Encounter.Encounter;
+import io.catalyte.training.superhealthapi.domains.Encounter.EncounterRepository;
 import io.catalyte.training.superhealthapi.exceptions.ResourceNotFound;
 import io.catalyte.training.superhealthapi.exceptions.ServerError;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +23,15 @@ public class PatientServiceImpl implements PatientService{
 
   private final PatientRepository patientRepository;
 
+  private final EncounterRepository encounterRepository;
+
   PatientValidation patientValidation = new PatientValidation();
 
   @Autowired
-  public PatientServiceImpl(PatientRepository patientRepository) {
+  public PatientServiceImpl(PatientRepository patientRepository,
+      EncounterRepository encounterRepository) {
     this.patientRepository = patientRepository;
+    this.encounterRepository = encounterRepository;
   }
 
   /**
@@ -105,6 +112,11 @@ public class PatientServiceImpl implements PatientService{
     } else {
       if (Objects.equals(existingPatient.getEmail(), patient.getEmail())
           && Objects.equals(anotherPatient.getId(), existingPatient.getId()) || anotherPatient == null) {
+        if (patientId != patient.getId()) {
+          throw  new ResponseStatusException(HttpStatus.BAD_REQUEST,
+              "Body patient id must match path variable id");
+        }
+        patientValidation.isValidPatient(patient);
         try {
           patient = patientRepository.save(patient);
         } catch (DataAccessException e) {
@@ -124,14 +136,21 @@ public class PatientServiceImpl implements PatientService{
    */
   @Override
   public void deletePatient(long patientId) {
-    Patient existingPatient = patientRepository.findById(patientId).orElse(null);
-    if (existingPatient != null) {
-      try {
-        patientRepository.deleteById(patientId);
-      } catch (DataAccessException e) {
-        logger.error(e.getMessage());
-        throw new ServerError(e.getMessage());
+
+    List<Long> patientIdsWithEncounters = encounterRepository.findAll().stream().map(Encounter :: getPatientId).collect(
+        Collectors.toList());
+    if (patientRepository.existsById(patientId)) {
+      if (!patientIdsWithEncounters.contains(patientId)) {
+        try {
+          patientRepository.deleteById(patientId);
+        } catch (DataAccessException e) {
+          logger.error(e.getMessage());
+          throw new ServerError(e.getMessage());
+        }
+      } else {
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "That patient has encounters and therefore cannot be deleted");
       }
+
     } else {
       throw new ResourceNotFound("Patient with id " + patientId + " does not exist in the database");
     }

@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class PatientValidation {
+
   /**
    * Checks if an input is blank or null
-   *
    * @param input String any field of any card
    * @return true if blank or null and false if populated
    */
@@ -25,6 +25,11 @@ public class PatientValidation {
     StringBuilder errorList = new StringBuilder();
     String[] genders = new String[]{"Male", "Female", "Other", "male", "female", "other"};
     List<String> genderArray = new ArrayList<>(Arrays.asList(genders));
+    String[] states = new String[]{"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "GU", "HI",
+        "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS",
+        "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "CM", "OH", "OK", "OR", "PA",
+        "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VI", "VA", "WA", "WV", "WI", "WY"};
+    List<String> usStates = new ArrayList<>(Arrays.asList(states));
     String firstName = patient.getFirstName();
     String lastName = patient.getLastName();
     String ssn = patient.getSsn();
@@ -33,9 +38,9 @@ public class PatientValidation {
     String city = patient.getCity();
     String state = patient.getState();
     String postal = patient.getPostal();
-    Integer age = patient.getAge();
-    Integer height = patient.getHeight();
-    Integer weight = patient.getWeight();
+    Float age = patient.getAge();
+    Float height = patient.getHeight();
+    Float weight = patient.getWeight();
     String insurance = patient.getInsurance();
     String gender = patient.getGender();
 
@@ -75,8 +80,8 @@ public class PatientValidation {
 
     if (isBlankField(state)) {
       errorList.append("State cannot be blank or null. ");
-    } else if (!state.matches("^[a-zA-Z' ]*$")) {
-      errorList.append("State cannot contain special characters or numbers");
+    } else if (!usStates.contains(state)) {
+      errorList.append("State must be an existing state with its abbreviated two letters. ");
     }
 
     if (isBlankField(postal)) {
@@ -89,13 +94,20 @@ public class PatientValidation {
 
     if (age == null || age <= 0) {
       errorList.append("Age must be a positive number. ");
+    } else if ((age % 1) != 0) {
+      errorList.append("Age must be a whole number or at least divisible by 1. ");
     }
 
-    if (height == null || age <= 0) {
+    if (height == null || height <= 0) {
       errorList.append("Height must be a positive number. ");
+    } else if ((height % 1) != 0) {
+      errorList.append("Height must be a whole number or at least divisible by 1. ");
     }
-    if (weight == null || age <= 0) {
+
+    if (weight == null || weight <= 0) {
       errorList.append("Weight must be a positive number. ");
+    } else if ((weight % 1) != 0) {
+      errorList.append("Weight must be a whole number or at least divisible by 1. ");
     }
 
     if (isBlankField(insurance)) {

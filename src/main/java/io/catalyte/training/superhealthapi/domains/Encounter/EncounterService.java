@@ -13,4 +13,6 @@ public interface EncounterService {
 
   Encounter saveEncounter(long patientId, Encounter encounter);
 
+  Encounter updateEncounter(long patientId, long encounterId, Encounter encounter);
+
 }

@@ -31,18 +31,18 @@ public class DemoData implements CommandLineRunner {
 
   private void loadPatients() {
     patientRepository.save(new Patient("Vivian", "Westwood", "452-98-9033", "vivian@gmail.com",
-        "3423 W Chelsea", "Manhattan", "New York", "56705", 26, 66, 110, "Blue Cross", "Female"));
+        "3423 W Chelsea", "Manhattan", "NY", "56705", 26F, 66F, 110F, "Blue Cross", "Female"));
 
-    patientRepository.save(new Patient("Alexander", "McQueen", "546-77-9987", "Dior@gmail.com", "6500 N Park Avenue", "Manhattan", "New York", "56717", 31, 71, 150, "Aetna", "Male"));
+    patientRepository.save(new Patient("Alexander", "McQueen", "546-77-9987", "Dior@gmail.com", "6500 N Park Avenue", "Manhattan", "NY", "56717", 31F, 71F, 150F, "Aetna", "Male"));
   }
 
   private void loadEncounters() {
-    encounterRepository.save(new Encounter(2L, "Provided iboprofen for 3 days", " H7J 8W2", "Blue Cross", "123.456.789-12", "A22",
+    encounterRepository.save(new Encounter(2L, "Provided iboprofen for 3 days", "H7J 8W2", "Blue Cross", "123.456.789-12", "A22",
         BigDecimal.valueOf(55.50), BigDecimal.valueOf(20), "Had a flue",
-        23, 100, 80, "2022-10-17"));
+        23F, 100F, 80F, "2022-10-17"));
 
-    encounterRepository.save(new Encounter(2L, "Gavem them cough syrup", " H8Y 8M3", "Aetna", "129.458.780-19", "B23",
+    encounterRepository.save(new Encounter(2L, "Gavem them cough syrup", "H8Y 8M3", "Aetna", "129.458.780-19", "B23",
         BigDecimal.valueOf(100), BigDecimal.valueOf(40), "Had a a bad cough",
-        28, 90, 75, "2022-10-09"));
+        28F, 90F, 75F, "2022-10-09"));
   }
 }

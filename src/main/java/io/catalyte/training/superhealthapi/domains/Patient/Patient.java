@@ -31,11 +31,11 @@ public class Patient {
 
   private String postal;
 
-  private Integer age;
+  private Float age;
 
-  private Integer height;
+  private Float height;
 
-  private Integer weight;
+  private Float weight;
 
   private String insurance;
 
@@ -46,7 +46,7 @@ public class Patient {
 
   public Patient(String firstName, String lastName, String ssn, String email,
       String street,
-      String city, String state, String postal, Integer age, Integer height, Integer weight,
+      String city, String state, String postal, Float age, Float height, Float weight,
       String insurance, String gender) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -99,15 +99,15 @@ public class Patient {
     this.postal = postal;
   }
 
-  public void setAge(Integer age) {
+  public void setAge(Float age) {
     this.age = age;
   }
 
-  public void setHeight(Integer height) {
+  public void setHeight(Float height) {
     this.height = height;
   }
 
-  public void setWeight(Integer weight) {
+  public void setWeight(Float weight) {
     this.weight = weight;
   }
 
@@ -155,15 +155,15 @@ public class Patient {
     return postal;
   }
 
-  public Integer getAge() {
+  public Float getAge() {
     return age;
   }
 
-  public Integer getHeight() {
+  public Float getHeight() {
     return height;
   }
 
-  public Integer getWeight() {
+  public Float getWeight() {
     return weight;
   }
 
