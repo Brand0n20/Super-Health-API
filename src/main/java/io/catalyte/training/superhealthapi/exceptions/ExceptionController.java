@@ -2,11 +2,15 @@ package io.catalyte.training.superhealthapi.exceptions;
 
 import static io.catalyte.training.superhealthapi.constants.StringConstants.NOT_FOUND;
 import static io.catalyte.training.superhealthapi.constants.StringConstants.SERVER_ERROR;
+import static io.catalyte.training.superhealthapi.constants.StringConstants.SERVICE_UNAVAILABLE;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -50,6 +54,18 @@ public class ExceptionController {
         new ExceptionResponse(SERVER_ERROR, new Date(), exception.getMessage());
 
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  /**
+   * @param exception response thrown
+   * @return string constant JDBCConnectionException.class, date, and exception message
+   */
+  @ExceptionHandler(JDBCConnectionException.class)
+  public ResponseEntity<ExceptionResponse> dbFailure(Exception exception) {
+
+        ExceptionResponse response = new ExceptionResponse(SERVICE_UNAVAILABLE, new Date(), exception.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
   }
 
   /**
