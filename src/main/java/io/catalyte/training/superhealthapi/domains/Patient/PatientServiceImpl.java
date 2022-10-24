@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
+/**
+ * This class provides the implementation for the PatientService interface
+ */
 @Service
 public class PatientServiceImpl implements PatientService{
 
@@ -81,10 +83,9 @@ public class PatientServiceImpl implements PatientService{
   public Patient savePatient(Patient patient) {
     patientValidation.isValidPatient(patient);
     Patient existingPatient = patientRepository.findByEmail(patient.getEmail());
-    Patient savedPatient = null;
     if (existingPatient == null) {
       try {
-        savedPatient =  patientRepository.save(patient);
+      patientRepository.save(patient);
       } catch (DataAccessException e) {
         logger.error(e.getMessage());
         throw new ServerError(e.getMessage());
@@ -93,7 +94,7 @@ public class PatientServiceImpl implements PatientService{
       logger.error("That email is already in use");
       throw new ResponseStatusException(HttpStatus.CONFLICT, "That email is already in use");
     }
-  return savedPatient;
+  return patient;
   }
 
   /**
@@ -132,7 +133,8 @@ public class PatientServiceImpl implements PatientService{
 
   /**
    * Will delete a patient if its id provided exists in the database
-   * @param patientId
+   * Won't delete patient if it's linked with encounters
+   * @param patientId - way to identify which patient will be deleted
    */
   @Override
   public void deletePatient(long patientId) {
@@ -154,6 +156,7 @@ public class PatientServiceImpl implements PatientService{
     } else {
       throw new ResourceNotFound("Patient with id " + patientId + " does not exist in the database");
     }
+
   }
 
 }

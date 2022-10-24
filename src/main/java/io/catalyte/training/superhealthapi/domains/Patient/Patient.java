@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * This class is a representation of a patient
+ * This class is a representation of a Patient
  */
 @Entity
 public class Patient {

@@ -33,7 +33,7 @@ public class DemoData implements CommandLineRunner {
     patientRepository.save(new Patient("Vivian", "Westwood", "452-98-9033", "vivian@gmail.com",
         "3423 W Chelsea", "Manhattan", "NY", "56705", 26F, 66F, 110F, "Blue Cross", "Female"));
 
-    patientRepository.save(new Patient("Alexander", "McQueen", "546-77-9987", "Dior@gmail.com", "6500 N Park Avenue", "Manhattan", "NY", "56717", 31F, 71F, 150F, "Aetna", "Male"));
+    patientRepository.save(new Patient("Alexander", "McQueen", "546-77-9987", "McQueen@gmail.com", "6500 N Park Avenue", "Manhattan", "NY", "56717", 31F, 71F, 150F, "Aetna", "Male"));
   }
 
   private void loadEncounters() {

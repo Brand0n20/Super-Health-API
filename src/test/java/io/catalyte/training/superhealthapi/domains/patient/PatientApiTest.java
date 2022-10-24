@@ -10,25 +10,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.catalyte.training.superhealthapi.domains.Patient.Patient;
 import io.catalyte.training.superhealthapi.domains.Patient.PatientRepository;
-import io.catalyte.training.superhealthapi.domains.Patient.PatientServiceImpl;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.server.ResponseStatusException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,9 +29,6 @@ public class PatientApiTest {
 
   @Mock
   PatientRepository patientRepository;
-
-//  @InjectMocks
-//  PatientServiceImpl patientService;
 
   @Autowired
   private WebApplicationContext wac;
@@ -57,21 +47,37 @@ public class PatientApiTest {
     }
   }
 
+  /**
+   * Will return all patients will a 200 OK status
+   * @throws Exception
+   */
   @Test
   public void getPatientsReturns200() throws Exception {
     mockMvc.perform(get(PATIENTS_PATH)).andExpect(status().isOk());
   }
 
+  /**
+   * Will return a single patient based on the given id with a 200 OK status
+   * @throws Exception
+   */
   @Test
   public void getPatientByIdReturns200() throws Exception {
     mockMvc.perform(get(PATIENTS_PATH + "/2")).andExpect(status().isOk());
   }
 
+  /**
+   * Will throw an exception since the patient id doesn't exist
+   * @throws Exception
+   */
   @Test
   public void getPatientByNonExistingIdReturns404() throws Exception {
     mockMvc.perform(get(PATIENTS_PATH + "/4")).andExpect(status().isNotFound());
   }
 
+  /**
+   * Will return a saved patient with a 204 CREATED status
+   * @throws Exception
+   */
   @Test
   public void savePatientReturns201() throws Exception {
     Patient patient = new Patient("Tory", "Williams", "456-78-2345", "TW@gmail.com", "2347 W Park", "Overland Park", "KS",
@@ -80,6 +86,10 @@ public class PatientApiTest {
         asJsonString(patient))).andExpect(status().isCreated());
   }
 
+  /**
+   * Will throw an exception if the patient email
+   * @throws Exception
+   */
   @Test
   public void patientWithOtherPatientEmailReturns409() throws Exception {
     Patient oldPatient = new Patient("Tory", "Williams", "456-78-2345", "TW@gmail.com", "2347 W Park", "Overland Park", "KS",

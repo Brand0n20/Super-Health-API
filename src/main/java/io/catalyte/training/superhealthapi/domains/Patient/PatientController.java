@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +51,6 @@ public class PatientController {
     return new ResponseEntity<>(patientService.getPatientById(id), HttpStatus.OK);
   }
 
-
   /**
    * Will save a valid patient to the database
    * @param patient - The patient to post
@@ -63,6 +61,12 @@ public class PatientController {
     return new ResponseEntity<>(patientService.savePatient(patient), HttpStatus.CREATED);
   }
 
+  /**
+   * Will update an existing patient
+   * @param patientToUpdate = The new patient payload
+   * @param id - path to identify the patient to be selected
+   * @return - the updated patient
+   */
   @PutMapping(value = "/{id}")
   public ResponseEntity<Patient> updatePatient(@RequestBody Patient patientToUpdate, @PathVariable long id) {
     return new ResponseEntity<>(patientService.updatePatient(patientToUpdate, id), HttpStatus.OK);

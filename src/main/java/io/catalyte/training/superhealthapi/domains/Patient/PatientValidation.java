@@ -20,6 +20,12 @@ public class PatientValidation {
     return true;
   }
 
+  /**
+   * Checks if the patient object is valid based on if it passes the conditions tested
+   * Will add error messages to a list for every condition failed, if the list contains error messages, a BAD_REQUEST status will be thrown
+   * @param patient - patient to be validated
+   * @return true saying the patient is valid
+   */
   public boolean isValidPatient(Patient patient) {
 
     StringBuilder errorList = new StringBuilder();
@@ -46,14 +52,14 @@ public class PatientValidation {
 
     if (isBlankField(firstName)) {
       errorList.append("First name cannot be blank or null. ");
-    } else if (!firstName.matches("^[a-zA-Z']*$")) {
+    } else if (!firstName.matches("^[a-zA-Z' ]*$")) {
       errorList.append("Last name cannot contain special characters or numbers.  ");
     }
 
     if (isBlankField(lastName)) {
       errorList.append("Last name cannot be blank or null. ");
-    } else if (!lastName.matches("^[a-zA-Z']*$")) {
-      errorList.append("Last name ccannot contain special characters or numbers. ");
+    } else if (!lastName.matches("^[a-zA-Z' ]*$")) {
+      errorList.append("Last name cannot contain special characters or numbers. ");
     }
 
     if (isBlankField(ssn)) {
@@ -64,7 +70,7 @@ public class PatientValidation {
 
     if (isBlankField(email)) {
       errorList.append("Email cannot be blank or null. ");
-    } else if (!email.matches("\\S+@\\S+\\.\\S+")) {
+    } else if (!email.matches("^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$")) {
       errorList.append("Email must be valid. ");
     }
 

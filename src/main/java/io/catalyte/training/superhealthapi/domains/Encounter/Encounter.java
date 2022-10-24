@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
+/**
+ * This class is a representation of an encounter belonging to a patient
+ */
 @Entity
 public class Encounter {
 

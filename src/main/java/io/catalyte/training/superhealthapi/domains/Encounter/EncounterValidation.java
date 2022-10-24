@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class EncouterValidation {
+public class EncounterValidation {
 
   /**
    * Checks if an input is blank or null
@@ -18,6 +18,12 @@ public class EncouterValidation {
     return true;
   }
 
+  /**
+   * Checks if the encounter object is valid based on if it passes the conditions tested
+   * Will add error messages to a list for every condition failed, if the list contains error messages, a BAD_REQUEST status will be thrown
+   * @param encounter - encounter to be validated
+   * @return true saying the encounter is valid
+   */
   public boolean isValidEncounter(Encounter encounter) {
     StringBuilder errorList = new StringBuilder();
     String visitCode = encounter.getVisitCode();
