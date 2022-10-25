@@ -1,10 +1,14 @@
 package io.catalyte.training.superhealthapi.domains.Encounter;
 
 import java.math.BigDecimal;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class EncounterValidation {
+
+  private final Logger logger = LogManager.getLogger(EncounterValidation.class);
 
   /**
    * Checks if an input is blank or null
@@ -99,6 +103,7 @@ public class EncounterValidation {
     }
 
     if (!(errorList.length() == 0)) {
+      logger.error(errorList.toString());
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorList.toString());
     }
 

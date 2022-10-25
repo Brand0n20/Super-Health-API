@@ -3,11 +3,14 @@ package io.catalyte.training.superhealthapi.domains.Patient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class PatientValidation {
 
+  private final Logger logger = LogManager.getLogger(PatientValidation.class);
   /**
    * Checks if an input is blank or null
    * @param input String any field of any card
@@ -129,6 +132,7 @@ public class PatientValidation {
       }
 
     if (!(errorList.length() == 0)) {
+      logger.error(errorList.toString());
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorList.toString());
     }
 

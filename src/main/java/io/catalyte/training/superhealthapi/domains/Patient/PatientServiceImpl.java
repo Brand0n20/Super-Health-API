@@ -69,7 +69,7 @@ public class PatientServiceImpl implements PatientService{
     if (patient != null) {
       return patient;
     } else {
-      logger.info("Patient with id " + patientId + " does not exist in the database");
+      logger.error("Patient with id " + patientId + " does not exist in the database");
       throw new ResourceNotFound("Patient with id " + patientId + " does not exist in the database");
     }
   }
@@ -109,11 +109,13 @@ public class PatientServiceImpl implements PatientService{
     Patient anotherPatient = patientRepository.findByEmail(patient.getEmail());
 
     if (existingPatient == null) {
+      logger.error("Patient with id: " + patientId + " does not exist");
       throw new ResourceNotFound("Patient with id: " + patientId + " does not exist");
     } else {
       if (Objects.equals(existingPatient.getEmail(), patient.getEmail())
           && Objects.equals(anotherPatient.getId(), existingPatient.getId()) || anotherPatient == null) {
         if (patientId != patient.getId()) {
+          logger.error("Body patient id must match path variable id");
           throw  new ResponseStatusException(HttpStatus.BAD_REQUEST,
               "Body patient id must match path variable id");
         }
@@ -125,6 +127,7 @@ public class PatientServiceImpl implements PatientService{
           throw new ServerError(e.getMessage());
         }
       } else {
+        logger.error("That email is already in use by somebody else");
         throw new ResponseStatusException(HttpStatus.CONFLICT, "That email is already in use by somebody else");
       }
     }
@@ -150,10 +153,12 @@ public class PatientServiceImpl implements PatientService{
           throw new ServerError(e.getMessage());
         }
       } else {
+        logger.error("That patient has encounters and therefore cannot be deleted");
         throw new ResponseStatusException(HttpStatus.CONFLICT, "That patient has encounters and therefore cannot be deleted");
       }
 
     } else {
+      logger.error("Patient with id " + patientId + " does not exist in the database");
       throw new ResourceNotFound("Patient with id " + patientId + " does not exist in the database");
     }
 

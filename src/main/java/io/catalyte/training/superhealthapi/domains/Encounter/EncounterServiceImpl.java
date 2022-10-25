@@ -92,10 +92,12 @@ public class EncounterServiceImpl implements EncounterService {
           throw new ServerError(e.getMessage());
         }
       } else if (patientId != encounter.getPatientId()) {
+        logger.error("Body patient id must match path variable id");
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "Body patient id must match path variable id");
       }
     } else {
+      logger.error("Patient with id of " + patientId + " does not exist in the database");
       throw new ResourceNotFound(
           "Patient with id of " + patientId + " does not exist in the database. ");
     }
@@ -124,13 +126,16 @@ public class EncounterServiceImpl implements EncounterService {
           throw new ServerError(e.getMessage());
         }
       } else {
+        logger.error("Both patient and encounter id need to match in the body and in the path. ");
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "Both patient and encounter id need to match in the body and in the path. ");
       }
     } else if (!encounterRepository.existsById(encounterId)) {
+      logger.error("Encounter with id of " + encounterId + " does not exist in the database");
       throw new ResourceNotFound(
           "Encounter with id of " + encounterId + " does not exist in the database");
     } else {
+      logger.error("Patient with id of" + patientId + " does not exist in the database");
       throw new ResourceNotFound(
           "Patient with id of" + patientId + " does not exist in the database");
     }
