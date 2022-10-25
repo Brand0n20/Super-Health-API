@@ -36,7 +36,7 @@ This server requires that you have Postgres installed and running on the default
 
 ##### Postman Collection
 
-Here's the link to the Postman collection: It should contain all the 200 and 400 requests required: https://www.getpostman.com/collections/c9ae5ebd0d796203bb40
+Here's the link to the Postman collection: It should contain all the 200 and 400 requests required: https://www.getpostman.com/collections/2904ed8289dd64bfc324
 They're running on port8085
 
 ###### Testing
