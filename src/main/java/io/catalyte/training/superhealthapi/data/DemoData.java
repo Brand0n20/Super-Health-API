@@ -37,11 +37,11 @@ public class DemoData implements CommandLineRunner {
   }
 
   private void loadEncounters() {
-    encounterRepository.save(new Encounter(2L, "Provided iboprofen for 3 days", "H7J 8W2", "Blue Cross", "123.456.789-12", "A22",
+    encounterRepository.save(new Encounter(2L, "Provided iboprofen for 3 days", "H7J 8W2", "Dr. Cole", "123.456.789-12", "A22",
         BigDecimal.valueOf(55.50), BigDecimal.valueOf(20), "Had a flue",
         23F, 100F, 80F, "2022-10-17"));
 
-    encounterRepository.save(new Encounter(2L, "Gavem them cough syrup", "H8Y 8M3", "Aetna", "129.458.780-19", "B23",
+    encounterRepository.save(new Encounter(2L, "Gavem them cough syrup", "H8Y 8M3", "Dr. Umar", "129.458.780-19", "B23",
         BigDecimal.valueOf(100), BigDecimal.valueOf(40), "Had a a bad cough",
         28F, 90F, 75F, "2022-10-09"));
   }
