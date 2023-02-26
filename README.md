@@ -20,13 +20,12 @@ Make sure the front-end is using this port in its constants file
 - Validation-api, persistence-api
 - For testing, JUnit was used, along with Mockito
 - For databases, postgresql was used and h2 database for testing
-- These are all included in the project already
 
 #### JDK
 
 You must have a JDK installed on your machine.
 
-#### Postgres
+#### PostgreSQL
 
 This server requires that you have Postgres installed and running on the default Postgres port of
 5432. It requires that you have a database created on the server with the name of `postgres`
